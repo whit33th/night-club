@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <div className="relative grid h-[calc(100dvh-56px-100px)] w-full overflow-hidden !p-0 lg:h-[calc(100dvh-56px)]">
+    <div className="relative grid h-[calc(100dvh-56px-100px)] w-full overflow-hidden !p-0 lg:h-[calc(100dvh-56px-32px)]">
       <video
         src="/videos/2.mp4"
         autoPlay

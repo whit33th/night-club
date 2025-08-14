@@ -2,17 +2,18 @@
 
 import { MessageSquare, Settings, Ticket } from "lucide-react";
 import Image from "next/image";
+import { TabKey } from "../page";
 
 type Props = {
-  active: "tickets" | "messages" | "settings";
+  active: TabKey;
   onChange: (tab: Props["active"]) => void;
 };
 
 export default function ProfileHeader({ active, onChange }: Props) {
   const tabs = [
     {
-      key: "tickets",
-      label: "Tickets",
+      key: "liked",
+      label: "Liked",
       icon: <Ticket className="h-4 w-4" />,
     },
     {

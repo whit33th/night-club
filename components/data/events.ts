@@ -13,10 +13,14 @@ export type ClubEvent = {
   price?: number;
   currency?: string;
   new?: boolean;
+  ticketUrl?: string;
+  // Add a unique id for each event to ensure unique ViewTransition names
+  id?: string;
 };
 
 export const mockEvents: Array<ClubEvent> = [
   {
+    id: "the-dark-knight-2025-08-10",
     title: "The Dark Knight",
     slug: "the-dark-knight",
     date: "2025-08-10",
@@ -31,8 +35,10 @@ export const mockEvents: Array<ClubEvent> = [
     price: 25,
     currency: "PLN",
     new: true,
+    ticketUrl: "https://www.ebilet.pl/en/event/12345",
   },
   {
+    id: "city-lights-2025-08-12",
     title: "City Lights",
     slug: "city-lights",
     date: "2025-08-12",
@@ -46,8 +52,10 @@ export const mockEvents: Array<ClubEvent> = [
     subtitle: "Casablanca • Benicassim",
     price: 20,
     currency: "PLN",
+    ticketUrl: "https://www.ticketmaster.pl/event/abcde",
   },
   {
+    id: "open-decks-2025-08-13",
     title: "Open Decks",
     slug: "open-decks",
     date: "2025-08-13",
@@ -64,6 +72,7 @@ export const mockEvents: Array<ClubEvent> = [
     new: true,
   },
   {
+    id: "after-hours-2025-08-14",
     title: "After Hours",
     slug: "after-hours",
     date: "2025-08-14",
@@ -77,8 +86,10 @@ export const mockEvents: Array<ClubEvent> = [
     subtitle: "Concert Music Festival • Chiclana",
     price: 30,
     currency: "PLN",
+    ticketUrl: "https://tobilet.pl/wydarzenie/98765",
   },
   {
+    id: "midnight-pulse-2025-08-15",
     title: "Midnight Pulse",
     slug: "midnight-pulse",
     date: "2025-08-15",
@@ -93,6 +104,7 @@ export const mockEvents: Array<ClubEvent> = [
     currency: "PLN",
   },
   {
+    id: "neon-drift-2025-08-16",
     title: "Neon Drift",
     slug: "neon-drift",
     date: "2025-08-16",
@@ -105,8 +117,10 @@ export const mockEvents: Array<ClubEvent> = [
     subtitle: "Medusa Beach Club • Cullera",
     price: 28,
     currency: "PLN",
+    ticketUrl: "https://www.ebilet.pl/en/event/67890",
   },
   {
+    id: "motel-paraiso-2025-08-17",
     title: "Motel Paraíso",
     slug: "motel-paraiso",
     date: "2025-08-17",
@@ -121,6 +135,7 @@ export const mockEvents: Array<ClubEvent> = [
     currency: "PLN",
   },
   {
+    id: "velice-night-2025-08-21",
     title: "Velice Night",
     slug: "velice-night",
     date: "2025-08-21",
@@ -135,6 +150,7 @@ export const mockEvents: Array<ClubEvent> = [
     currency: "PLN",
   },
   {
+    id: "nmf-2025-08-30",
     title: "NMF",
     slug: "nmf",
     date: "2025-08-30",
@@ -149,6 +165,7 @@ export const mockEvents: Array<ClubEvent> = [
     currency: "PLN",
   },
   {
+    id: "la-daurada-2025-08-29",
     title: "La Daurada",
     slug: "la-daurada",
     date: "2025-08-29",

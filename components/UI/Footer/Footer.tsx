@@ -1,13 +1,12 @@
 "use client";
 
+import { Facebook, Instagram, Twitter, type LucideIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Facebook, Instagram, Twitter, type LucideIcon } from "lucide-react";
 
 type NavLink = { href: string; label: string };
 type NavSection = { title: string; links: Array<NavLink> };
 type SocialLink = { href: string; label: string; Icon: LucideIcon };
-type PaymentIcon = { src: string; alt: string };
 
 const SECTION_TITLE_CLASS = "text-xs uppercase tracking-[0.2em] text-white/60";
 const LINK_CLASS = "text-white/85 transition hover:text-white";
@@ -56,12 +55,6 @@ const SOCIAL_LINKS: Array<SocialLink> = [
     label: "Facebook",
     Icon: Facebook,
   },
-];
-
-const PAYMENT_ICONS: Array<PaymentIcon> = [
-  { src: "/imgs/payments/visa.svg", alt: "Visa" },
-  { src: "/imgs/payments/mastercard.svg", alt: "Mastercard" },
-  { src: "/imgs/payments/paypal.svg", alt: "PayPal" },
 ];
 
 function FooterSection({ title, links }: NavSection) {

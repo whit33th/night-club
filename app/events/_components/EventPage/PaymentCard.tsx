@@ -1,13 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import Link from "next/link";
 
 type PaymentCardProps = {
   basePrice?: number;
   currency?: string;
   imageSrc?: string;
   title?: string;
+  ticketUrl?: string;
 };
 
 export default function PaymentCard({
@@ -15,11 +16,8 @@ export default function PaymentCard({
   currency = "PLN",
   imageSrc,
   title = "General Admission",
+  ticketUrl,
 }: PaymentCardProps) {
-  const [quantity, setQuantity] = useState<number>(1);
-
-  const total = basePrice * quantity;
-
   return (
     <section
       className="relative w-full overflow-hidden rounded-xl bg-neutral-900/15 p-0 shadow-xl backdrop-blur"
@@ -63,47 +61,37 @@ export default function PaymentCard({
             </span>
           </header>
 
-          <div className="flex w-full flex-col justify-between gap-4 sm:flex-row">
-            <div className="flex items-center justify-center gap-3">
-              <button
-                type="button"
-                aria-label="Decrease quantity"
-                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5 text-lg font-bold text-white/90 transition hover:bg-white/10 active:scale-95"
-              >
-                −
-              </button>
-              <div className="min-w-12 rounded-md border border-white/10 bg-black/30 px-3 py-1 text-center text-base font-semibold">
-                {quantity}
+          <div className="flex w-full flex-col justify-between gap-2 sm:flex-row sm:items-center">
+            {basePrice ? (
+              <div className="text-center sm:text-left">
+                <p className="text-[10px] uppercase tracking-widest text-neutral-400">
+                  Price from:
+                </p>
+                <p className="text-xl font-extrabold text-white">
+                  {basePrice} {currency}
+                </p>
               </div>
-              <button
-                type="button"
-                aria-label="Increase quantity"
-                onClick={() => setQuantity((q) => Math.min(10, q + 1))}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--primary)_40%,transparent)] bg-[color-mix(in_srgb,var(--primary)_10%,transparent)] text-lg font-bold text-[var(--primary)] transition hover:bg-[color-mix(in_srgb,var(--primary)_15%,transparent)] active:scale-95"
-              >
-                +
-              </button>
-            </div>
-
-            <div className="text-center sm:text-right">
-              <p className="text-[10px] uppercase tracking-widest text-neutral-400">
-                Total
-              </p>
-              <p className="text-xl font-extrabold text-white">
-                {total} {currency}
-              </p>
+            ) : null}
+            <div className="text-xs text-neutral-400 sm:text-right">
+              {ticketUrl ? null : <p>Free entry — no purchase required.</p>}
             </div>
           </div>
 
           <div className="mt-4 flex flex-wrap items-center justify-center gap-3 sm:justify-end">
-            <button
-              type="button"
-              onClick={() => {}}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-[color-mix(in_srgb,var(--primary)_45%,transparent)] bg-[color-mix(in_srgb,var(--primary)_12%,transparent)] px-6 py-2 text-center text-sm font-semibold text-[var(--primary)] backdrop-blur-sm transition hover:bg-[color-mix(in_srgb,var(--primary)_18%,transparent)] focus:outline-none focus:ring-2 focus:ring-[color-mix(in_srgb,var(--primary)_45%,transparent)] focus:ring-offset-0"
-            >
-              Buy now
-            </button>
+            {ticketUrl ? (
+              <Link
+                href={ticketUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-[color-mix(in_srgb,var(--primary)_45%,transparent)] bg-[color-mix(in_srgb,var(--primary)_12%,transparent)] px-6 py-2 text-center text-sm font-semibold text-[var(--primary)] backdrop-blur-sm transition hover:bg-[color-mix(in_srgb,var(--primary)_18%,transparent)] focus:outline-none focus:ring-2 focus:ring-[color-mix(in_srgb,var(--primary)_45%,transparent)] focus:ring-offset-0"
+              >
+                Buy tickets
+              </Link>
+            ) : (
+              <span className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-2 text-center text-sm font-semibold text-white/80">
+                No ticket needed
+              </span>
+            )}
           </div>
         </div>
       </div>

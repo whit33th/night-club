@@ -1,55 +1,68 @@
 "use client";
 
-import { mockEvents, ClubEvent } from "@/components/data/events";
-import { useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { X } from "lucide-react";
+import { unstable_Activity as Activity } from "react";
+import EventsGridView from "./_components/EventsPage/EventsGridView";
+import EventsListView from "./_components/EventsPage/EventsListView";
 import FiltersHeader from "./_components/EventsPage/FiltersHeader";
 import ModeToggle from "./_components/EventsPage/ModeToggle";
-import EventsListView from "./_components/EventsPage/EventsListView";
-import EventsGridView from "./_components/EventsPage/EventsGridView";
-
-const RAW_POSTERS: Array<ClubEvent> = mockEvents;
+import { useEventsFilters } from "./_hooks/useEventsFilters";
 
 export default function EventsPage() {
-  const [active, setActive] = useState<string>("all");
-  const [mode, setMode] = useState<"grid" | "list">("list");
-  const filters = ["all", "techno", "house", "mixed"] as const;
-  const searchParams = useSearchParams();
-  const after = searchParams.get("after");
-
-  const posters = useMemo(() => {
-    let list = RAW_POSTERS;
-    if (after) {
-      const t = new Date(after).getTime();
-      if (!Number.isNaN(t)) {
-        list = list.filter((p) => new Date(p.date).getTime() > t);
-      }
-    }
-    if (active === "all") return list;
-    return list.filter((p) => p.genres?.includes(active));
-  }, [active, after]);
+  const {
+    filters,
+    activeGenre,
+    after,
+    posters,
+    setGenre,
+    clearAfter,
+    mode,
+    toggleMode,
+  } = useEventsFilters();
 
   return (
     <div className="flex flex-col gap-4">
       <FiltersHeader
-        filters={filters as unknown as string[]}
-        active={active}
-        onChange={setActive}
+        filters={filters}
+        active={activeGenre}
+        onChange={setGenre}
+        after={after}
       />
+
+      {after ? (
+        <div className="flex items-center justify-center gap-2 text-xs text-white/70">
+          <span>
+            Showing events after: <span className="font-semibold">{after}</span>
+          </span>
+          <button
+            className="ml-2 aspect-square rounded-full px-2 py-0.5 text-xs font-medium text-white/60 transition hover:bg-white/10 hover:text-white"
+            onClick={clearAfter}
+            type="button"
+          >
+            <X className="h-3 w-3" />
+          </button>
+        </div>
+      ) : null}
 
       <p className="w-full px-1 py-1 text-center text-[10px] uppercase tracking-[0.4em] text-white/70">
         Exclusive drops · Limited capacity · Doors 22:00 · 18+ · Dress code
       </p>
 
-      <ModeToggle
-        mode={mode}
-        onToggle={() => setMode((m) => (m === "grid" ? "list" : "grid"))}
-      />
+      <ModeToggle mode={mode} onToggle={toggleMode} />
 
-      {mode === "grid" ? (
-        <EventsGridView items={posters} />
+      {posters.length === 0 ? (
+        <div className="mx-auto w-full max-w-2xl rounded-xl border border-white/10 bg-white/5 p-6 text-center text-white/80">
+          <p>No events found after the selected date.</p>
+        </div>
       ) : (
-        <EventsListView items={posters} />
+        <>
+          <Activity mode={mode === "grid" ? "visible" : "hidden"}>
+            <EventsGridView items={posters} />
+          </Activity>
+          <Activity mode={mode === "list" ? "visible" : "hidden"}>
+            <EventsListView items={posters} />
+          </Activity>
+        </>
       )}
     </div>
   );

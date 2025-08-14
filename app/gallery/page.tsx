@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -29,19 +30,28 @@ export default function GalleryPage() {
             <h2 className="mx-auto inline-block w-full max-w-xs text-3xl font-extrabold uppercase tracking-tight sm:max-w-none sm:text-5xl">
               After Dark Moments
             </h2>
-            <p className="mx-auto mt-3 w-full max-w-2xl text-sm text-white/80 sm:text-base">
+            {/* <p className="mx-auto mt-3 w-full max-w-2xl text-sm text-white/80 sm:text-base">
               Nights out, cool lights, good vibes. Just moments we liked.
-            </p>
+            </p> */}
           </div>
         </div>
       </section>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
         {images.map((src, idx) => (
-          <button
+          <motion.button
             key={idx}
             onClick={() => setActive(idx)}
             className="ring-none group relative aspect-square overflow-hidden"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{
+              duration: 0.5,
+              delay: idx * 0.08,
+              type: "spring",
+              stiffness: 60,
+            }}
           >
             <Image
               src={src}
@@ -55,47 +65,7 @@ export default function GalleryPage() {
               fill
               className="object-cover object-center p-0.5"
             />
-          </button>
-        ))}
-        {images.map((src, idx) => (
-          <button
-            key={idx}
-            onClick={() => setActive(idx)}
-            className="ring-none group relative aspect-square overflow-hidden"
-          >
-            <Image
-              src={src}
-              alt={`Gallery hover ${idx + 1}`}
-              fill
-              className="object-cover object-center opacity-0 invert transition-opacity group-hover:opacity-90"
-            />
-            <Image
-              src={src}
-              alt={`Gallery ${idx + 1}`}
-              fill
-              className="object-cover object-center p-0.5"
-            />
-          </button>
-        ))}
-        {images.map((src, idx) => (
-          <button
-            key={idx}
-            onClick={() => setActive(idx)}
-            className="ring-none group relative aspect-square overflow-hidden"
-          >
-            <Image
-              src={src}
-              alt={`Gallery hover ${idx + 1}`}
-              fill
-              className="object-cover object-center opacity-0 invert transition-opacity group-hover:opacity-90"
-            />
-            <Image
-              src={src}
-              alt={`Gallery ${idx + 1}`}
-              fill
-              className="object-cover object-center p-0.5"
-            />
-          </button>
+          </motion.button>
         ))}
       </div>
 

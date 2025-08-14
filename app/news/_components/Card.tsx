@@ -8,19 +8,18 @@ import { formatDate } from "./utils";
 
 export function NewsCard({ post, index }: { post: NewsItem; index: number }) {
   return (
-    <motion.figure
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.6, delay: index * 0.05, ease: "easeOut" }}
-      className="group relative mb-3 overflow-hidden border-x border-b border-white/10 [break-inside:avoid] sm:mb-4"
-      style={{
-        clipPath:
-          "polygon(12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px)",
-        position: "relative",
-      }}
-    >
-      <Link href={`/news/${post.id}`} className="block no-underline">
+    <Link href={`/news/${post.id}`} className="group">
+      <motion.article
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, delay: index * 0.05, ease: "easeOut" }}
+        style={{
+          clipPath:
+            "polygon(12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px)",
+        }}
+        className="border-x border-b border-white/10"
+      >
         <div className="relative overflow-hidden">
           <Image
             width={200}
@@ -45,8 +44,8 @@ export function NewsCard({ post, index }: { post: NewsItem; index: number }) {
             <span className="mx-1 text-neutral-500">{"///"}</span> {post.title}
           </span>
         </figcaption>
-      </Link>
-    </motion.figure>
+      </motion.article>
+    </Link>
   );
 }
 

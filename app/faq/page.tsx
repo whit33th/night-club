@@ -16,7 +16,7 @@ export default function FaqPage() {
   ];
 
   return (
-    <div className="relative mx-auto max-w-3xl px-4 pb-16 pt-8 sm:pt-14">
+    <div className="relative mx-auto max-w-3xl px-4 pt-8">
       {/* Header */}
       <header className="relative mb-10 sm:mb-14">
         <h1 className="text-center text-5xl font-black uppercase tracking-tight sm:text-6xl">

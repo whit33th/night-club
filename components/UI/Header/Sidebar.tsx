@@ -28,7 +28,7 @@ export default function Sidebar({
 
   return (
     <aside
-      className={`fixed inset-0 top-14 z-[61] w-full -translate-y-full border-b border-[color-mix(in_srgb,var(--primary)_20%,transparent)] bg-black/85 backdrop-blur-2xl transition-transform will-change-transform lg:hidden ${open ? "translate-y-0" : "-translate-y-full"}`}
+      className={`fixed inset-0 top-14 z-50 w-full border-b border-[color-mix(in_srgb,var(--primary)_20%,transparent)] bg-black/85 backdrop-blur-2xl transition-transform will-change-transform lg:hidden ${open ? "translate-y-0" : "hidden -translate-y-full"}`}
       role="dialog"
       aria-modal
       aria-labelledby="sidebar-title"

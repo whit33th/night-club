@@ -1,11 +1,20 @@
+"use client";
+
 import Map from "@/components/UI/Map/Map";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function AboutPage() {
   return (
     <div className="flex flex-col gap-8">
-      <section className="relative flex min-h-[40dvh] items-center justify-center overflow-hidden rounded-xl">
+      <motion.section
+        className="relative flex min-h-[40dvh] items-center justify-center overflow-hidden rounded-xl"
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         <Image
           src="/imgs/1.jpg"
           alt="Club"
@@ -22,9 +31,15 @@ export default function AboutPage() {
             After Dark · Neon Heart · No Sleep Club
           </p>
         </div>
-      </section>
+      </motion.section>
 
-      <section className="container relative mx-auto overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--primary)_25%,transparent)] p-6 lg:p-8">
+      <motion.section
+        className="container relative mx-auto overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--primary)_25%,transparent)] p-6 lg:p-8"
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(900px_320px_at_85%_120%,color-mix(in_srgb,var(--primary)_18%,transparent),transparent)]" />
         <div className="grid items-start gap-8 md:grid-cols-2">
           <div className="flex flex-col gap-4">
@@ -32,7 +47,7 @@ export default function AboutPage() {
               Boundless Nights
             </span>
             <h2 className="text-3xl font-extrabold uppercase leading-tight tracking-tight sm:text-4xl">
-              2Progi — Night Euphoria
+              2Progi
             </h2>
             <p className="max-w-prose text-sm text-white/80">
               Dive into the pulse of Poznań’s night. Our club is where magic
@@ -61,7 +76,7 @@ export default function AboutPage() {
               <h3 className="text-xs uppercase tracking-wide text-white/60">
                 Visit
               </h3>
-              <p className="text-white/90">Address: 123 Event St., Main Hall</p>
+              <p className="text-white/90">Address: 2Progi, Poznań, Poland</p>
             </div>
             <div className="grid gap-1 text-sm">
               <h3 className="text-xs uppercase tracking-wide text-white/60">
@@ -74,10 +89,10 @@ export default function AboutPage() {
                 Contact
               </h3>
               <Link
-                href="mailto:hello@nightclub.test"
+                href="#"
                 className="text-white/90 hover:text-[var(--primary)]"
               >
-                hello@nightclub.test
+                Facebook: 2Progi (official)
               </Link>
             </div>
             <div className="grid gap-1 text-sm">
@@ -93,9 +108,15 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      <section className="container mx-auto flex flex-col gap-4">
+      <motion.section
+        className="container mx-auto flex flex-col gap-4"
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         <h2 className="text-xl font-semibold">Residents</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {[
@@ -104,9 +125,13 @@ export default function AboutPage() {
             { name: "Ghost Unit", img: "/imgs/residents/3.png" },
             { name: "MC Nova", img: "/imgs/residents/4.png" },
           ].map((a, i) => (
-            <div
+            <motion.div
               key={i}
               className="group relative aspect-video overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--primary)_20%,transparent)]"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: i * 0.05 }}
             >
               <Image
                 src={a.img}
@@ -122,12 +147,18 @@ export default function AboutPage() {
                   Resident
                 </span>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </section>
+      </motion.section>
 
-      <section className="relative overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--primary)_25%,transparent)] p-6">
+      <motion.section
+        className="relative overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--primary)_25%,transparent)] p-6"
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(800px_260px_at_80%_120%,color-mix(in_srgb,var(--primary)_20%,transparent),transparent)]" />
         <div className="flex flex-col items-center gap-3 text-center">
           <h3 className="text-2xl font-extrabold uppercase tracking-tight">
@@ -144,8 +175,15 @@ export default function AboutPage() {
             Browse Events
           </Link>
         </div>
-      </section>
-      <Map />
+      </motion.section>
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <Map />
+      </motion.div>
     </div>
   );
 }

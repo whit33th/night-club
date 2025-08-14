@@ -23,7 +23,7 @@ export default function NewsDetailPage({
   }
 
   return (
-    <div className="relative mx-auto max-w-3xl px-4 pb-16 pt-8 sm:pt-14">
+    <div className="relative mx-auto max-w-3xl px-4 pt-8">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 [mask-image:radial-gradient(520px_220px_at_50%_0%,black,transparent)]"

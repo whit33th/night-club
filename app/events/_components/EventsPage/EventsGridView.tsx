@@ -10,8 +10,8 @@ type EventsGridViewProps = {
 export default function EventsGridView({ items }: EventsGridViewProps) {
   return (
     <div className="grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] gap-4 xl:grid-cols-[repeat(auto-fill,minmax(315px,1fr))]">
-      {items.map((ev, index) => (
-        <EventsCard key={index} poster={ev} index={index} />
+      {items.map((event, index) => (
+        <EventsCard key={event.id} event={event} index={index} />
       ))}
     </div>
   );

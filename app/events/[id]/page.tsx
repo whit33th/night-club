@@ -14,7 +14,7 @@ export default function EventPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const event: ClubEvent | undefined = mockEvents.find((e) => e.slug === id);
+  const event: ClubEvent | undefined = mockEvents.find((e) => e.id === id);
 
   if (!event) {
     return (
@@ -39,7 +39,7 @@ export default function EventPage({
     <div className="flex h-full flex-col gap-4">
       <TopBar date={eventDateTime} />
       <div className="container m-auto grid grid-cols-1 gap-4 lg:grid-cols-2 lg:grid-rows-[1fr_auto]">
-        <HeroImage id={event.slug} src={event.img} alt={event.title} />
+        <HeroImage id={event.id ?? ""} src={event.img} alt={event.title} />
 
         <InfoCard title={event.title} subtitle={subtitle} />
 
@@ -48,6 +48,7 @@ export default function EventPage({
           currency={currency}
           imageSrc={event.img}
           title={event.entry === "free" ? "Free Entry" : "General Admission"}
+          ticketUrl={event.ticketUrl}
         />
         <NextEvents currentSlug={id} />
       </div>

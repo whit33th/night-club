@@ -1,14 +1,15 @@
 "use client";
 
 import type { ClubEvent } from "@/components/data/events";
-import { QrCode } from "lucide-react";
+import { useFavorites } from "@/components/hooks/useFavorites";
+import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, unstable_ViewTransition as ViewTransition } from "react";
-import QrPortal from "./TicketCard/QrPortal";
+import { unstable_ViewTransition as ViewTransition } from "react";
 type TicketCardProps = {
   event: ClubEvent;
   index?: number;
+  participantsCount?: number;
 };
 
 export default function TicketCard({ event, index }: TicketCardProps) {
@@ -17,23 +18,23 @@ export default function TicketCard({ event, index }: TicketCardProps) {
   const viewName = `ticket-${event.slug}`;
 
   const date = new Date(event.date);
-  const day = date.toLocaleDateString(undefined, { day: "2-digit" });
-  const month = date.toLocaleDateString(undefined, { month: "long" });
+  // const day = date.toLocaleDateString(undefined, { day: "2-digit" });
+  // const month = date.toLocaleDateString(undefined, { month: "long" });
   const fullDate = date.toLocaleDateString(undefined, {
     weekday: "long",
     day: "2-digit",
     month: "long",
   });
 
-  const [qrOpen, setQrOpen] = useState(false);
-  const eventDateTime = new Date(
-    `${event.date}T${event.time ? event.time : "23:59"}`,
-  );
-  const isPast = eventDateTime.getTime() < Date.now();
+  // const eventDateTime = new Date(
+  //   `${event.date}T${event.time ? event.time : "23:59"}`,
+  // );
+  // const isPast = eventDateTime.getTime() < Date.now();
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   return (
     <Link
-      href={`/events/${event.slug}`}
+      href={`/events/${event.id}`}
       className="group relative flex flex-col justify-between overflow-hidden rounded bg-neutral-900/30 p-4 backdrop-blur transition-colors hover:opacity-80 lg:p-5 xl:p-6"
     >
       <Image
@@ -43,19 +44,28 @@ export default function TicketCard({ event, index }: TicketCardProps) {
         height={600}
         className="absolute inset-0 -z-10 h-full w-full rounded-2xl object-cover object-center opacity-30 blur invert"
       />
-      {/* Top bar: status + QR button */}
+      {/* Top bar: favorite toggle */}
       <div className="mb-3 flex items-center justify-between">
         <button
           type="button"
-          aria-label="Open QR code"
+          aria-label={
+            isFavorite(event.slug) ? "Remove from saved" : "Save event"
+          }
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            setQrOpen(true);
+            toggleFavorite(event.slug);
           }}
-          className="inline-grid h-10 w-10 place-items-center rounded-full border border-white/15 bg-white/10 text-white transition hover:bg-white/20"
+          className={`inline-grid h-10 w-10 place-items-center rounded-full border transition ${
+            isFavorite(event.slug)
+              ? "border-red-500/40 bg-red-500/20 text-red-500 hover:bg-red-500/25"
+              : "border-white/15 bg-white/10 text-white hover:bg-white/20"
+          }`}
         >
-          <QrCode className="h-5 w-5" />
+          <Heart
+            className="h-5 w-5"
+            {...(isFavorite(event.slug) ? { fill: "currentColor" } : {})}
+          />
         </button>
       </div>
 
@@ -92,8 +102,6 @@ export default function TicketCard({ event, index }: TicketCardProps) {
           <div className="pointer-events-none absolute inset-0 rounded-lg bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0)_55%,rgba(0,0,0,0.25)_100%)]" />
         </div>
       </div>
-
-      {qrOpen && <QrPortal event={event} onClose={() => setQrOpen(false)} />}
     </Link>
   );
 }
