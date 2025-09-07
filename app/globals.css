@@ -33,6 +33,17 @@
   }
 }
 
+/* Form primitives */
+.input {
+  @apply w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm text-white outline-none transition placeholder:text-white/40 focus:ring-2 focus:ring-[var(--primary)];
+}
+.btn {
+  @apply inline-flex items-center justify-center rounded-lg bg-[var(--primary)] px-4 py-2 text-sm font-medium text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60;
+}
+.btn-secondary {
+  @apply inline-flex items-center justify-center rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-sm text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-60;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
@@ -52,4 +63,23 @@ html.lenis,
 }
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
+}
+
+/* Hide native date/time picker icons; keep only our Lucide icons */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  display: none;
+}
+input[type="date"]::-webkit-inner-spin-button,
+input[type="time"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-clear-button,
+input[type="time"]::-webkit-clear-button {
+  -webkit-appearance: none;
+  display: none;
+}
+/* Optional: reduce default padding space reserved by the indicator in some browsers */
+input[type="date"],
+input[type="time"] {
+  background-image: none;
 }

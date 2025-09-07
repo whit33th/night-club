@@ -1,0 +1,130 @@
+"use client";
+
+import { useState } from "react";
+import { Image as ImageIcon } from "lucide-react";
+import { Image } from "@imagekit/next";
+
+export function HoverPreviewIcon({
+  imageKitId,
+  imageKitPath,
+}: {
+  imageKitId?: string | null;
+  imageKitPath?: string | null;
+  size?: number;
+}) {
+  const [open, setOpen] = useState(false);
+  const [pos, setPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  return (
+    <div
+      className="inline-flex"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+      onMouseMove={(e) => setPos({ x: e.clientX, y: e.clientY })}
+    >
+      <ImageIcon className="text-white/70" size={18} />
+      {open && (
+        <PreviewAtCursor
+          x={pos.x}
+          y={pos.y - 8}
+          imageKitId={imageKitId}
+          imageKitPath={imageKitPath}
+          size={300}
+        />
+      )}
+    </div>
+  );
+}
+
+function PreviewAtCursor({
+  x,
+  y,
+  imageKitId,
+  imageKitPath,
+  size,
+}: {
+  x: number;
+  y: number;
+  imageKitId?: string | null;
+  imageKitPath?: string | null;
+  size: number;
+}) {
+  if (!imageKitId && !imageKitPath) {
+    return (
+      <div
+        className="fixed z-50 -translate-x-1/2 -translate-y-full"
+        style={{ left: x, top: y }}
+      >
+        <div className="pointer-events-none rounded-md border border-white/10 bg-black/80 p-1 shadow-lg backdrop-blur">
+          <div
+            className="animate-pulse rounded bg-white/10"
+            style={{ width: size, height: size }}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // Use imageKitPath if available (new format), otherwise fall back to imageKitId (legacy)
+  const imageSrc = imageKitPath
+    ? imageKitPath
+    : imageKitId
+      ? `/${imageKitId}`
+      : "";
+
+  return (
+    <div
+      className="fixed z-50 -translate-x-1/2 -translate-y-full"
+      style={{ left: x, top: y }}
+    >
+      <div className="pointer-events-none rounded-md border border-white/10 bg-black/80 p-1 shadow-lg backdrop-blur">
+        <div className="relative" style={{ width: 300, height: 300 }}>
+          <Image
+            src={imageSrc}
+            alt="preview"
+            fill
+            className="rounded object-contain"
+            transformation={[
+              {
+                width: 300,
+                quality: 80,
+              },
+            ]}
+            onError={(e) => {
+              console.error("ImageKit load error:", e);
+              console.error("Error event details:", {
+                type: e.type,
+                timeStamp: e.timeStamp,
+              });
+              console.log("imageKitId:", imageKitId);
+              console.log("imageKitPath:", imageKitPath);
+              console.log("Generated src:", imageSrc);
+              console.log(
+                "Full URL should be:",
+                `${process.env.NEXT_PUBLIC_IMAGEKIT_ENDPOINT}${imageSrc}`,
+              );
+              console.log(
+                "Endpoint:",
+                process.env.NEXT_PUBLIC_IMAGEKIT_ENDPOINT,
+              );
+
+              // Check if the image element has a src attribute
+              const imgElement = e.target as HTMLImageElement;
+              if (imgElement) {
+                console.log("Actual img src:", imgElement.src);
+                console.log("Img naturalWidth:", imgElement.naturalWidth);
+                console.log("Img naturalHeight:", imgElement.naturalHeight);
+                console.log("Img complete:", imgElement.complete);
+              }
+            }}
+            onLoad={() => {
+              console.log(
+                "ImageKit loaded successfully:",
+                imageKitPath || imageKitId,
+              );
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}

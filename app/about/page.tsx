@@ -11,8 +11,7 @@ export default function AboutPage() {
       <motion.section
         className="relative flex min-h-[40dvh] items-center justify-center overflow-hidden rounded-xl"
         initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <Image
@@ -36,8 +35,7 @@ export default function AboutPage() {
       <motion.section
         className="container relative mx-auto overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--primary)_25%,transparent)] p-6 lg:p-8"
         initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(900px_320px_at_85%_120%,color-mix(in_srgb,var(--primary)_18%,transparent),transparent)]" />
@@ -76,7 +74,9 @@ export default function AboutPage() {
               <h3 className="text-xs uppercase tracking-wide text-white/60">
                 Visit
               </h3>
-              <p className="text-white/90">Address: 2Progi, Poznań, Poland</p>
+              <p className="text-white/90">
+                Address: Al. Niepodległości 36, 61-714 Poznań
+              </p>
             </div>
             <div className="grid gap-1 text-sm">
               <h3 className="text-xs uppercase tracking-wide text-white/60">
@@ -113,8 +113,7 @@ export default function AboutPage() {
       <motion.section
         className="container mx-auto flex flex-col gap-4"
         initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <h2 className="text-xl font-semibold">Residents</h2>
@@ -129,8 +128,7 @@ export default function AboutPage() {
               key={i}
               className="group relative aspect-video overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--primary)_20%,transparent)]"
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: "easeOut", delay: i * 0.05 }}
             >
               <Image
@@ -155,8 +153,7 @@ export default function AboutPage() {
       <motion.section
         className="relative overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--primary)_25%,transparent)] p-6"
         initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(800px_260px_at_80%_120%,color-mix(in_srgb,var(--primary)_20%,transparent),transparent)]" />
@@ -178,8 +175,7 @@ export default function AboutPage() {
       </motion.section>
       <motion.div
         initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <Map />

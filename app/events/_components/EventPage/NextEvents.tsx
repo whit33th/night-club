@@ -1,20 +1,31 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { mockEvents } from "@/components/data/events";
+import { Image } from "@imagekit/next";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 import { ArrowRight } from "lucide-react";
 
 type NextEventsProps = {
-  currentSlug: string;
+  currentId: string;
   max?: number;
 };
 
-export default function NextEvents({ currentSlug, max = 3 }: NextEventsProps) {
-  const current = mockEvents.find((e) => e.slug === currentSlug);
+export default function NextEvents({ currentId, max = 3 }: NextEventsProps) {
+  const eventsData = useQuery(api.admin.listEvents);
+
+  if (!eventsData) {
+    return (
+      <section className="relative w-full overflow-hidden rounded-xl bg-neutral-900/15 p-4 shadow-xl backdrop-blur">
+        <div className="text-xs text-white/50">Loading events...</div>
+      </section>
+    );
+  }
+
+  const current = eventsData.find((e) => e._id === currentId);
   const currentDate = current ? new Date(current.date) : new Date();
 
-  const upcoming = mockEvents
+  const upcoming = eventsData
     .filter((e) => new Date(e.date).getTime() > currentDate.getTime())
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .slice(0, max);
@@ -38,17 +49,44 @@ export default function NextEvents({ currentSlug, max = 3 }: NextEventsProps) {
       </header>
 
       <div className="flex items-center gap-3">
-        {upcoming.map((e) => (
-          <Link
-            key={e.slug}
-            href={`/events/${e.slug}`}
-            className="group relative block h-24 w-24 overflow-hidden rounded-lg border border-white/10 bg-white/5 transition hover:opacity-90 sm:h-28 sm:w-28"
-            title={e.title}
-          >
-            <Image src={e.img} alt={e.title} fill className="object-cover" />
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120px_80px_at_30%_20%,white/10,transparent)]" />
-          </Link>
-        ))}
+        {upcoming.map((e) => {
+          // Generate SEO-friendly URL: event-name-date-id
+          const eventSlug = `${e.title
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "")}-${e.date}-${e._id}`;
+
+          // Use ImageKit image
+          const imageSrc = e.imageKitPath
+            ? e.imageKitPath
+            : e.imageKitId
+              ? `/${e.imageKitId}`
+              : "/imgs/posters/1.jpg";
+
+          return (
+            <Link
+              key={e._id}
+              href={`/events/${eventSlug}`}
+              className="group relative block h-24 w-24 overflow-hidden rounded-lg border border-white/10 bg-white/5 transition hover:opacity-90 sm:h-28 sm:w-28"
+              title={e.title}
+            >
+              <Image
+                src={imageSrc}
+                alt={e.title}
+                fill
+                className="object-cover"
+                transformation={[
+                  {
+                    width: 120,
+                    height: 120,
+                    quality: 80,
+                  },
+                ]}
+              />
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120px_80px_at_30%_20%,white/10,transparent)]" />
+            </Link>
+          );
+        })}
         {upcoming.length === 0 ? (
           <div className="text-xs text-white/50">No upcoming events</div>
         ) : null}

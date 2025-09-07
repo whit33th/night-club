@@ -2,11 +2,12 @@ import ApperanceEffect from "@/components/Providers/ApperanceEffect";
 import ConvexClientProvider from "@/components/Providers/ConvexClientProvider";
 import LenisProvider from "@/components/Providers/LenisProvider";
 import Nav from "@/components/UI/Header/Header";
-import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
+import { Toaster } from "sonner";
 import "./globals.css";
+import { ImageKitProviderWrapper } from "@/components/Providers/ImageKitProvider";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -26,25 +27,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ConvexAuthNextjsServerProvider>
-      <html lang="en">
-        <body className={`${inter.variable} antialiased`}>
-          <NextTopLoader
-            color="var(--primary)"
-            easing="ease"
-            shadow="0 0 10px 0 rgba(0, 0, 0, 0.1)"
-            height={2.5}
-            showSpinner={false}
-          />
-          <ConvexClientProvider>
+    <html lang="en">
+      <body className={`${inter.variable} antialiased`}>
+        <NextTopLoader
+          color="var(--primary)"
+          easing="ease"
+          shadow="0 0 10px 0 rgba(0, 0, 0, 0.1)"
+          height={2.5}
+          showSpinner={false}
+        />
+        <ConvexClientProvider>
+          <ImageKitProviderWrapper>
             <LenisProvider>
               <Nav>
                 <ApperanceEffect>{children}</ApperanceEffect>
               </Nav>
             </LenisProvider>
-          </ConvexClientProvider>
-        </body>
-      </html>
-    </ConvexAuthNextjsServerProvider>
+          </ImageKitProviderWrapper>
+          <Toaster richColors position="bottom-right" />
+        </ConvexClientProvider>
+      </body>
+    </html>
   );
 }

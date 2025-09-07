@@ -37,18 +37,6 @@ export default function Nav({ children }: { children: React.ReactNode }) {
               {l.label}
             </Link>
           ))}
-          <Link
-            href="/profile"
-            className="ml-2 flex items-center transition-all duration-200 hover:opacity-80 hover:shadow-lg"
-          >
-            <Image
-              src="/imgs/1.jpg"
-              alt="Profile"
-              width={32}
-              height={32}
-              className="aspect-square rounded-full border border-white/20"
-            />
-          </Link>
         </nav>
         <button
           aria-label={open ? "Close menu" : "Open menu"}

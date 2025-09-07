@@ -37,8 +37,7 @@ export default function FaqPage() {
           <motion.details
             key={i}
             initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: i * 0.04, ease: "easeOut" }}
             className="group relative mb-3 overflow-hidden bg-white/[0.02] sm:mb-4"
           >

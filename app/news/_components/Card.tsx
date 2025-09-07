@@ -11,8 +11,7 @@ export function NewsCard({ post, index }: { post: NewsItem; index: number }) {
     <Link href={`/news/${post.id}`} className="group">
       <motion.article
         initial={{ opacity: 0, y: 18 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: index * 0.05, ease: "easeOut" }}
         style={{
           clipPath:

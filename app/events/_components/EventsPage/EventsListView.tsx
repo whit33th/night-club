@@ -1,11 +1,35 @@
 "use client";
 
 import Link from "next/link";
-import { ClubEvent } from "@/components/data/events";
 import { unstable_ViewTransition as ViewTransition } from "react";
 
+type ConvexEvent = {
+  _id: string;
+  _creationTime: number;
+  title: string;
+  date: string;
+  startAt: string;
+  doorsAt?: string;
+  imageKitId: string;
+  imageKitPath?: string;
+  artists?: Array<{
+    index?: number;
+    name: string;
+    imageKitId?: string;
+    imageKitPath?: string;
+    role?: string;
+  }>;
+  musicGenres?: string[];
+  priceFrom?: number;
+  minAge?: number;
+  dressCode?: string;
+  currency?: string;
+  ticketUrl?: string;
+  description?: string;
+};
+
 type EventsListViewProps = {
-  items: Array<ClubEvent>;
+  items: Array<ConvexEvent>;
 };
 
 export default function EventsListView({ items }: EventsListViewProps) {
@@ -25,11 +49,22 @@ export default function EventsListView({ items }: EventsListViewProps) {
           const mm = d.toLocaleString(undefined, { month: "2-digit" });
           const eventMs = d.getTime();
           const isPast = eventMs < todayMs;
+
+          // Format artists for display
+          const artistsDisplay =
+            p.artists?.map((artist) => artist.name).join(", ") || "";
+
+          // Generate SEO-friendly URL: event-name-date-id
+          const eventSlug = `${p.title
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "")}-${p.date}-${p._id}`;
+
           return (
-            <ViewTransition name={`event-${p.id}`} key={p.id}>
+            <ViewTransition name={`event-${p._id}`} key={p._id}>
               <Link
-                key={p.id}
-                href={`/events/${p.id}`}
+                key={p._id}
+                href={`/events/${eventSlug}`}
                 className={` ${isPast ? "opacity-35" : "opacity-100 hover:opacity-80"}`}
               >
                 <div className="flex justify-between gap-4">
@@ -41,8 +76,7 @@ export default function EventsListView({ items }: EventsListViewProps) {
                       {p.title}
                     </p>
                     <p className="text-[10px] uppercase tracking-[0.25em] text-white/70">
-                      {(p.venue || (p.artists && p.artists.join(", ")) || "") +
-                        (p.city ? ` · ${p.city}` : "")}
+                      {artistsDisplay}
                     </p>
                   </div>
                 </div>

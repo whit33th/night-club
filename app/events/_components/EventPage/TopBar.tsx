@@ -15,7 +15,7 @@ export default function TopBar({ date = "2024-07-01T13:00:00" }: TopBarProps) {
 
   useEffect(() => {
     const eventDate = new Date(date);
-    const locale = navigator.language || "en-US";
+    const locale = "en-US";
 
     setMonth(eventDate.toLocaleString(locale, { month: "short" }));
     setDay(eventDate.toLocaleString(locale, { day: "2-digit" }));
@@ -23,6 +23,7 @@ export default function TopBar({ date = "2024-07-01T13:00:00" }: TopBarProps) {
       eventDate.toLocaleTimeString(locale, {
         hour: "2-digit",
         minute: "2-digit",
+        hour12: false,
       }),
     );
   }, [date]);
@@ -61,7 +62,7 @@ export default function TopBar({ date = "2024-07-01T13:00:00" }: TopBarProps) {
         <p className="font-bold leading-none">{month}</p>
         <p className="text-2xl font-bold leading-none">{day}</p>
       </div>
-      <div className="relative flex min-w-0 flex-1 items-center justify-center overflow-hidden rounded-xl bg-[var(--primary)] drop-shadow-[0_0_24px_var(--primary)]">
+      <div className="bg-primary drop-shadow-primary relative flex min-w-0 flex-1 items-center justify-center overflow-hidden rounded-xl drop-shadow-lg">
         {countdown.state === "upcoming" ? (
           <div className="z-10 flex flex-col items-center px-3 text-black">
             <div className="grid grid-cols-4 gap-2 md:gap-4">

@@ -116,7 +116,7 @@ export default function QrPortal({
               <div className="absolute inset-0 -z-10 rounded-xl bg-[conic-gradient(at_50%_50%,rgba(0,0,0,0.08),transparent_25%)]" />
               <div className="flex h-56 w-56 items-center justify-center sm:h-64 sm:w-64">
                 <QRCode
-                  value={`https://example.com/ticket/${event.slug}`}
+                  value={`https://example.com/ticket/${event.id}`}
                   size={512}
                   style={{ width: "100%", height: "100%" }}
                 />

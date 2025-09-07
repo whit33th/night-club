@@ -1,6 +1,6 @@
 export type ClubEvent = {
   title: string;
-  slug: string;
+  id: string; // stable identifier used in routes and keys
   date: string; // ISO: YYYY-MM-DD
   time?: string; // HH:mm in local time
   entry?: "buy" | "free";
@@ -10,19 +10,16 @@ export type ClubEvent = {
   venue?: string;
   city?: string;
   subtitle?: string;
-  price?: number;
+  priceFrom?: number;
   currency?: string;
   new?: boolean;
   ticketUrl?: string;
-  // Add a unique id for each event to ensure unique ViewTransition names
-  id?: string;
 };
 
 export const mockEvents: Array<ClubEvent> = [
   {
     id: "the-dark-knight-2025-08-10",
     title: "The Dark Knight",
-    slug: "the-dark-knight",
     date: "2025-08-10",
     time: "23:00",
     entry: "buy",
@@ -32,7 +29,7 @@ export const mockEvents: Array<ClubEvent> = [
     venue: "Medusa Festival",
     city: "Cullera",
     subtitle: "Medusa Festival • Cullera",
-    price: 25,
+    priceFrom: 25,
     currency: "PLN",
     new: true,
     ticketUrl: "https://www.ebilet.pl/en/event/12345",
@@ -40,7 +37,6 @@ export const mockEvents: Array<ClubEvent> = [
   {
     id: "city-lights-2025-08-12",
     title: "City Lights",
-    slug: "city-lights",
     date: "2025-08-12",
     time: "22:30",
     entry: "buy",
@@ -50,14 +46,13 @@ export const mockEvents: Array<ClubEvent> = [
     venue: "Casablanca",
     city: "Benicassim",
     subtitle: "Casablanca • Benicassim",
-    price: 20,
+    priceFrom: 20,
     currency: "PLN",
     ticketUrl: "https://www.ticketmaster.pl/event/abcde",
   },
   {
     id: "open-decks-2025-08-13",
     title: "Open Decks",
-    slug: "open-decks",
     date: "2025-08-13",
     time: "21:00",
     entry: "free",
@@ -67,14 +62,13 @@ export const mockEvents: Array<ClubEvent> = [
     venue: "Afterpolo",
     city: "Sotogrande",
     subtitle: "Afterpolo • Sotogrande",
-    price: 0,
+    priceFrom: 0,
     currency: "PLN",
     new: true,
   },
   {
     id: "after-hours-2025-08-14",
     title: "After Hours",
-    slug: "after-hours",
     date: "2025-08-14",
     time: "00:30",
     entry: "buy",
@@ -84,14 +78,13 @@ export const mockEvents: Array<ClubEvent> = [
     venue: "Concert Music Festival",
     city: "Chiclana",
     subtitle: "Concert Music Festival • Chiclana",
-    price: 30,
+    priceFrom: 30,
     currency: "PLN",
     ticketUrl: "https://tobilet.pl/wydarzenie/98765",
   },
   {
     id: "midnight-pulse-2025-08-15",
     title: "Midnight Pulse",
-    slug: "midnight-pulse",
     date: "2025-08-15",
     time: "23:30",
     img: "/imgs/posters/3.webp",
@@ -100,13 +93,12 @@ export const mockEvents: Array<ClubEvent> = [
     venue: "Menorca Urban Fest",
     city: "Menorca",
     subtitle: "Menorca Urban Fest • Menorca",
-    price: 22,
+    priceFrom: 22,
     currency: "PLN",
   },
   {
     id: "neon-drift-2025-08-16",
     title: "Neon Drift",
-    slug: "neon-drift",
     date: "2025-08-16",
     time: "23:00",
     img: "/imgs/posters/2.webp",
@@ -115,14 +107,13 @@ export const mockEvents: Array<ClubEvent> = [
     venue: "Medusa Beach Club",
     city: "Cullera",
     subtitle: "Medusa Beach Club • Cullera",
-    price: 28,
+    priceFrom: 28,
     currency: "PLN",
     ticketUrl: "https://www.ebilet.pl/en/event/67890",
   },
   {
     id: "motel-paraiso-2025-08-17",
     title: "Motel Paraíso",
-    slug: "motel-paraiso",
     date: "2025-08-17",
     time: "22:00",
     img: "/imgs/posters/4.jpg",
@@ -131,13 +122,12 @@ export const mockEvents: Array<ClubEvent> = [
     venue: "Motel Paraíso",
     city: "Puerto de Santa María",
     subtitle: "Motel Paraíso • Puerto de Santa María",
-    price: 18,
+    priceFrom: 18,
     currency: "PLN",
   },
   {
     id: "velice-night-2025-08-21",
     title: "Velice Night",
-    slug: "velice-night",
     date: "2025-08-21",
     time: "23:00",
     img: "/imgs/posters/5.jpg",
@@ -146,13 +136,12 @@ export const mockEvents: Array<ClubEvent> = [
     venue: "Velice",
     city: "Torrevieja",
     subtitle: "Velice • Torrevieja",
-    price: 24,
+    priceFrom: 24,
     currency: "PLN",
   },
   {
     id: "nmf-2025-08-30",
     title: "NMF",
-    slug: "nmf",
     date: "2025-08-30",
     time: "23:59",
     img: "/imgs/posters/2.webp",
@@ -161,13 +150,12 @@ export const mockEvents: Array<ClubEvent> = [
     venue: "NMF",
     city: "Santander",
     subtitle: "NMF • Santander",
-    price: 26,
+    priceFrom: 26,
     currency: "PLN",
   },
   {
     id: "la-daurada-2025-08-29",
     title: "La Daurada",
-    slug: "la-daurada",
     date: "2025-08-29",
     time: "22:30",
     img: "/imgs/posters/3.webp",
@@ -176,7 +164,7 @@ export const mockEvents: Array<ClubEvent> = [
     venue: "La Daurada",
     city: "Vilanova",
     subtitle: "La Daurada • Vilanova",
-    price: 19,
+    priceFrom: 19,
     currency: "PLN",
   },
 ];

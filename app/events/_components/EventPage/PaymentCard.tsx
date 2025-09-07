@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Image } from "@imagekit/next";
 import Link from "next/link";
 
 type PaymentCardProps = {
@@ -33,11 +33,17 @@ export default function PaymentCard({
         <div className="group relative aspect-square w-36 flex-shrink-0 overflow-hidden rounded-l-lg bg-white/5 md:w-48">
           {imageSrc ? (
             <Image
-              width={200}
-              height={200}
               src={imageSrc}
               alt={title}
+              fill
               className="h-full w-full object-cover opacity-90 invert transition duration-300 group-hover:scale-[1.04] group-hover:opacity-100"
+              transformation={[
+                {
+                  width: 300,
+                  height: 300,
+                  quality: 80,
+                },
+              ]}
             />
           ) : (
             <div className="absolute inset-0 grid place-items-center text-xs uppercase tracking-[0.25em] text-white/50">

@@ -3,8 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { unstable_ViewTransition as ViewTransition } from "react";
-import { Heart } from "lucide-react";
-import { useFavorites } from "@/components/hooks/useFavorites";
 import type { ClubEvent } from "@/components/data/events";
 import { motion } from "framer-motion";
 
@@ -15,21 +13,16 @@ export default function EventsCard({
   event: ClubEvent;
   index: number;
 }) {
-  const { isFavorite, toggleFavorite } = useFavorites();
+  const locale = "en-US";
   const date = new Date(event.date);
-  const month = date.toLocaleString(undefined, { month: "short" });
-  const day = date.toLocaleString(undefined, { day: "2-digit" });
+  const month = date.toLocaleString(locale, { month: "short" });
+  const day = date.toLocaleString(locale, { day: "2-digit" });
   return (
-    <Link
-      href={`/events/${event.id}`}
-      key={event.id}
-      className="group relative flex flex-col p-5 transition"
-    >
+    <Link href={`/events/${event.id}`} className="group flex flex-col">
       <motion.div
-        key={index}
+        className="relative p-5"
         initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{
           duration: 0.2,
           delay: index * 0.06,
@@ -67,31 +60,6 @@ export default function EventsCard({
                   : "Christopher Nolan, Hans Zimmer"}
               </p>
             </div>
-            <button
-              type="button"
-              aria-label={
-                isFavorite(event.slug ?? event.title)
-                  ? "Remove from saved"
-                  : "Save event"
-              }
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                toggleFavorite(event.slug ?? event.title);
-              }}
-              className={`inline-grid h-9 w-9 place-items-center rounded-full border transition ${
-                isFavorite(event.slug ?? event.title)
-                  ? "border-red-500/40 bg-red-500/20 text-red-500 hover:bg-red-500/25"
-                  : "border-white/15 bg-white/10 text-white hover:bg-white/20"
-              }`}
-            >
-              <Heart
-                className="h-4 w-4"
-                {...(isFavorite(event.slug ?? event.title)
-                  ? { fill: "currentColor" }
-                  : {})}
-              />
-            </button>
           </div>
         </div>
       </motion.div>
