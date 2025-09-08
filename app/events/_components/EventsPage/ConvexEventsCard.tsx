@@ -33,9 +33,11 @@ type ConvexEvent = {
 export default function ConvexEventsCard({
   event,
   index,
+  href,
 }: {
   event: ConvexEvent;
   index: number;
+  href?: string;
 }) {
   const locale = "en-US";
   const date = new Date(event.date);
@@ -59,8 +61,11 @@ export default function ConvexEventsCard({
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")}-${event.date}-${event._id}`;
 
+  // Use custom href if provided, otherwise generate default URL
+  const linkHref = href || `/events/${eventSlug}`;
+
   return (
-    <Link href={`/events/${eventSlug}`} className="group flex flex-col">
+    <Link href={linkHref} className="group flex flex-col">
       <motion.div
         className="relative p-5"
         initial={{ opacity: 0, y: 20 }}

@@ -1,11 +1,11 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { ConvexError } from "convex/values";
 
 export default function AdminAuthPage() {
-  const router = useRouter();
   const params = useSearchParams();
   const redirectParam = params.get("redirect");
   const redirect =
@@ -32,8 +32,11 @@ export default function AdminAuthPage() {
       toast.success("Welcome, admin.");
       // Hard navigation so middleware re-evaluates with the new cookie immediately
       window.location.assign(redirect);
-    } catch (err: any) {
-      toast.error(err?.message || "Authentication failed");
+    } catch (err) {
+      toast.error(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (err as Error | ConvexError<any>)?.message || "Authentication failed",
+      );
     } finally {
       setLoading(false);
     }

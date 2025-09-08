@@ -1,27 +1,27 @@
 "use client";
 
-import { Controller, useFieldArray } from "react-hook-form";
-import { useMutation, useQuery } from "convex/react";
-import { usePaginatedQuery } from "convex-helpers/react/cache/hooks";
-import { api } from "@/convex/_generated/api";
-import { useAdminForm } from "./_hooks/useAdminForm";
-import { FormField } from "./_components/FormField";
-import MultiSelect from "./_components/MultiSelect";
-import { DataTable } from "./_components/DataTable";
-import { HoverPreviewIcon } from "./_components/HoverPreview";
-import type { Doc, Id } from "@/convex/_generated/dataModel";
 import Button from "@/components/UI/Form/Button";
+import { api } from "@/convex/_generated/api";
+import type { Doc, Id } from "@/convex/_generated/dataModel";
+import { usePaginatedQuery } from "convex-helpers/react/cache/hooks";
+import { useMutation } from "convex/react";
 import {
   CalendarDays,
   Clock3,
-  Type,
-  FileImage,
-  Music2,
   DollarSign,
+  FileImage,
   Link,
   MessageSquareText,
+  Music2,
+  Type,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { Controller, useFieldArray } from "react-hook-form";
+import { DataTable } from "./_components/DataTable";
+import { FormField } from "./_components/FormField";
+import { HoverPreviewIcon } from "./_components/HoverPreview";
+import MultiSelect from "./_components/MultiSelect";
+import { useAdminForm } from "./_hooks/useAdminForm";
 import { deleteImageFromImageKit } from "./_utils/imageKit";
 
 interface EventFormData {
@@ -94,7 +94,7 @@ const eventColumns = [
     key: "artists",
     label: "Artists",
     render: (event: Doc<"events">) =>
-      (event.artists ?? []).map((a: any) => a.name).join(", ") || "—",
+      (event.artists ?? []).map((a) => a.name).join(", ") || "—",
   },
   {
     key: "imageKitId",
@@ -102,7 +102,7 @@ const eventColumns = [
     render: (event: Doc<"events">) => (
       <HoverPreviewIcon
         imageKitId={event.imageKitId}
-        imageKitPath={(event as any).imageKitPath}
+        imageKitPath={event.imageKitPath}
         size={160}
       />
     ),
@@ -162,7 +162,6 @@ export default function EventsPage() {
     loading,
     imagePreview,
     handleFileChange,
-    setValue,
     reset,
     watch,
     control,

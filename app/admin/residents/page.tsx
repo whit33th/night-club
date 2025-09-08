@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation, useQuery } from "convex/react";
+import { useMutation } from "convex/react";
 import { usePaginatedQuery } from "convex-helpers/react/cache/hooks";
 import { api } from "@/convex/_generated/api";
 import { useAdminForm } from "../_hooks/useAdminForm";
@@ -43,7 +43,7 @@ const residentColumns = [
       r.imageKitId ? (
         <HoverPreviewIcon
           imageKitId={r.imageKitId}
-          imageKitPath={(r as any).imageKitPath}
+          imageKitPath={r.imageKitPath}
           size={160}
         />
       ) : (
@@ -79,7 +79,6 @@ export default function ResidentsPage() {
     loading,
     imagePreview,
     handleFileChange,
-    setValue,
     reset,
     clearImage,
   } = useAdminForm<ResidentFormData>({

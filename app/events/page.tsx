@@ -33,7 +33,7 @@ function EventsPageBody() {
   if (isLoading) {
     return (
       <div className="flex flex-col gap-4">
-        <div className="mx-auto w-full max-w-2xl rounded-xl border border-white/10 bg-white/5 p-6 text-center text-white/80">
+        <div className="mx-auto w-full max-w-2xl text-center text-white/80">
           <p>Loading events...</p>
         </div>
       </div>
@@ -49,10 +49,14 @@ function EventsPageBody() {
         after={after}
       />
 
+      <p className="w-full px-1 py-1 text-center text-[10px] uppercase tracking-[0.4em] text-white/70">
+        Exclusive parties · Limited capacity · 18+ · Dress code · International
+        DJs · Secure entry
+      </p>
       {after ? (
         <div className="flex items-center justify-center gap-2 text-xs text-white/70">
-          <span>
-            Showing events after: <span className="font-semibold">{after}</span>
+          <span className="text-base md:text-lg">
+            Events after: <span className="font-semibold">{after}</span>
           </span>
           <button
             className="ml-2 aspect-square rounded-full px-2 py-0.5 text-xs font-medium text-white/60 transition hover:bg-white/10 hover:text-white"
@@ -63,17 +67,11 @@ function EventsPageBody() {
           </button>
         </div>
       ) : null}
-
-      <p className="w-full px-1 py-1 text-center text-[10px] uppercase tracking-[0.4em] text-white/70">
-        Exclusive parties · Limited capacity · 18+ · Dress code · International
-        DJs · Secure entry
-      </p>
-
       <ModeToggle mode={mode} onToggle={toggleMode} />
 
       {posters.length === 0 ? (
-        <div className="mx-auto w-full max-w-2xl rounded-xl border border-white/10 bg-white/5 p-6 text-center text-white/80">
-          <p>No events found after the selected date.</p>
+        <div className="mx-auto mt-4 w-full max-w-2xl text-center text-2xl">
+          <p>No events after the selected date.</p>
         </div>
       ) : (
         <>
@@ -88,5 +86,3 @@ function EventsPageBody() {
     </div>
   );
 }
-
-// End of file

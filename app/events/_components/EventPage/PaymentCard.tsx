@@ -12,7 +12,7 @@ type PaymentCardProps = {
 };
 
 export default function PaymentCard({
-  basePrice = 20,
+  basePrice,
   currency = "PLN",
   imageSrc,
   title = "General Admission",
@@ -39,9 +39,10 @@ export default function PaymentCard({
               className="h-full w-full object-cover opacity-90 invert transition duration-300 group-hover:scale-[1.04] group-hover:opacity-100"
               transformation={[
                 {
-                  width: 300,
-                  height: 300,
-                  quality: 80,
+                  format: "webp",
+                  width: 800,
+                  height: 800,
+                  quality: 90,
                 },
               ]}
             />
@@ -68,7 +69,7 @@ export default function PaymentCard({
           </header>
 
           <div className="flex w-full flex-col justify-between gap-2 sm:flex-row sm:items-center">
-            {basePrice ? (
+            {basePrice && ticketUrl ? (
               <div className="text-center sm:text-left">
                 <p className="text-[10px] uppercase tracking-widest text-neutral-400">
                   Price from:
@@ -79,7 +80,9 @@ export default function PaymentCard({
               </div>
             ) : null}
             <div className="text-xs text-neutral-400 sm:text-right">
-              {ticketUrl ? null : <p>Free entry — no purchase required.</p>}
+              {ticketUrl ? null : (
+                <p>Feel free to come in — the night’s yours!</p>
+              )}
             </div>
           </div>
 

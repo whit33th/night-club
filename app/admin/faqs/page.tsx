@@ -1,15 +1,15 @@
 "use client";
 
-import { useMutation, useQuery } from "convex/react";
-import { usePaginatedQuery } from "convex-helpers/react/cache/hooks";
-import { api } from "@/convex/_generated/api";
-import { useAdminForm } from "../_hooks/useAdminForm";
-import { FormField } from "../_components/FormField";
-import { DataTable } from "../_components/DataTable";
-import type { Doc, Id } from "@/convex/_generated/dataModel";
 import Button from "@/components/UI/Form/Button";
+import { api } from "@/convex/_generated/api";
+import type { Doc, Id } from "@/convex/_generated/dataModel";
+import { usePaginatedQuery } from "convex-helpers/react/cache/hooks";
+import { useMutation } from "convex/react";
 import { HelpCircle, MessageSquareText } from "lucide-react";
 import { useEffect, useState } from "react";
+import { DataTable } from "../_components/DataTable";
+import { FormField } from "../_components/FormField";
+import { useAdminForm } from "../_hooks/useAdminForm";
 
 interface FAQFormData {
   question: string;
@@ -60,7 +60,6 @@ export default function FAQsPage() {
     loading,
     reset,
     watch,
-    setValue,
   } = useAdminForm<FAQFormData>({
     defaultValues: {
       question: "",

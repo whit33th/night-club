@@ -20,7 +20,7 @@ export default defineSchema({
     doorsAt: v.optional(v.string()), // HH:mm
     // Primary storage in ImageKit
     imageKitId: v.string(),
-    imageKitPath: v.optional(v.string()), // Added filePath from ImageKit
+    imageKitPath: v.optional(v.string()),
     artists: v.optional(
       v.array(
         v.object({

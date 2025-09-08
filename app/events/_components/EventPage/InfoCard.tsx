@@ -40,7 +40,6 @@ export default function InfoCard({
   minAge,
   musicGenres,
   priceFrom,
-  currency = "PLN",
 }: InfoCardProps) {
   // Determine entry type based onpriceFrom
   const entryType =
@@ -135,7 +134,7 @@ export default function InfoCard({
                 Age Limit
               </dt>
               <dd className="mt-1 text-sm">
-                {minAge ? `${minAge}+` : "Без ограничений"}
+                {minAge ? `${minAge}+` : "No age restrictions"}
               </dd>
             </div>
 

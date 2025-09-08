@@ -18,7 +18,7 @@ export async function GET() {
       .update(token + expire)
       .digest("hex");
     return NextResponse.json({ token, expire, signature, publicKey });
-  } catch (e) {
+  } catch  {
     return NextResponse.json({ error: "Auth error" }, { status: 500 });
   }
 }

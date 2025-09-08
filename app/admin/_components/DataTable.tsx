@@ -20,7 +20,7 @@ interface Column<T> {
   render?: (item: T) => React.ReactNode;
 }
 
-type BaseRow = { _id: any; _creationTime: number };
+type BaseRow = { _id: string; _creationTime: number };
 
 interface DataTableProps<T extends BaseRow> {
   data: T[];
@@ -61,23 +61,34 @@ export function DataTable<T extends BaseRow>({
 
   const allSelected = data.length > 0 && selectedIds.size === data.length;
 
-  const renderCellValue = (item: T, column: Column<T>) => {
+  const renderCellValue = (item: T, column: Column<T>): React.ReactNode => {
     if (column.render) {
       return column.render(item);
     }
 
-    const value = (item as any)[column.key];
+    const key = column.key as keyof T;
+    const value = item[key];
 
     // Format common fields
-    if (column.key === "_creationTime") {
+    if (column.key === "_creationTime" && typeof value === "number") {
       return new Date(value).toLocaleDateString();
     }
 
     if (column.key === "date" && value) {
-      return new Date(value).toLocaleDateString();
+      if (typeof value === "string" || typeof value === "number") {
+        return new Date(value).toLocaleDateString();
+      }
     }
 
-    return value || "—";
+    if (value === null || value === undefined) {
+      return "—";
+    }
+
+    if (typeof value === "string" || typeof value === "number") {
+      return value;
+    }
+
+    return String(value) || "—";
   };
 
   if (loading) {

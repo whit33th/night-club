@@ -1,13 +1,14 @@
 "use client";
 
 import { use } from "react";
-import { useQuery } from "convex/react";
+import { useQuery } from "convex-helpers/react/cache";
 import { api } from "@/convex/_generated/api";
 import HeroImage from "../_components/EventPage/HeroImage";
 import InfoCard from "../_components/EventPage/InfoCard";
 import NextEvents from "../_components/EventPage/NextEvents";
 import PaymentCard from "../_components/EventPage/PaymentCard";
 import TopBar from "../_components/EventPage/TopBar";
+import { Id } from "@/convex/_generated/dataModel";
 
 export default function EventPage({
   params,
@@ -20,7 +21,7 @@ export default function EventPage({
   const eventId = slug.split("-").pop() || "";
 
   // Get event from Convex
-  const event = useQuery(api.admin.getEvent, { id: eventId as any });
+  const event = useQuery(api.admin.getEvent, { id: eventId as Id<"events"> });
 
   if (event === undefined) {
     return (
@@ -48,15 +49,10 @@ export default function EventPage({
     "";
 
   const subtitle = artistsDisplay || event.title;
-  const priceFrom = event.priceFrom ?? 20;
   const currency = event.currency ?? "PLN";
 
   // Use ImageKit image
-  const imageSrc = event.imageKitPath
-    ? event.imageKitPath
-    : event.imageKitId
-      ? `/${event.imageKitId}`
-      : "/imgs/posters/1.jpg";
+  const imageSrc = event.imageKitPath ?? "/imgs/posters/1.jpg"; //FIXME
 
   return (
     <div className="flex h-full flex-col gap-4">

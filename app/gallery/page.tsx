@@ -1,13 +1,16 @@
 "use client";
 
+import { api } from "@/convex/_generated/api";
+import { Image } from "@imagekit/next";
+import { useQuery } from "convex-helpers/react/cache";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { useState } from "react";
-
-const images = ["/imgs/1.jpg", "/imgs/2.jpg", "/imgs/3.jpg", "/imgs/4.jpg"];
 
 export default function GalleryPage() {
   const [active, setActive] = useState<number | null>(null);
+
+  const galleryImages = useQuery(api.admin_temp.listGallery);
+  const isLoading = galleryImages === undefined;
   return (
     <div className="flex flex-col gap-6">
       <section className="relative w-full overflow-hidden rounded-xl">
@@ -37,55 +40,133 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
-        {images.map((src, idx) => (
-          <motion.button
-            key={idx}
-            onClick={() => setActive(idx)}
-            className="ring-none group relative aspect-square overflow-hidden"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.5,
-              delay: idx * 0.08,
-              type: "spring",
-              stiffness: 60,
-            }}
-          >
-            <Image
-              src={src}
-              alt={`Gallery hover ${idx + 1}`}
-              fill
-              className="object-cover object-center opacity-0 invert transition-opacity group-hover:opacity-90"
-            />
-            <Image
-              src={src}
-              alt={`Gallery ${idx + 1}`}
-              fill
-              className="object-cover object-center p-0.5"
-            />
-          </motion.button>
-        ))}
-      </div>
+      {isLoading ? (
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
+          {Array.from({ length: 7 }).map((_, idx) => (
+            <motion.div
+              key={`skeleton-${idx}`}
+              className="aspect-square overflow-hidden rounded bg-white/10"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.5,
+                delay: idx * 0.03,
+                type: "spring",
+                stiffness: 60,
+              }}
+            >
+              <div className="h-full w-full animate-pulse bg-gradient-to-br from-white/5 to-white/10" />
+            </motion.div>
+          ))}
+        </div>
+      ) : galleryImages.length === 0 ? (
+        <div className="flex min-h-[300px] items-center justify-center">
+          <p className="text-white/70">No images in gallery yet</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
+          {galleryImages.map((image, idx) => {
+            const imageSrc = image.imageKitPath
+              ? image.imageKitPath
+              : image.imageKitId
+                ? `/${image.imageKitId}`
+                : "";
 
-      {active !== null && (
+            return (
+              <motion.button
+                key={image._id}
+                onClick={() => setActive(idx)}
+                className="ring-none group relative aspect-square overflow-hidden"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.5,
+                  delay: idx * 0.08,
+                  type: "spring",
+                  stiffness: 60,
+                }}
+              >
+                <Image
+                  src={imageSrc}
+                  alt={`Gallery hover ${idx + 1}`}
+                  fill
+                  className="object-cover object-center opacity-0 invert transition-opacity group-hover:opacity-90"
+                  transformation={[
+                    {
+                      format: "webp",
+                      width: 400,
+                      height: 400,
+                      quality: 90,
+                    },
+                  ]}
+                />
+                <Image
+                  src={imageSrc}
+                  alt={`Gallery ${idx + 1}`}
+                  fill
+                  className="absolute inset-0 object-cover object-center p-0.5"
+                  transformation={[
+                    {
+                      format: "webp",
+                      width: 400,
+                      height: 400,
+                      quality: 90,
+                    },
+                  ]}
+                />
+              </motion.button>
+            );
+          })}
+        </div>
+      )}
+
+      {active !== null && galleryImages?.[active] && (
         <div
-          className="fixed inset-0 z-[100] grid place-items-center bg-black/70 p-4"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4"
           onClick={() => setActive(null)}
         >
-          <div className="relative h-full w-full max-w-5xl overflow-hidden rounded-xl shadow-2xl">
-            <Image
-              src={images[active]}
-              alt={`Modal ${active + 1}`}
-              fill
-              className="object-contain invert"
-            />
-            <Image
-              src={images[active]}
-              alt={`Modal ${active + 1}`}
-              fill
-              className="object-contain p-2 xl:p-3"
-            />
+          <div className="relative max-h-full max-w-full overflow-hidden shadow-2xl">
+            {(() => {
+              const activeImage = galleryImages[active];
+              const imageSrc = activeImage.imageKitPath
+                ? activeImage.imageKitPath
+                : activeImage.imageKitId
+                  ? `/${activeImage.imageKitId}`
+                  : "";
+
+              return (
+                <>
+                  <Image
+                    src={imageSrc}
+                    alt={`Modal hover ${active + 1}`}
+                    width={1200}
+                    height={800}
+                    className="max-h-[90vh] max-w-full object-contain opacity-90 invert transition-opacity"
+                    transformation={[
+                      {
+                        format: "webp",
+                        width: 1200,
+                        quality: 95,
+                      },
+                    ]}
+                  />
+                  <Image
+                    src={imageSrc}
+                    alt={`Modal ${active + 1}`}
+                    width={1200}
+                    height={800}
+                    className="absolute inset-0 h-full max-h-[90vh] max-w-full object-contain p-2"
+                    transformation={[
+                      {
+                        format: "webp",
+                        width: 1200,
+                        quality: 95,
+                      },
+                    ]}
+                  />
+                </>
+              );
+            })()}
           </div>
         </div>
       )}

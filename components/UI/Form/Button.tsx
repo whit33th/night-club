@@ -9,9 +9,9 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 export default function Button({
   variant = "primary",
-  loading,
   className = "",
   children,
+  loading: _loading, // eslint-disable-line @typescript-eslint/no-unused-vars
   ...props
 }: Props) {
   const base =

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation, useQuery } from "convex/react";
+import { useMutation } from "convex/react";
 import { usePaginatedQuery } from "convex-helpers/react/cache/hooks";
 import { api } from "@/convex/_generated/api";
 import { useAdminForm } from "../_hooks/useAdminForm";
@@ -45,6 +45,7 @@ const newsColumns = [
       n.imageKitId ? (
         <HoverPreviewIcon
           imageKitId={n.imageKitId}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           imageKitPath={(n as any).imageKitPath}
           size={160}
         />
@@ -76,7 +77,6 @@ export default function NewsPage() {
     loading,
     imagePreview,
     handleFileChange,
-    setValue,
     reset,
     watch,
     clearImage,
@@ -201,6 +201,7 @@ export default function NewsPage() {
               <div className="flex min-h-48 items-center justify-center p-4">
                 {imagePreview ? (
                   <div className="relative aspect-video w-full max-w-xl">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={imagePreview}
                       alt="News preview"

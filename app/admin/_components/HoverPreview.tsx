@@ -14,15 +14,24 @@ export function HoverPreviewIcon({
 }) {
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+
+  // Check if we have a valid image path
+  const hasValidImage = !!imageKitPath;
+
   return (
     <div
-      className="inline-flex"
-      onMouseEnter={() => setOpen(true)}
+      className={`inline-flex ${hasValidImage ? "cursor-pointer" : "cursor-not-allowed"}`}
+      onMouseEnter={() => hasValidImage && setOpen(true)}
       onMouseLeave={() => setOpen(false)}
-      onMouseMove={(e) => setPos({ x: e.clientX, y: e.clientY })}
+      onMouseMove={(e) =>
+        hasValidImage && setPos({ x: e.clientX, y: e.clientY })
+      }
     >
-      <ImageIcon className="text-white/70" size={18} />
-      {open && (
+      <ImageIcon
+        className={hasValidImage ? "text-white/70" : "text-red-500"}
+        size={18}
+      />
+      {open && hasValidImage && (
         <PreviewAtCursor
           x={pos.x}
           y={pos.y - 8}

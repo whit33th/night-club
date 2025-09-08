@@ -49,6 +49,10 @@ body {
   background: var(--background);
   font-family: var(--font-inter);
 }
+button,
+a {
+  cursor: pointer;
+}
 
 /* Lenis helpers */
 html.lenis,
@@ -82,4 +86,14 @@ input[type="time"]::-webkit-clear-button {
 input[type="date"],
 input[type="time"] {
   background-image: none;
+}
+
+.custom-hide-5 > :nth-child(5) {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .custom-hide-5 > :nth-child(5) {
+    display: block;
+  }
 }

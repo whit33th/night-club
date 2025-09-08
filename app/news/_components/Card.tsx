@@ -1,14 +1,38 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
+import { Image } from "@imagekit/next";
 import Link from "next/link";
-import type { NewsItem } from "./data";
+import type { Doc } from "@/convex/_generated/dataModel";
+import { generateNewsSlug } from "../_utils/slugUtils";
 import { formatDate } from "./utils";
 
-export function NewsCard({ post, index }: { post: NewsItem; index: number }) {
+export function NewsCard({
+  post,
+  index,
+}: {
+  post: Doc<"news">;
+  index: number;
+}) {
+  // Generate SEO-friendly slug
+  const newsSlug = generateNewsSlug(
+    post.title,
+    new Date(post._creationTime).toISOString().split("T")[0],
+    post._id,
+  );
+
+  // Use ImageKit image path
+  const imageSrc = post.imageKitPath
+    ? post.imageKitPath
+    : post.imageKitId
+      ? `/${post.imageKitId}`
+      : "/imgs/1.jpg";
+
+  // Format date from timestamp
+  const formattedDate = formatDate(new Date(post._creationTime).toISOString());
+
   return (
-    <Link href={`/news/${post.id}`} className="group">
+    <Link href={`/news/${newsSlug}`} className="group">
       <motion.article
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
@@ -21,12 +45,18 @@ export function NewsCard({ post, index }: { post: NewsItem; index: number }) {
       >
         <div className="relative overflow-hidden">
           <Image
-            width={200}
-            height={200}
-            src={post.img}
+            src={imageSrc}
             alt={post.title}
-            className="block w-full scale-[1.01] transform-gpu opacity-95 contrast-125 grayscale transition-all duration-500 ease-out group-hover:scale-[1.03] group-hover:opacity-100 group-hover:grayscale-0"
+            width={400}
+            height={300}
+            className="block h-auto w-full scale-[1.01] transform-gpu opacity-95 contrast-125 grayscale transition-all duration-500 ease-out group-hover:scale-[1.03] group-hover:opacity-100 group-hover:grayscale-0"
             loading="lazy"
+            transformation={[
+              {
+                width: 400,
+                quality: 80,
+              },
+            ]}
           />
           <span
             aria-hidden
@@ -39,7 +69,7 @@ export function NewsCard({ post, index }: { post: NewsItem; index: number }) {
         </div>
         <figcaption className="flex items-center justify-between gap-3 border-white/10 bg-white/[0.03] px-3 py-2 text-xs uppercase tracking-wide text-neutral-200">
           <span className="grow select-none text-right text-[0.72rem] text-neutral-200">
-            {formatDate(post.date)}
+            {formattedDate}
             <span className="mx-1 text-neutral-500">{"///"}</span> {post.title}
           </span>
         </figcaption>

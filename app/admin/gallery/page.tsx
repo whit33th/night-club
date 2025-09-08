@@ -11,6 +11,7 @@ import { ImagePlusIcon, X } from "lucide-react";
 import { HoverPreviewIcon } from "../_components/HoverPreview";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import Image from "next/image";
 
 interface GalleryFormData {
   imageKitId: string;
@@ -51,9 +52,9 @@ export default function GalleryPage() {
     loadMore,
   } = usePaginatedQuery(api.admin.paginateGallery, {}, { initialNumItems: 5 });
 
-  const { handleSubmit, loading, uploadFile } = useAdminForm<GalleryFormData>({
+  const { handleSubmit, uploadFile } = useAdminForm<GalleryFormData>({
     defaultValues: { imageKitId: "" },
-    onSubmit: async (_data: GalleryFormData, imageKitId) => {
+    onSubmit: async () => {
       return;
     },
   });
@@ -179,7 +180,8 @@ export default function GalleryPage() {
                 >
                   <X className="h-4 w-4" />
                 </button>
-                <img
+                <Image
+                  fill
                   src={it.url}
                   alt="Selected"
                   className="h-full w-full object-cover"

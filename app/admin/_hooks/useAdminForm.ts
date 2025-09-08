@@ -2,6 +2,7 @@ import { useForm, FieldValues, DefaultValues } from "react-hook-form";
 import { useState } from "react";
 import { toast } from "sonner";
 import imageCompression from "browser-image-compression";
+import { ConvexError } from "convex/values";
 
 interface UseAdminFormOptions<T extends FieldValues> {
   defaultValues: DefaultValues<T>;
@@ -101,8 +102,10 @@ export function useAdminForm<T extends FieldValues>({
         fileId: result.fileId,
         filePath: result.filePath,
       };
-    } catch (error: any) {
-      toast.error("Image upload failed: " + error.message);
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
+      toast.error("Image upload failed: " + errorMessage);
       throw error;
     }
   };
@@ -125,8 +128,11 @@ export function useAdminForm<T extends FieldValues>({
         setImagePreview("");
         setSelectedFile(null);
       }
-    } catch (error: any) {
-      toast.error(error.message || "Something went wrong");
+    } catch (error) {
+      toast.error(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (error as Error | ConvexError<any>)?.message || "Something went wrong",
+      );
     } finally {
       setLoading(false);
     }

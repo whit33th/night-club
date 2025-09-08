@@ -17,7 +17,6 @@ export default function FiltersHeader({
   filters,
   active,
   onChange,
-  after,
 }: FiltersHeaderProps) {
   return (
     <section className="relative overflow-hidden rounded-xl">
@@ -29,11 +28,7 @@ export default function FiltersHeader({
         <p className="mt-2 text-center text-xs uppercase tracking-[0.25em] text-white/60">
           {subtitle}
         </p>
-        {after ? (
-          <p className="mt-1 text-center text-[10px] uppercase tracking-[0.25em] text-white/60">
-            Filter: after {after}
-          </p>
-        ) : null}
+
         <div className="mt-2.5 flex flex-wrap items-center justify-center gap-2">
           {filters.map((f) => (
             <button

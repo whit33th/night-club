@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
       deleted: summary.filter((s) => s.ok).map((s) => s.id),
       summary,
     });
-  } catch (e) {
+  } catch {
     return NextResponse.json({ error: "Delete error" }, { status: 500 });
   }
 }

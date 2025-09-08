@@ -21,11 +21,11 @@ export default function ConvexClientProvider({
 }
 
 export function toastConvexError(
-  err: unknown,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  err: ConvexError<any>,
   onFieldErrors?: (fields: string[]) => void,
 ) {
   try {
-    const anyErr = err as any;
     const errorFields: string[] = [];
 
     // Map technical field names to user-friendly names
@@ -67,33 +67,35 @@ export function toastConvexError(
 
     let message = "Something went wrong";
 
-    if (anyErr instanceof ConvexError) {
-      if (typeof anyErr.data === "string") {
-        message = anyErr.data;
+    if (err instanceof ConvexError) {
+      if (typeof err.data === "string") {
+        message = err.data;
       } else if (
-        anyErr.data?.issues &&
-        Array.isArray(anyErr.data.issues) &&
-        anyErr.data.issues.length > 0
+        err.data?.issues &&
+        Array.isArray(err.data.issues) &&
+        err.data.issues.length > 0
       ) {
         // Collect error fields and show all validation errors with user-friendly field names
-        const errors = anyErr.data.issues.map((issue: any) => {
-          const fieldPath =
-            Array.isArray(issue.path) && issue.path.length > 0
-              ? issue.path.join(".")
-              : "field";
+        const errors = err.data.issues.map(
+          (issue: { path: string[]; message: string }) => {
+            const fieldPath =
+              Array.isArray(issue.path) && issue.path.length > 0
+                ? issue.path.join(".")
+                : "field";
 
-          // Add to error fields for highlighting
-          errorFields.push(fieldPath);
+            // Add to error fields for highlighting
+            errorFields.push(fieldPath);
 
-          const friendlyName = getUserFriendlyFieldName(fieldPath);
-          return `${friendlyName}: ${issue.message}`;
-        });
+            const friendlyName = getUserFriendlyFieldName(fieldPath);
+            return `${friendlyName}: ${issue.message}`;
+          },
+        );
         message = errors.join(", ");
-      } else if (typeof anyErr.data?.message === "string") {
-        message = anyErr.data.message;
+      } else if (typeof err.data?.message === "string") {
+        message = err.data.message;
       }
-    } else if (typeof anyErr?.message === "string") {
-      message = anyErr.message;
+    } else if (err instanceof Error && typeof err.message === "string") {
+      message = err.message;
 
       // Clean up ArgumentValidationError messages
       if (message.includes("Object is missing the required field")) {

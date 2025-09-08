@@ -16,7 +16,6 @@ export default function HeroImage({
   id,
   imageKitId,
   imageKitPath,
-  convexId,
   src,
   alt,
 }: HeroImageProps) {
@@ -38,9 +37,10 @@ export default function HeroImage({
           priority
           transformation={[
             {
+              format: "webp",
               width: 800,
               height: 800,
-              quality: 85,
+              quality: 90,
             },
           ]}
         />

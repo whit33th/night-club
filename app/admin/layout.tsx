@@ -11,9 +11,9 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     () => [
       { href: "/admin", label: "Events" },
       { href: "/admin/news", label: "News" },
-      { href: "/admin/residents", label: "Residents" },
       { href: "/admin/gallery", label: "Gallery" },
-      { href: "/admin/faqs", label: "FAQs" },
+      // { href: "/admin/residents", label: "Residents" },
+      // { href: "/admin/faqs", label: "FAQs" },
     ],
     [],
   );

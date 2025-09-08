@@ -16,7 +16,6 @@ export function AdminForm({
   children,
   onSubmit,
   isLoading = false,
-  isSaved = false,
   submitText = "Save",
   className = "grid grid-cols-1 gap-3 md:grid-cols-3",
 }: AdminFormProps) {

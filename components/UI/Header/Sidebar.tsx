@@ -99,8 +99,8 @@ export default function Sidebar({
             </div>
           </div>
 
-          <div className="grid grid-cols-5 gap-2">
-            {["1.jpg", "2.webp", "3.webp", "4.jpg", "5.jpg", "5.jpg"]
+          <div className="custom-hide-5 grid grid-cols-4 gap-2 md:grid-cols-5">
+            {["1.jpg", "2.webp", "3.webp", "4.jpg", "5.jpg"]
               .slice(0, 5)
               .map((name) => (
                 <Link
