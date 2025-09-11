@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Image } from "@imagekit/next";
+import ImageWithPlaceholder from "@/components/UI/ImageKit/ImageWithPlaceholder";
 import Link from "next/link";
 import type { Doc } from "@/convex/_generated/dataModel";
 import { generateNewsSlug } from "../_utils/slugUtils";
@@ -44,19 +44,21 @@ export function NewsCard({
         className="border-x border-b border-white/10"
       >
         <div className="relative overflow-hidden">
-          <Image
+          <ImageWithPlaceholder
             src={imageSrc}
             alt={post.title}
             width={400}
             height={300}
             className="block h-auto w-full scale-[1.01] transform-gpu opacity-95 contrast-125 grayscale transition-all duration-500 ease-out group-hover:scale-[1.03] group-hover:opacity-100 group-hover:grayscale-0"
-            loading="lazy"
             transformation={[
               {
                 width: 400,
-                quality: 80,
               },
             ]}
+            quality={80}
+            blurQuality={10}
+            blurAmount={50}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
           />
           <span
             aria-hidden

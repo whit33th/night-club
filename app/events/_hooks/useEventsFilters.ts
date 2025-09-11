@@ -1,40 +1,16 @@
 "use client";
 
+import { api } from "@/convex/_generated/api";
+import { Doc } from "@/convex/_generated/dataModel";
+import { useQuery } from "convex-helpers/react/cache";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
-import { useQuery } from "convex-helpers/react/cache";
-import { api } from "@/convex/_generated/api";
-
-type ConvexEvent = {
-  _id: string;
-  _creationTime: number;
-  title: string;
-  date: string;
-  startAt: string;
-  doorsAt?: string;
-  imageKitId: string;
-  imageKitPath?: string;
-  artists?: Array<{
-    index?: number;
-    name: string;
-    imageKitId?: string;
-    imageKitPath?: string;
-    role?: string;
-  }>;
-  musicGenres?: string[];
-  priceFrom?: number;
-  minAge?: number;
-  dressCode?: string;
-  currency?: string;
-  ticketUrl?: string;
-  description?: string;
-};
 
 type UseEventsFiltersResult = {
   filters: string[];
   activeGenre: string;
   after: string | null;
-  posters: Array<ConvexEvent>;
+  posters: Doc<"events">[];
   setGenre: (value: string) => void;
   clearAfter: () => void;
   mode: "grid" | "list";
@@ -47,13 +23,44 @@ export function useEventsFilters(): UseEventsFiltersResult {
   const eventsData = useQuery(api.admin.listEvents);
   const isLoading = eventsData === undefined;
 
-  const filters: string[] = useMemo(() => {
-    if (!eventsData) return ["all"];
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
 
-    // Get all unique genres from events
+  const after = searchParams.get("after");
+  const genreParam = (searchParams.get("genre") || "all").toLowerCase();
+  const modeParam = (searchParams.get("mode") || "list").toLowerCase();
+  const mode: "grid" | "list" = modeParam === "grid" ? "grid" : "list";
+
+  const afterTime = useMemo(() => {
+    if (!after) return null as number | null;
+
+    // Parse the date and set to start of day
+    const date = new Date(after);
+    if (Number.isNaN(date.getTime())) return null;
+
+    // Set to start of the day to include events on that date
+    date.setHours(0, 0, 0, 0);
+    return date.getTime();
+  }, [after]);
+
+  const filteredByDate = useMemo(() => {
+    if (!eventsData) return [];
+
+    return afterTime
+      ? eventsData.filter((p) => {
+          const eventDate = new Date(p.date);
+          eventDate.setHours(0, 0, 0, 0); // Normalize to start of day for comparison
+          return eventDate.getTime() < afterTime;
+        })
+      : eventsData;
+  }, [eventsData, afterTime]);
+
+  const filters: string[] = useMemo(() => {
+    // Get unique genres from the date-filtered events only
     const allGenres = new Set<string>();
 
-    eventsData.forEach((event) => {
+    filteredByDate.forEach((event) => {
       if (event.musicGenres && Array.isArray(event.musicGenres)) {
         event.musicGenres.forEach((genre) => {
           if (genre && typeof genre === "string") {
@@ -65,36 +72,17 @@ export function useEventsFilters(): UseEventsFiltersResult {
 
     // Convert to array and sort, with "all" at the beginning
     return ["all", ...Array.from(allGenres).sort()];
-  }, [eventsData]);
+  }, [filteredByDate]);
 
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const after = searchParams.get("after");
-  const genreParam = (searchParams.get("genre") || "all").toLowerCase();
   const activeGenre = filters.includes(genreParam) ? genreParam : "all";
-  const modeParam = (searchParams.get("mode") || "list").toLowerCase();
-  const mode: "grid" | "list" = modeParam === "grid" ? "grid" : "list";
-
-  const afterTime = useMemo(() => {
-    if (!after) return null as number | null;
-
-    const t = new Date(after).getTime();
-    return Number.isNaN(t) ? null : t;
-  }, [after]);
 
   const posters = useMemo(() => {
-    if (!eventsData) return [];
-
-    const base = afterTime
-      ? eventsData.filter((p) => new Date(p.date).getTime() > afterTime)
-      : eventsData;
+    if (!filteredByDate) return [];
 
     return activeGenre === "all"
-      ? base
-      : base.filter((p) => p.musicGenres?.includes(activeGenre));
-  }, [eventsData, activeGenre, afterTime]);
+      ? filteredByDate
+      : filteredByDate.filter((p) => p.musicGenres?.includes(activeGenre));
+  }, [filteredByDate, activeGenre]);
 
   const setGenre = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());

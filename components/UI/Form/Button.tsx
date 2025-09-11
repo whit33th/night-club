@@ -11,7 +11,8 @@ export default function Button({
   variant = "primary",
   className = "",
   children,
-  loading: _loading, // eslint-disable-line @typescript-eslint/no-unused-vars
+  loading = false,
+  disabled,
   ...props
 }: Props) {
   const base =
@@ -20,8 +21,15 @@ export default function Button({
     variant === "secondary"
       ? "border border-white/15 bg-white/5 text-white hover:bg-white/10"
       : "bg-[var(--primary)] text-white hover:brightness-110";
+
+  const isDisabled = disabled || loading;
+
   return (
-    <button {...props} className={`${base} ${styles} ${className}`}>
+    <button
+      {...props}
+      disabled={isDisabled}
+      className={`${base} ${styles} ${className}`}
+    >
       {children}
     </button>
   );

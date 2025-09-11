@@ -5,21 +5,55 @@ import {
   ReactNode,
   ThHTMLAttributes,
   TdHTMLAttributes,
+  forwardRef,
 } from "react";
 
 type Align = "left" | "center" | "right";
 
-export function TableContainer({
-  children,
-  className = "",
-  ...props
-}: HTMLAttributes<HTMLDivElement>) {
+export const TableContainer = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(({ children, className = "", ...props }, ref) => {
   return (
-    <div className={`overflow-x-auto ${className}`} {...props}>
+    <div
+      ref={ref}
+      className={`relative overflow-x-auto ${className}`}
+      data-lenis-prevent
+      data-lenis-prevent-wheel
+      data-lenis-prevent-touch
+      style={{
+        overscrollBehavior: "contain",
+        WebkitOverflowScrolling: "touch",
+        isolation: "isolate",
+      }}
+      onWheel={(e) => {
+        // Force scroll within container, prevent page scroll
+        const container = e.currentTarget;
+        const atTop = container.scrollTop === 0;
+        const atBottom =
+          container.scrollTop >=
+          container.scrollHeight - container.clientHeight;
+
+        if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
+          // At boundary - let the event bubble up to page
+          return;
+        }
+
+        // Within scroll bounds - keep scrolling in container
+        e.stopPropagation();
+      }}
+      onTouchStart={(e) => {
+        // Ensure touch scrolling works properly on iOS
+        const container = e.currentTarget;
+        (container.style as any).webkitOverflowScrolling = "touch";
+      }}
+      {...props}
+    >
       {children}
     </div>
   );
-}
+});
+TableContainer.displayName = "TableContainer";
 
 export function Table({
   children,
@@ -50,7 +84,7 @@ export function THead({
 
 export function TBody({
   children,
-  className = "",
+  className = "bg-white/2",
   ...props
 }: HTMLAttributes<HTMLTableSectionElement>) {
   return (
@@ -94,7 +128,7 @@ export function Th({
         ? "text-center"
         : "text-left";
   const stickyClass = sticky
-    ? "sticky top-0 z-10 backdrop-blur bg-black/40"
+    ? "sticky top-0 z-10 bg-black border-b border-white/10"
     : "";
   return (
     <th
@@ -129,8 +163,12 @@ export function Td({
   );
 }
 
-export function ActionsHeader() {
-  return <Th align="right">Actions</Th>;
+export function ActionsHeader({ sticky = false }: { sticky?: boolean }) {
+  return (
+    <Th align="right" sticky={sticky}>
+      Actions
+    </Th>
+  );
 }
 
 export function ActionsCell({ children }: { children: ReactNode }) {
@@ -138,31 +176,5 @@ export function ActionsCell({ children }: { children: ReactNode }) {
     <Td align="right">
       <div className="inline-flex gap-2">{children}</div>
     </Td>
-  );
-}
-
-export function EmptyRow({
-  colSpan = 1,
-  children = "No data",
-}: {
-  colSpan?: number;
-  children?: ReactNode;
-}) {
-  return (
-    <Tr>
-      <Td align="center" className="py-6 text-white/50" colSpan={colSpan}>
-        {children}
-      </Td>
-    </Tr>
-  );
-}
-
-export function LoadingRow({ colSpan = 1 }: { colSpan?: number }) {
-  return (
-    <Tr>
-      <Td colSpan={colSpan}>
-        <div className="h-6 animate-pulse rounded bg-white/10" />
-      </Td>
-    </Tr>
   );
 }

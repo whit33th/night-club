@@ -16,12 +16,8 @@ export default function NewsPage() {
       />
       <NewsHeader />
       {news === undefined ? (
-        <div className="mt-8">
-          <div className="animate-pulse space-y-4">
-            {Array.from({ length: 3 }).map((_, index) => (
-              <div key={index} className="h-32 rounded-lg bg-neutral-800" />
-            ))}
-          </div>
+        <div className="mt-8 flex items-center justify-center gap-3 py-12">
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white/60"></div>
         </div>
       ) : (
         <NewsList posts={news} />

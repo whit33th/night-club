@@ -1,4 +1,4 @@
-import ApperanceEffect from "@/components/Providers/ApperanceEffect";
+import AppearanceEffect from "@/components/Providers/AppearanceEffect";
 import ConvexClientProvider from "@/components/Providers/ConvexClientProvider";
 import LenisProvider from "@/components/Providers/LenisProvider";
 import Nav from "@/components/UI/Header/Header";
@@ -40,7 +40,7 @@ export default function RootLayout({
           <ImageKitProviderWrapper>
             <LenisProvider>
               <Nav>
-                <ApperanceEffect>{children}</ApperanceEffect>
+                <AppearanceEffect>{children}</AppearanceEffect>
               </Nav>
             </LenisProvider>
           </ImageKitProviderWrapper>

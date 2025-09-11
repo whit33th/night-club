@@ -1,5 +1,5 @@
 import { useForm, FieldValues, DefaultValues } from "react-hook-form";
-import { useState } from "react";
+import { useState, useCallback, useRef } from "react";
 import { toast } from "sonner";
 import imageCompression from "browser-image-compression";
 import { ConvexError } from "convex/values";
@@ -18,6 +18,8 @@ export function useAdminForm<T extends FieldValues>({
   onSubmit,
   autoReset = true,
 }: UseAdminFormOptions<T>) {
+  // Keep an immutable snapshot of initial defaults for reliable resets
+  const initialDefaultsRef = useRef(defaultValues);
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -123,8 +125,11 @@ export function useAdminForm<T extends FieldValues>({
 
       await onSubmit(data, imageKitData);
       toast.success("Saved successfully!");
+
+      // Always reset after successful submit regardless of autoReset
+      // This ensures the form state is immediately clean
       if (autoReset) {
-        form.reset();
+        form.reset(initialDefaultsRef.current);
         setImagePreview("");
         setSelectedFile(null);
       }
@@ -138,13 +143,18 @@ export function useAdminForm<T extends FieldValues>({
     }
   };
 
-  const clearImage = () => {
+  const clearImage = useCallback(() => {
     if (imagePreview) {
       URL.revokeObjectURL(imagePreview);
     }
     setImagePreview("");
     setSelectedFile(null);
-  };
+  }, [imagePreview]);
+
+  const resetForm = useCallback(() => {
+    form.reset(initialDefaultsRef.current);
+    clearImage();
+  }, [form, clearImage]);
 
   return {
     ...form,
@@ -153,6 +163,7 @@ export function useAdminForm<T extends FieldValues>({
     selectedFile,
     handleFileChange,
     clearImage,
+    resetForm,
     uploadFile: uploadImageToImageKit,
     handleSubmit: form.handleSubmit(handleSubmit),
   };

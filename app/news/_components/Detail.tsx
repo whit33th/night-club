@@ -1,9 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Image } from "@imagekit/next";
+import ImageWithPlaceholder from "@/components/UI/ImageKit/ImageWithPlaceholder";
 import type { Doc } from "@/convex/_generated/dataModel";
 import { formatDate } from "./utils";
+import { head } from "framer-motion/client";
 
 export function NewsDetail({ news }: { news: Doc<"news"> }) {
   // Use ImageKit image path
@@ -33,19 +34,16 @@ export function NewsDetail({ news }: { news: Doc<"news"> }) {
         className="overflow-hidden"
       >
         <div className="relative">
-          <Image
+          <ImageWithPlaceholder
             src={imageSrc}
             alt={news.title}
             width={800}
             height={600}
-            className="block w-full transform-gpu transition-all duration-700 ease-out hover:grayscale-0"
-            transformation={[
-              {
-                width: 800,
-                height: 600,
-                quality: 90,
-              },
-            ]}
+            className="block h-auto w-full transform-gpu transition-all duration-700 ease-out hover:grayscale-0"
+            quality={90}
+            blurQuality={5}
+            blurAmount={30}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 800px"
           />
         </div>
         <div className="border-l-8 border-white/10 px-4 py-4 sm:px-5 sm:py-5">

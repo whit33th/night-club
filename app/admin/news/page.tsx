@@ -9,9 +9,10 @@ import { DataTable } from "../_components/DataTable";
 import { HoverPreviewIcon } from "../_components/HoverPreview";
 import type { Doc, Id } from "@/convex/_generated/dataModel";
 import Button from "@/components/UI/Form/Button";
-import { Type, FileImage, MessageSquareText } from "lucide-react";
+import { Type, MessageSquareText } from "lucide-react";
 import { useEffect, useState } from "react";
 import { deleteImageFromImageKit } from "../_utils/imageKit";
+import NewsImagePicker from "./_components/NewsImagePicker";
 
 interface NewsFormData {
   title: string;
@@ -65,7 +66,7 @@ export default function NewsPage() {
     results: news,
     status,
     loadMore,
-  } = usePaginatedQuery(api.admin.paginateNews, {}, { initialNumItems: 5 });
+  } = usePaginatedQuery(api.admin.paginateNews, {}, { initialNumItems: 50 });
 
   const [editingId, setEditingId] = useState<Id<"news"> | null>(null);
   const [editingNews, setEditingNews] = useState<Doc<"news"> | null>(null);
@@ -80,12 +81,13 @@ export default function NewsPage() {
     reset,
     watch,
     clearImage,
+    resetForm,
   } = useAdminForm<NewsFormData>({
     defaultValues: {
       title: "",
       body: "",
     },
-    autoReset: false,
+    autoReset: true,
     onSubmit: async (data, imageKitData) => {
       const formData = mapFormToNewsPatch(data);
 
@@ -102,11 +104,10 @@ export default function NewsPage() {
 
         await updateNews({ id: editingId, patch });
 
+        // Clear editing state
         setEditingId(null);
         setEditingNews(null);
-        reset(mapNewsToForm(null));
         setImageError(false);
-        clearImage();
       } else {
         const toCreate = {
           ...formData,
@@ -115,9 +116,8 @@ export default function NewsPage() {
         };
         await createNews(toCreate);
 
-        reset(mapNewsToForm(null));
+        // Clear error state
         setImageError(false);
-        clearImage();
       }
     },
   });
@@ -131,6 +131,7 @@ export default function NewsPage() {
       const formData = mapNewsToForm(editingNews);
       reset(formData);
     }
+    // Do not auto-reset in create mode to avoid clearing chosen image
   }, [editingNews, reset]);
 
   const handleDelete = async (id: string, opts?: { skipConfirm?: boolean }) => {
@@ -153,13 +154,13 @@ export default function NewsPage() {
           </span>
           <button
             type="button"
-            className="ml-4 rounded bg-white/10 px-2 py-1 text-xs hover:bg-white/20"
+            className="ml-4 rounded bg-white/10 px-2 py-1 text-xs hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={loading}
             onClick={() => {
               setEditingId(null);
               setEditingNews(null);
-              reset(mapNewsToForm(null));
+              resetForm();
               setImageError(false);
-              clearImage();
             }}
           >
             Cancel
@@ -183,42 +184,15 @@ export default function NewsPage() {
             })}
           />
 
-          <div className="md:col-span-2">
-            <input
-              id="news-image"
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                handleFileChange(e as React.ChangeEvent<HTMLInputElement>);
-                setImageError(false);
-              }}
-              className="sr-only"
-            />
-            <label
-              htmlFor="news-image"
-              className={`group block w-full cursor-pointer rounded-xl border-2 border-dashed bg-white/5 transition-colors ${imageError ? "border-red-500" : "border-white/20 hover:border-white/40"}`}
-            >
-              <div className="flex min-h-48 items-center justify-center p-4">
-                {imagePreview ? (
-                  <div className="relative aspect-video w-full max-w-xl">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={imagePreview}
-                      alt="News preview"
-                      className="h-full w-full object-contain"
-                    />
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center py-10 text-white/70">
-                    <FileImage className="mb-3 h-10 w-10" />
-                    <span className="text-sm">
-                      Choose image <span className="text-red-500">*</span>
-                    </span>
-                  </div>
-                )}
-              </div>
-            </label>
-          </div>
+          <NewsImagePicker
+            imagePreview={imagePreview}
+            imageError={imageError}
+            disabled={loading}
+            onChange={(e) => {
+              handleFileChange(e as React.ChangeEvent<HTMLInputElement>);
+              setImageError(false);
+            }}
+          />
 
           <FormField
             label="Body"
@@ -265,13 +239,10 @@ export default function NewsPage() {
           }}
           onDelete={handleDelete}
           loading={status === "LoadingFirstPage"}
+          actionsDisabled={loading}
+          onLoadMore={() => loadMore(50)}
+          canLoadMore={status === "CanLoadMore"}
         />
-
-        {status === "CanLoadMore" && (
-          <Button variant="secondary" onClick={() => loadMore(5)}>
-            Load More
-          </Button>
-        )}
       </div>
     </div>
   );

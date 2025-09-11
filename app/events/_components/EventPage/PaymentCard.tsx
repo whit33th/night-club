@@ -1,6 +1,6 @@
 "use client";
 
-import { Image } from "@imagekit/next";
+import ImageWithPlaceholder from "@/components/UI/ImageKit/ImageWithPlaceholder";
 import Link from "next/link";
 
 type PaymentCardProps = {
@@ -32,19 +32,21 @@ export default function PaymentCard({
         {/* Left: square visual */}
         <div className="group relative aspect-square w-36 flex-shrink-0 overflow-hidden rounded-l-lg bg-white/5 md:w-48">
           {imageSrc ? (
-            <Image
+            <ImageWithPlaceholder
               src={imageSrc}
               alt={title}
               fill
               className="h-full w-full object-cover opacity-90 invert transition duration-300 group-hover:scale-[1.04] group-hover:opacity-100"
               transformation={[
                 {
-                  format: "webp",
                   width: 800,
                   height: 800,
-                  quality: 90,
                 },
               ]}
+              quality={90}
+              blurQuality={10}
+              blurAmount={50}
+              sizes="(max-width: 768px) 144px, 192px"
             />
           ) : (
             <div className="absolute inset-0 grid place-items-center text-xs uppercase tracking-[0.25em] text-white/50">
@@ -63,9 +65,11 @@ export default function PaymentCard({
                 Tickets
               </h2>
             </div>
-            <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-[0.2em] text-white/70">
-              Limited
-            </span>
+            {ticketUrl && (
+              <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-[0.2em] text-white/70">
+                Limited
+              </span>
+            )}
           </header>
 
           <div className="flex w-full flex-col justify-between gap-2 sm:flex-row sm:items-center">

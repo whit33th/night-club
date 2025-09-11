@@ -33,12 +33,18 @@ type EventsListViewProps = {
 };
 
 export default function EventsListView({ items }: EventsListViewProps) {
-  const now = new Date();
-  const todayMs = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate(),
-  ).getTime();
+  // Get current time in Warsaw timezone
+  const warsawTime = new Date().toLocaleString("en-US", {
+    timeZone: "Europe/Warsaw",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+  const currentWarsawDate = new Date(warsawTime.replace(",", ""));
 
   return (
     <div className="mx-auto w-full max-w-6xl">
@@ -47,8 +53,8 @@ export default function EventsListView({ items }: EventsListViewProps) {
           const d = new Date(p.date);
           const dd = d.toLocaleString(undefined, { day: "2-digit" });
           const mm = d.toLocaleString(undefined, { month: "2-digit" });
-          const eventMs = d.getTime();
-          const isPast = eventMs < todayMs;
+          const eventDateTime = new Date(`${p.date}T${p.startAt || "00:00"}`);
+          const isPast = eventDateTime < currentWarsawDate;
 
           // Format artists for display
           const artistsDisplay =
@@ -65,17 +71,29 @@ export default function EventsListView({ items }: EventsListViewProps) {
               <Link
                 key={p._id}
                 href={`/events/${eventSlug}`}
-                className={` ${isPast ? "opacity-35" : "opacity-100 hover:opacity-80"}`}
+                className={`relative ${isPast ? "opacity-50" : "opacity-100 hover:opacity-80"}`}
               >
                 <div className="flex justify-between gap-4">
-                  <span className="w-24 shrink-0 text-2xl font-extrabold leading-none tracking-tight text-white">
+                  <span
+                    className={`w-24 shrink-0 text-2xl font-extrabold leading-none tracking-tight ${
+                      isPast ? "text-white/60" : "text-white"
+                    }`}
+                  >
                     {dd}.{mm}
                   </span>
                   <div className="flex-1">
-                    <p className="text-lg font-extrabold uppercase leading-tight tracking-tight">
+                    <p
+                      className={`text-lg font-extrabold uppercase leading-tight tracking-tight ${
+                        isPast ? "text-white/70" : ""
+                      }`}
+                    >
                       {p.title}
                     </p>
-                    <p className="text-[10px] uppercase tracking-[0.25em] text-white/70">
+                    <p
+                      className={`text-[10px] uppercase tracking-[0.25em] ${
+                        isPast ? "text-white/50" : "text-white/70"
+                      }`}
+                    >
                       {artistsDisplay}
                     </p>
                   </div>

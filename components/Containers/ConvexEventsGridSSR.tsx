@@ -19,14 +19,12 @@ const generateSlug = (title: string, date: string, id: string) => {
 export default function ConvexEventsGridSSR({
   preloaded,
 }: {
-  preloaded: Preloaded<typeof api.admin.listEvents>;
+  preloaded: Preloaded<typeof api.admin.listUpcomingEvents>;
 }) {
   const events = usePreloadedQuery(preloaded);
 
-  // Sort events by date and take first 6
-  const sortedEvents = [...events]
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-    .slice(0, 6);
+  // Events are already filtered and sorted by the query, just take first 6
+  const sortedEvents = events.slice(0, 12);
 
   return (
     <section className="mt-4">
@@ -43,12 +41,31 @@ export default function ConvexEventsGridSSR({
       <div className="grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] gap-4 xl:grid-cols-[repeat(auto-fill,minmax(315px,1fr))]">
         {sortedEvents.map((event, index) => {
           const eventSlug = generateSlug(event.title, event.date, event._id);
+
+          // Check if event is past (though it shouldn't be with upcoming events query)
+          const warsawTime = new Date().toLocaleString("en-US", {
+            timeZone: "Europe/Warsaw",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false,
+          });
+          const currentWarsawDate = new Date(warsawTime.replace(",", ""));
+          const eventDateTime = new Date(
+            `${event.date}T${event.startAt || "00:00"}`,
+          );
+          const isPast = eventDateTime < currentWarsawDate;
+
           return (
             <ConvexEventsCard
               key={event._id}
               event={event}
               index={index}
               href={`/events/${eventSlug}`}
+              isPast={isPast}
             />
           );
         })}

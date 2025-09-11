@@ -1,11 +1,11 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { useState } from "react";
-import { toast } from "sonner";
 import { ConvexError } from "convex/values";
+import { useSearchParams } from "next/navigation";
+import { useState, Suspense } from "react";
+import { toast } from "sonner";
 
-export default function AdminAuthPage() {
+function AdminAuthForm() {
   const params = useSearchParams();
   const redirectParam = params.get("redirect");
   const redirect =
@@ -73,5 +73,20 @@ export default function AdminAuthPage() {
         Your session uses a secure, HttpOnly cookie and expires automatically.
       </p>
     </div>
+  );
+}
+
+export default function AdminAuthPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="mx-auto flex min-h-[70vh] max-w-sm flex-col justify-center gap-4 px-4">
+          <h1 className="text-center text-2xl font-bold">Admin Access</h1>
+          <p className="text-center text-white/60">Loading...</p>
+        </div>
+      }
+    >
+      <AdminAuthForm />
+    </Suspense>
   );
 }

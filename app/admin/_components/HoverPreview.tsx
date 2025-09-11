@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Image as ImageIcon } from "lucide-react";
-import { Image } from "@imagekit/next";
+import ImageWithPlaceholder from "@/components/UI/ImageKit/ImageWithPlaceholder";
 
 export function HoverPreviewIcon({
   imageKitId,
@@ -87,7 +87,7 @@ function PreviewAtCursor({
     >
       <div className="pointer-events-none rounded-md border border-white/10 bg-black/80 p-1 shadow-lg backdrop-blur">
         <div className="relative" style={{ width: 300, height: 300 }}>
-          <Image
+          <ImageWithPlaceholder
             src={imageSrc}
             alt="preview"
             fill
@@ -95,42 +95,12 @@ function PreviewAtCursor({
             transformation={[
               {
                 width: 300,
-                quality: 80,
               },
             ]}
-            onError={(e) => {
-              console.error("ImageKit load error:", e);
-              console.error("Error event details:", {
-                type: e.type,
-                timeStamp: e.timeStamp,
-              });
-              console.log("imageKitId:", imageKitId);
-              console.log("imageKitPath:", imageKitPath);
-              console.log("Generated src:", imageSrc);
-              console.log(
-                "Full URL should be:",
-                `${process.env.NEXT_PUBLIC_IMAGEKIT_ENDPOINT}${imageSrc}`,
-              );
-              console.log(
-                "Endpoint:",
-                process.env.NEXT_PUBLIC_IMAGEKIT_ENDPOINT,
-              );
-
-              // Check if the image element has a src attribute
-              const imgElement = e.target as HTMLImageElement;
-              if (imgElement) {
-                console.log("Actual img src:", imgElement.src);
-                console.log("Img naturalWidth:", imgElement.naturalWidth);
-                console.log("Img naturalHeight:", imgElement.naturalHeight);
-                console.log("Img complete:", imgElement.complete);
-              }
-            }}
-            onLoad={() => {
-              console.log(
-                "ImageKit loaded successfully:",
-                imageKitPath || imageKitId,
-              );
-            }}
+            quality={80}
+            blurQuality={10}
+            blurAmount={50}
+            sizes="300px"
           />
         </div>
       </div>

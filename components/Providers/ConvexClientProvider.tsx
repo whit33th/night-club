@@ -2,9 +2,9 @@
 
 import { ConvexQueryCacheProvider } from "convex-helpers/react/cache/provider";
 import { ConvexProvider, ConvexReactClient } from "convex/react";
+import { ConvexError } from "convex/values";
 import { ReactNode } from "react";
 import { toast } from "sonner";
-import { ConvexError } from "convex/values";
 
 const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
@@ -21,14 +21,12 @@ export default function ConvexClientProvider({
 }
 
 export function toastConvexError(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  err: ConvexError<any>,
+  err: unknown,
   onFieldErrors?: (fields: string[]) => void,
 ) {
   try {
     const errorFields: string[] = [];
 
-    // Map technical field names to user-friendly names
     const fieldNameMap: Record<string, string> = {
       imageKitId: "Image",
       startAt: "Start time",
@@ -37,7 +35,6 @@ export function toastConvexError(
       ticketUrl: "Ticket URL",
       minAge: "Minimum age",
       dressCode: "Dress code",
-      // clubInfo.socialMedia fields kept for club info form only
       "socialMedia.facebook": "Facebook URL",
       "socialMedia.instagram": "Instagram URL",
       "socialMedia.twitter": "Twitter URL",
@@ -51,7 +48,6 @@ export function toastConvexError(
       name: "Name",
       phone: "Phone",
       email: "Email",
-      // summary removed from News schema
       body: "Content",
       question: "Question",
       answer: "Answer",
@@ -94,8 +90,8 @@ export function toastConvexError(
       } else if (typeof err.data?.message === "string") {
         message = err.data.message;
       }
-    } else if (err instanceof Error && typeof err.message === "string") {
-      message = err.message;
+    } else if (err && typeof err === "string") {
+      message = err;
 
       // Clean up ArgumentValidationError messages
       if (message.includes("Object is missing the required field")) {

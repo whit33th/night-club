@@ -1,10 +1,11 @@
 "use client";
 
 import { api } from "@/convex/_generated/api";
-import { Image } from "@imagekit/next";
 import { useQuery } from "convex-helpers/react/cache";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import ImageWithPlaceholder from "@/components/UI/ImageKit/ImageWithPlaceholder";
+import Image from "next/image";
 
 export default function GalleryPage() {
   const [active, setActive] = useState<number | null>(null);
@@ -13,32 +14,29 @@ export default function GalleryPage() {
   const isLoading = galleryImages === undefined;
   return (
     <div className="flex flex-col gap-6">
-      <section className="relative w-full overflow-hidden rounded-xl">
-        <PixelOverlay />
-        <video
-          src="/videos/2.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 -z-10 h-full w-full object-cover"
-          style={{
-            imageRendering: "pixelated",
-            filter: "contrast(1.1) saturate(1.2)",
-          }}
+      <motion.div
+        className="relative flex min-h-[40dvh] items-center justify-center overflow-hidden rounded-xl"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <Image
+          src="/imgs/10.jpg"
+          alt="Gallery"
+          width={256}
+          height={256}
+          className="absolute inset-0 -z-10 h-full w-full object-cover blur-xl"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-        <div className="relative z-10 grid min-h-[40vh] w-full place-items-center p-3 sm:min-h-[50vh] sm:p-6">
-          <div className="mx-auto w-full max-w-full text-center text-white">
-            <h2 className="mx-auto inline-block w-full max-w-xs text-3xl font-extrabold uppercase tracking-tight sm:max-w-none sm:text-5xl">
-              After Dark Moments
-            </h2>
-            {/* <p className="mx-auto mt-3 w-full max-w-2xl text-sm text-white/80 sm:text-base">
-              Nights out, cool lights, good vibes. Just moments we liked.
-            </p> */}
-          </div>
+        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black to-transparent" />
+        <div className="relative z-10 flex flex-col items-center justify-center p-6 text-center">
+          <h1 className="text-4xl font-extrabold uppercase tracking-tight">
+            Gallery
+          </h1>
+          <p className="mt-2 text-xs uppercase tracking-[0.25em] text-white/80">
+            After Dark · Neon Heart · No Sleep Club
+          </p>
         </div>
-      </section>
+      </motion.div>
 
       {isLoading ? (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
@@ -86,33 +84,21 @@ export default function GalleryPage() {
                   stiffness: 60,
                 }}
               >
-                <Image
-                  src={imageSrc}
-                  alt={`Gallery hover ${idx + 1}`}
-                  fill
-                  className="object-cover object-center opacity-0 invert transition-opacity group-hover:opacity-90"
-                  transformation={[
-                    {
-                      format: "webp",
-                      width: 400,
-                      height: 400,
-                      quality: 90,
-                    },
-                  ]}
-                />
-                <Image
+                <ImageWithPlaceholder
                   src={imageSrc}
                   alt={`Gallery ${idx + 1}`}
                   fill
-                  className="absolute inset-0 object-cover object-center p-0.5"
+                  className="object-cover object-center"
                   transformation={[
                     {
-                      format: "webp",
                       width: 400,
                       height: 400,
-                      quality: 90,
                     },
                   ]}
+                  quality={90}
+                  blurQuality={10}
+                  blurAmount={50}
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1536px) 25vw, 20vw"
                 />
               </motion.button>
             );
@@ -135,36 +121,22 @@ export default function GalleryPage() {
                   : "";
 
               return (
-                <>
-                  <Image
-                    src={imageSrc}
-                    alt={`Modal hover ${active + 1}`}
-                    width={1200}
-                    height={800}
-                    className="max-h-[90vh] max-w-full object-contain opacity-90 invert transition-opacity"
-                    transformation={[
-                      {
-                        format: "webp",
-                        width: 1200,
-                        quality: 95,
-                      },
-                    ]}
-                  />
-                  <Image
-                    src={imageSrc}
-                    alt={`Modal ${active + 1}`}
-                    width={1200}
-                    height={800}
-                    className="absolute inset-0 h-full max-h-[90vh] max-w-full object-contain p-2"
-                    transformation={[
-                      {
-                        format: "webp",
-                        width: 1200,
-                        quality: 95,
-                      },
-                    ]}
-                  />
-                </>
+                <ImageWithPlaceholder
+                  src={imageSrc}
+                  alt={`Modal ${active + 1}`}
+                  width={1200}
+                  height={800}
+                  className="max-h-[90vh] max-w-full object-contain"
+                  transformation={[
+                    {
+                      width: 1200,
+                    },
+                  ]}
+                  quality={95}
+                  blurQuality={5}
+                  blurAmount={30}
+                  sizes="90vw"
+                />
               );
             })()}
           </div>

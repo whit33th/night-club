@@ -48,7 +48,7 @@ export default function FAQsPage() {
     results: faqs,
     status,
     loadMore,
-  } = usePaginatedQuery(api.admin.paginateFaqs, {}, { initialNumItems: 5 });
+  } = usePaginatedQuery(api.admin.paginateFaqs, {}, { initialNumItems: 50 });
 
   const [editingId, setEditingId] = useState<Id<"faqs"> | null>(null);
   const [editingFaq, setEditingFaq] = useState<Doc<"faqs"> | null>(null);
@@ -60,12 +60,13 @@ export default function FAQsPage() {
     loading,
     reset,
     watch,
+    resetForm,
   } = useAdminForm<FAQFormData>({
     defaultValues: {
       question: "",
       answer: "",
     },
-    autoReset: false,
+    autoReset: true,
     onSubmit: async (data: FAQFormData) => {
       const formData = mapFormToFaqPatch(data);
 
@@ -75,13 +76,11 @@ export default function FAQsPage() {
           patch: formData,
         });
 
+        // Clear editing state
         setEditingId(null);
         setEditingFaq(null);
-        reset(mapFaqToForm(null));
       } else {
         await createFaq(formData);
-
-        reset(mapFaqToForm(null));
       }
     },
   });
@@ -93,6 +92,8 @@ export default function FAQsPage() {
       const formData = mapFaqToForm(editingFaq);
       reset(formData);
     }
+    // Note: We don't automatically reset when editingFaq becomes null
+    // because that would interfere with user input
   }, [editingFaq, reset]);
 
   const handleDelete = async (id: string, opts?: { skipConfirm?: boolean }) => {
@@ -115,11 +116,12 @@ export default function FAQsPage() {
           </span>
           <button
             type="button"
-            className="ml-4 rounded bg-white/10 px-2 py-1 text-xs hover:bg-white/20"
+            className="ml-4 rounded bg-white/10 px-2 py-1 text-xs hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={loading}
             onClick={() => {
               setEditingId(null);
               setEditingFaq(null);
-              reset(mapFaqToForm(null));
+              resetForm();
             }}
           >
             Cancel
@@ -178,13 +180,10 @@ export default function FAQsPage() {
           }}
           onDelete={handleDelete}
           loading={status === "LoadingFirstPage"}
+          actionsDisabled={loading}
+          onLoadMore={() => loadMore(50)}
+          canLoadMore={status === "CanLoadMore"}
         />
-
-        {status === "CanLoadMore" && (
-          <Button variant="secondary" onClick={() => loadMore(5)}>
-            Load More
-          </Button>
-        )}
       </div>
     </div>
   );

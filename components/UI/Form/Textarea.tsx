@@ -1,6 +1,7 @@
 "use client";
 
 import { forwardRef, TextareaHTMLAttributes, ReactNode } from "react";
+import { FormLabel, FormMessage } from "./FormHelpers";
 
 type Props = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   label?: string;
@@ -15,44 +16,37 @@ const Textarea = forwardRef<HTMLTextAreaElement, Props>(
     { label, error, hint, format, icon, className = "", required, ...props },
     ref,
   ) => {
+    const textareaClasses = [
+      "min-h-[100px] w-full rounded-lg border border-white/15 bg-white/5 text-sm text-white outline-none transition placeholder:text-white/40 focus:ring-2 focus:ring-[var(--primary)]",
+      icon ? "py-2 pl-8 pr-3" : "px-3 py-2",
+      error ? "border-red-500/60 focus:ring-red-500" : "",
+      className,
+    ].filter(Boolean).join(" ");
+
     return (
       <label className="block text-sm">
-        {label && (
-          <div className="mb-1 flex items-center justify-between">
-            <span className="block text-xs font-medium uppercase tracking-wide text-white/70">
-              {label}
-              {required && <span className="ml-1 text-red-500">*</span>}
-            </span>
-            {format && (
-              <span className="text-[10px] uppercase tracking-wide text-white/40">
-                {format}
-              </span>
-            )}
-          </div>
-        )}
+        <FormLabel 
+          label={label} 
+          required={required} 
+          format={format}
+        />
+        
         <div className="relative">
           {icon && (
             <span className="pointer-events-none absolute left-2 top-3 text-white/50">
               {icon}
             </span>
           )}
+          
           <textarea
             ref={ref}
             required={required}
             {...props}
-            className={
-              "min-h-[100px] w-full rounded-lg border border-white/15 bg-white/5 text-sm text-white outline-none transition placeholder:text-white/40 focus:ring-2 focus:ring-[var(--primary)] " +
-              (icon ? "py-2 pl-8 pr-3" : "px-3 py-2") +
-              (error ? "border-red-500/60 focus:ring-red-500" : "") +
-              className
-            }
+            className={textareaClasses}
           />
         </div>
-        {error ? (
-          <span className="mt-1 block text-xs text-red-400">{error}</span>
-        ) : hint ? (
-          <span className="mt-1 block text-xs text-white/50">{hint}</span>
-        ) : null}
+        
+        <FormMessage error={error} hint={hint} />
       </label>
     );
   },

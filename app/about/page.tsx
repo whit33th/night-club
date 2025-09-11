@@ -8,14 +8,14 @@ import { motion } from "framer-motion";
 export default function AboutPage() {
   return (
     <div className="flex flex-col gap-8">
-      <motion.section
+      <motion.div
         className="relative flex min-h-[40dvh] items-center justify-center overflow-hidden rounded-xl"
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <Image
-          src="/imgs/1.jpg"
+          src="/imgs/5.jpg"
           alt="Club"
           width={100}
           height={100}
@@ -30,7 +30,7 @@ export default function AboutPage() {
             After Dark · Neon Heart · No Sleep Club
           </p>
         </div>
-      </motion.section>
+      </motion.div>
 
       <motion.section
         className="container relative mx-auto overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--primary)_25%,transparent)] p-6 lg:p-8"

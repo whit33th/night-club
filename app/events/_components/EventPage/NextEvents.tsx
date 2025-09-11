@@ -1,36 +1,46 @@
 "use client";
 
 import Link from "next/link";
-import { Image } from "@imagekit/next";
-import { useQuery } from "convex-helpers/react/cache";
+import ImageWithPlaceholder from "@/components/UI/ImageKit/ImageWithPlaceholder";
+import { Preloaded, usePreloadedQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Doc } from "@/convex/_generated/dataModel";
 import { ArrowRight } from "lucide-react";
+import NextEventsSkeleton from "./NextEventsSkeleton";
 
 type NextEventsProps = {
   currentId: string;
+  currentEventDate: string;
+  currentEventTime: string;
+  preloadedUpcomingEvents: Preloaded<typeof api.admin.listUpcomingEvents>;
   max?: number;
 };
 
-export default function NextEvents({ currentId, max = 3 }: NextEventsProps) {
-  const eventsData = useQuery(api.admin.listEvents);
+export default function NextEvents({
+  currentId,
+  currentEventDate,
+  currentEventTime,
+  preloadedUpcomingEvents,
+  max = 3,
+}: NextEventsProps) {
+  const upcomingEvents = usePreloadedQuery(preloadedUpcomingEvents);
 
-  if (!eventsData) {
-    return (
-      <section className="relative w-full overflow-hidden rounded-xl bg-neutral-900/15 p-4 shadow-xl backdrop-blur">
-        <div className="text-xs text-white/50">Loading events...</div>
-      </section>
-    );
+  if (!upcomingEvents) {
+    return <NextEventsSkeleton max={4} />;
   }
 
-  const current = eventsData.find((e) => e._id === currentId);
-  const currentDate = current ? new Date(current.date) : new Date();
+  const currentDateTime = new Date(`${currentEventDate}T${currentEventTime}`);
 
-  const upcoming = eventsData
-    .filter((e) => new Date(e.date).getTime() > currentDate.getTime())
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-    .slice(0, max);
+  // Filter events that are after the current event (by date and time)
+  const eventsAfterCurrent = upcomingEvents.filter((e: Doc<"events">) => {
+    const eventDateTime = new Date(`${e.date}T${e.startAt}`);
+    return eventDateTime > currentDateTime;
+  });
 
-  const afterParam = currentDate.toISOString().slice(0, 10);
+  // Take only the next events, limit to max
+  const displayEvents: Doc<"events">[] = eventsAfterCurrent.slice(0, max);
+
+  const afterParam = currentDateTime.toISOString().slice(0, 10);
 
   return (
     <section className="relative w-full overflow-hidden rounded-xl bg-neutral-900/15 p-4 shadow-xl backdrop-blur">
@@ -49,7 +59,7 @@ export default function NextEvents({ currentId, max = 3 }: NextEventsProps) {
       </header>
 
       <div className="flex items-center gap-3">
-        {upcoming.map((e) => {
+        {displayEvents.map((e: Doc<"events">) => {
           // Generate SEO-friendly URL: event-name-date-id
           const eventSlug = `${e.title
             .toLowerCase()
@@ -63,32 +73,55 @@ export default function NextEvents({ currentId, max = 3 }: NextEventsProps) {
               ? `/${e.imageKitId}`
               : "/imgs/posters/1.jpg";
 
+          // Since we're only showing upcoming events, no need to check if past
+          const isPastEvent = false;
+
           return (
             <Link
               key={e._id}
               href={`/events/${eventSlug}`}
-              className="group relative block h-24 w-24 overflow-hidden rounded-lg border border-white/10 bg-white/5 transition hover:opacity-90 sm:h-28 sm:w-28"
+              className={`group relative block h-24 w-24 overflow-hidden rounded-lg border transition hover:opacity-90 sm:h-28 sm:w-28 ${
+                isPastEvent
+                  ? "border-white/5 bg-white/5 opacity-60"
+                  : "border-white/10 bg-white/5"
+              }`}
               title={e.title}
             >
-              <Image
+              <ImageWithPlaceholder
                 src={imageSrc}
                 alt={e.title}
                 fill
-                className="object-cover"
+                className={`object-cover transition ${isPastEvent ? "grayscale" : ""}`}
                 transformation={[
                   {
                     width: 120,
                     height: 120,
-                    quality: 80,
                   },
                 ]}
+                quality={80}
+                blurQuality={10}
+                blurAmount={50}
+                sizes="120px"
               />
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120px_80px_at_30%_20%,white/10,transparent)]" />
+              <div
+                className={`pointer-events-none absolute inset-0 ${
+                  isPastEvent
+                    ? "bg-[radial-gradient(120px_80px_at_30%_20%,black/20,transparent)]"
+                    : "bg-[radial-gradient(120px_80px_at_30%_20%,white/10,transparent)]"
+                }`}
+              />
+              {isPastEvent && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="rounded bg-black/60 px-1 py-0.5 text-xs font-medium text-white/80">
+                    Past
+                  </span>
+                </div>
+              )}
             </Link>
           );
         })}
-        {upcoming.length === 0 ? (
-          <div className="text-xs text-white/50">No upcoming events</div>
+        {displayEvents.length === 0 ? (
+          <div className="text-xs text-white/50">No events available</div>
         ) : null}
       </div>
     </section>

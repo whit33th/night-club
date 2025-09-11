@@ -27,7 +27,7 @@ export default function Nav({ children }: { children: React.ReactNode }) {
         <Link href="/" className="flex items-center gap-2">
           <Image src="/imgs/logo.png" alt="Logo" width={40} height={40} />
         </Link>
-        <nav className="hidden items-center gap-4 text-sm font-semibold sm:flex">
+        <nav className="hidden items-center gap-4 text-sm font-semibold md:flex">
           {navLinks.map((l) => (
             <Link
               key={l.href}
@@ -40,7 +40,7 @@ export default function Nav({ children }: { children: React.ReactNode }) {
         </nav>
         <button
           aria-label={open ? "Close menu" : "Open menu"}
-          className="sm:hidden"
+          className="md:hidden"
           onClick={() => setOpen((v) => !v)}
         >
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}

@@ -1,14 +1,16 @@
 "use client";
 
 import { forwardRef } from "react";
-import { FieldError } from "react-hook-form";
+import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
 import Input from "@/components/UI/Form/Input";
 import Textarea from "@/components/UI/Form/Textarea";
+
+type FormFieldError = FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined;
 
 interface FormFieldProps {
   label?: string;
   type?: "text" | "email" | "number" | "date" | "time" | "textarea" | "file";
-  error?: FieldError;
+  error?: FormFieldError;
   icon?: React.ReactNode;
   placeholder?: string;
   accept?: string;
@@ -41,6 +43,7 @@ export const FormField = forwardRef<
     ref,
   ) => {
     const hasError = !!error;
+    const errorMessage = typeof error === 'string' ? error : error?.message || '';
     const errorClassName = hasError ? "!border-red-500/60 !bg-red-500/10" : "";
 
     if (type === "textarea") {
@@ -56,7 +59,7 @@ export const FormField = forwardRef<
             onChange={onChange}
             {...props}
           />
-          {hasError && <p className="text-sm text-red-400">{error.message}</p>}
+          {hasError && <p className="text-sm text-red-400">{errorMessage}</p>}
         </div>
       );
     }
@@ -80,7 +83,7 @@ export const FormField = forwardRef<
               {...props}
             />
           </div>
-          {hasError && <p className="text-sm text-red-400">{error.message}</p>}
+          {hasError && <p className="text-sm text-red-400">{errorMessage}</p>}
         </div>
       );
     }
@@ -98,7 +101,7 @@ export const FormField = forwardRef<
           onChange={onChange}
           {...props}
         />
-        {hasError && <p className="text-sm text-red-400">{error.message}</p>}
+        {hasError && <p className="text-sm text-red-400">{errorMessage}</p>}
       </div>
     );
   },

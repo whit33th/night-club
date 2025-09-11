@@ -4,8 +4,10 @@ import { api } from "@/convex/_generated/api";
 import ConvexEventsGridSSR from "@/components/Containers/ConvexEventsGridSSR";
 
 export default async function HomePage() {
-  // Preload events data on the server
-  const preloadedEvents = await preloadQuery(api.admin.listEvents, {});
+  // Preload upcoming events data on the server with limit
+  const preloadedEvents = await preloadQuery(api.admin.listUpcomingEvents, {
+    limit: 12,
+  });
 
   return (
     <>

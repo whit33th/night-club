@@ -1,20 +1,71 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 type TopBarProps = {
-  date?: string | Date;
+  date: string;
+  startAt: string;
+  doorsAt?: string;
 };
 
-export default function TopBar({ date = "2024-07-01T13:00:00" }: TopBarProps) {
+type CountdownState =
+  | { state: "unknown" }
+  | {
+      state: "upcoming";
+      days: number;
+      hours: number;
+      minutes: number;
+      seconds: number;
+    }
+  | { state: "live" }
+  | { state: "ended"; daysAgo: number; hoursAgo: number; minsAgo: number };
+
+export default function TopBar({ date, startAt, doorsAt }: TopBarProps) {
+  const eventDateTime = startAt ? `${date}T${startAt}:00` : date;
   const [month, setMonth] = useState("");
   const [day, setDay] = useState("");
   const [time, setTime] = useState("");
-  const [now, setNow] = useState<number>(Date.now());
-  const eventTimeMs = useMemo(() => new Date(date).getTime(), [date]);
+  const [countdown, setCountdown] = useState<CountdownState>({
+    state: "unknown",
+  });
+
+  const eventTimeMs = useMemo(
+    () => new Date(eventDateTime).getTime(),
+    [eventDateTime],
+  );
+
+  const calculateCountdown = useCallback(
+    (currentTime: number): CountdownState => {
+      if (!eventTimeMs || Number.isNaN(eventTimeMs)) {
+        return { state: "unknown" };
+      }
+      const diff = eventTimeMs - currentTime;
+      const sixHours = 6 * 60 * 60 * 1000;
+
+      if (diff > 0) {
+        const totalSeconds = Math.floor(diff / 1000);
+        const days = Math.floor(totalSeconds / 86400);
+        const hours = Math.floor((totalSeconds % 86400) / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        return { state: "upcoming", days, hours, minutes, seconds };
+      }
+
+      if (Math.abs(diff) < sixHours) {
+        return { state: "live" };
+      }
+
+      const ago = Math.abs(diff);
+      const daysAgo = Math.floor(ago / 86400000);
+      const hoursAgo = Math.floor((ago % 86400000) / 3600000);
+      const minsAgo = Math.floor((ago % 3600000) / 60000);
+      return { state: "ended", daysAgo, hoursAgo, minsAgo };
+    },
+    [eventTimeMs],
+  );
 
   useEffect(() => {
-    const eventDate = new Date(date);
+    const eventDate = new Date(eventDateTime);
     const locale = "en-US";
 
     setMonth(eventDate.toLocaleString(locale, { month: "short" }));
@@ -26,35 +77,48 @@ export default function TopBar({ date = "2024-07-01T13:00:00" }: TopBarProps) {
         hour12: false,
       }),
     );
-  }, [date]);
+
+    // Инициализируем countdown
+    setCountdown(calculateCountdown(Date.now()));
+  }, [eventDateTime, calculateCountdown]);
 
   useEffect(() => {
-    const id = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(id);
-  }, []);
+    let startTime = Date.now();
 
-  const countdown = useMemo(() => {
-    if (!eventTimeMs || Number.isNaN(eventTimeMs)) {
-      return { state: "unknown" as const };
-    }
-    const diff = eventTimeMs - now;
-    const sixHours = 6 * 60 * 60 * 1000;
-    if (diff > 0) {
-      const totalSeconds = Math.floor(diff / 1000);
-      const days = Math.floor(totalSeconds / 86400);
-      const hours = Math.floor((totalSeconds % 86400) / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
-      return { state: "upcoming" as const, days, hours, minutes, seconds };
-    }
-    if (Math.abs(diff) < sixHours) {
-      return { state: "live" as const };
-    }
-    const ago = Math.abs(diff);
-    const hoursAgo = Math.floor(ago / 3600000);
-    const minsAgo = Math.floor((ago % 3600000) / 60000);
-    return { state: "ended" as const, hoursAgo, minsAgo };
-  }, [eventTimeMs, now]);
+    const updateCountdown = () => {
+      const currentTime = startTime + 1000; // Добавляем секунду к стартовому времени
+      startTime = currentTime;
+
+      setCountdown((prevCountdown) => {
+        const newCountdown = calculateCountdown(currentTime);
+
+        // Оптимизация: обновляем только если состояние изменилось или это upcoming с изменившимися значениями
+        if (prevCountdown.state !== newCountdown.state) {
+          return newCountdown;
+        }
+
+        if (
+          prevCountdown.state === "upcoming" &&
+          newCountdown.state === "upcoming"
+        ) {
+          // Проверяем, изменились ли значения счетчика
+          if (
+            prevCountdown.days !== newCountdown.days ||
+            prevCountdown.hours !== newCountdown.hours ||
+            prevCountdown.minutes !== newCountdown.minutes ||
+            prevCountdown.seconds !== newCountdown.seconds
+          ) {
+            return newCountdown;
+          }
+        }
+
+        return prevCountdown;
+      });
+    };
+
+    const id = setInterval(updateCountdown, 1000);
+    return () => clearInterval(id);
+  }, [calculateCountdown]);
 
   return (
     <section className="flex items-stretch justify-between gap-4">
@@ -98,17 +162,18 @@ export default function TopBar({ date = "2024-07-01T13:00:00" }: TopBarProps) {
             <p className="text-sm font-extrabold uppercase tracking-widest md:text-3xl">
               Event ended
             </p>
-            <p className="mt-1 text-[10px] uppercase tracking-[0.25em] opacity-75 md:text-xs">
-              {`Ended ${countdown.hoursAgo ?? 0}h ${countdown.minsAgo ?? 0}m ago`}
-            </p>
           </div>
         ) : null}
       </div>
       <div className="flex flex-none flex-col justify-center gap-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-center">
+        {!doorsAt && <p className="text-xs text-neutral-500">Starts at</p>}
+
         <div className="text-xl font-bold leading-none">{time}</div>
-        <p className="text-xs text-neutral-500">Doors open 13:00</p>
+
+        {doorsAt && (
+          <p className="text-xs text-neutral-500">Doors open {doorsAt}</p>
+        )}
       </div>
-      {/* Like button moved to InfoCard top-right */}
     </section>
   );
 }

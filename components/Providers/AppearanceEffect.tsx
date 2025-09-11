@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-export default function ApperanceEffect({
+export default function AppearanceEffect({
   children,
 }: {
   children: React.ReactNode;

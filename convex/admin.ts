@@ -7,6 +7,23 @@ import schema from "./schema";
 // Removed Convex storage helpers; ImageKit is the sole storage
 
 // ==========================
+// Utility functions
+// ==========================
+function getCurrentWarsawTime(): Date {
+  const warsawTime = new Date().toLocaleString("en-US", {
+    timeZone: "Europe/Warsaw",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+  return new Date(warsawTime.replace(",", ""));
+}
+
+// ==========================
 // Events CRUD
 // ==========================
 // address removed from events schema
@@ -42,7 +59,11 @@ export const listEvents = query({
     }),
   ),
   handler: async (ctx) => {
-    const rows = await ctx.db.query("events").order("desc").collect();
+    const rows = await ctx.db
+      .query("events")
+      .withIndex("by_date")
+      .order("desc")
+      .collect();
     // Project to allowed fields only (omit legacy fields like address)
     return rows.map((r: any) => ({
       _id: r._id,
@@ -65,11 +86,99 @@ export const listEvents = query({
   },
 });
 
+export const listUpcomingEvents = query({
+  args: { limit: v.optional(v.number()) },
+  returns: v.array(
+    v.object({
+      _id: v.id("events"),
+      _creationTime: v.number(),
+      title: v.string(),
+      date: v.string(),
+      startAt: v.string(),
+      doorsAt: v.optional(v.string()),
+      imageKitId: v.string(),
+      imageKitPath: v.optional(v.string()),
+      artists: v.optional(v.array(artistValidator)),
+      musicGenres: v.optional(v.array(v.string())),
+      priceFrom: v.optional(v.number()),
+      minAge: v.optional(v.number()),
+      dressCode: v.optional(v.string()),
+      currency: v.optional(v.string()),
+      ticketUrl: v.optional(v.string()),
+      description: v.optional(v.string()),
+    }),
+  ),
+  handler: async (ctx, args) => {
+    const currentWarsawDate = getCurrentWarsawTime();
+    const currentDateStr = currentWarsawDate.toISOString().slice(0, 10); // YYYY-MM-DD
+
+    // Use index to get events sorted by date ascending
+    const rows = await ctx.db
+      .query("events")
+      .withIndex("by_date")
+      .order("asc")
+      .collect();
+
+    // Filter for upcoming events only (check date and time)
+    const upcomingEvents = rows.filter((r: any) => {
+      const eventDateTime = new Date(`${r.date}T${r.startAt}`);
+      return eventDateTime >= currentWarsawDate;
+    });
+
+    // Apply limit if provided (already sorted by index)
+    return args.limit ? upcomingEvents.slice(0, args.limit) : upcomingEvents;
+  },
+});
+
+export const listPastEvents = query({
+  args: { limit: v.optional(v.number()) },
+  returns: v.array(
+    v.object({
+      _id: v.id("events"),
+      _creationTime: v.number(),
+      title: v.string(),
+      date: v.string(),
+      startAt: v.string(),
+      doorsAt: v.optional(v.string()),
+      imageKitId: v.string(),
+      imageKitPath: v.optional(v.string()),
+      artists: v.optional(v.array(artistValidator)),
+      musicGenres: v.optional(v.array(v.string())),
+      priceFrom: v.optional(v.number()),
+      minAge: v.optional(v.number()),
+      dressCode: v.optional(v.string()),
+      currency: v.optional(v.string()),
+      ticketUrl: v.optional(v.string()),
+      description: v.optional(v.string()),
+    }),
+  ),
+  handler: async (ctx, args) => {
+    // Use index to get events sorted by date descending
+    const rows = await ctx.db
+      .query("events")
+      .withIndex("by_date")
+      .order("desc")
+      .collect();
+
+    const currentWarsawDate = getCurrentWarsawTime();
+
+    // Filter for past events only
+    const pastEvents = rows.filter((r: any) => {
+      const eventDateTime = new Date(`${r.date}T${r.startAt}`);
+      return eventDateTime < currentWarsawDate;
+    });
+
+    // Apply limit if provided (already sorted by index in descending order)
+    return args.limit ? pastEvents.slice(0, args.limit) : pastEvents;
+  },
+});
+
 export const paginateEvents = query({
   args: { paginationOpts: paginationOptsValidator },
   handler: async (ctx, args) => {
     return await ctx.db
       .query("events")
+      .withIndex("by_date")
       .order("desc")
       .paginate(args.paginationOpts);
   },

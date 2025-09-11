@@ -7,12 +7,14 @@ import type { Id } from "@/convex/_generated/dataModel";
 import { useAdminForm } from "../_hooks/useAdminForm";
 import { DataTable } from "../_components/DataTable";
 import Button from "@/components/UI/Form/Button";
-import { ImagePlusIcon, X } from "lucide-react";
 import { HoverPreviewIcon } from "../_components/HoverPreview";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Image from "next/image";
-
+import GalleryFilePicker from "./_components/GalleryFilePicker";
+import GallerySelectedGrid, {
+  LocalItem,
+} from "./_components/GallerySelectedGrid";
 interface GalleryFormData {
   imageKitId: string;
 }
@@ -50,7 +52,7 @@ export default function GalleryPage() {
     results: gallery,
     status,
     loadMore,
-  } = usePaginatedQuery(api.admin.paginateGallery, {}, { initialNumItems: 5 });
+  } = usePaginatedQuery(api.admin.paginateGallery, {}, { initialNumItems: 20 });
 
   const { handleSubmit, uploadFile } = useAdminForm<GalleryFormData>({
     defaultValues: { imageKitId: "" },
@@ -59,7 +61,6 @@ export default function GalleryPage() {
     },
   });
 
-  type LocalItem = { id: string; file: File; url: string };
   const [selected, setSelected] = useState<LocalItem[]>([]);
   const [imageError, setImageError] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -133,63 +134,17 @@ export default function GalleryPage() {
       <h1 className="text-2xl font-bold">Gallery </h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="md:col-span-3">
-          <input
-            id="gallery-image"
-            type="file"
-            accept="image/png,image/jpeg,image/jpg,image/webp,image/gif,image/bmp,image/tiff,image/svg+xml"
-            multiple
-            onChange={(e) => {
-              const input = e.target as HTMLInputElement;
-              addFiles(input.files);
-              try {
-                input.value = "";
-              } catch {}
-            }}
-            className="sr-only"
-            disabled={isUploading}
-          />
-          <label
-            htmlFor="gallery-image"
-            className={`group block w-full cursor-pointer rounded-xl border-2 border-dashed bg-white/5 transition-colors ${imageError ? "border-red-500" : "border-white/20 hover:border-white/40"}`}
-          >
-            <div className="flex min-h-48 items-center justify-center p-4">
-              <div className="flex flex-col items-center justify-center py-10 text-white/70">
-                <ImagePlusIcon className="mb-3 h-10 w-10" />
-                <span className="text-sm">
-                  Choose images <span className="text-red-500">*</span>
-                </span>
-              </div>
-            </div>
-          </label>
-        </div>
+        <GalleryFilePicker
+          disabled={isUploading}
+          imageError={imageError}
+          onFiles={addFiles}
+        />
 
-        {selected.length > 0 && (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {selected.map((it) => (
-              <div
-                key={it.id}
-                className="relative aspect-square overflow-hidden rounded-lg bg-white/5"
-              >
-                <button
-                  type="button"
-                  className="absolute right-1 top-1 z-10 inline-flex h-6 w-6 items-center justify-center rounded-full bg-black/70 hover:bg-black/90"
-                  onClick={() => removeLocal(it.id)}
-                  aria-label="Remove"
-                  disabled={isUploading}
-                >
-                  <X className="h-4 w-4" />
-                </button>
-                <Image
-                  fill
-                  src={it.url}
-                  alt="Selected"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            ))}
-          </div>
-        )}
+        <GallerySelectedGrid
+          items={selected}
+          disabled={isUploading}
+          onRemove={removeLocal}
+        />
 
         <Button
           type="submit"
@@ -256,13 +211,10 @@ export default function GalleryPage() {
           columns={galleryColumns}
           onDelete={handleDelete}
           loading={status === "LoadingFirstPage"}
+          actionsDisabled={isUploading}
+          onLoadMore={() => loadMore(20)}
+          canLoadMore={status === "CanLoadMore"}
         />
-
-        {status === "CanLoadMore" && (
-          <Button variant="secondary" onClick={() => loadMore(5)}>
-            Load More
-          </Button>
-        )}
       </div>
     </div>
   );

@@ -15,7 +15,7 @@ import {
   Music2,
   Type,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Controller, useFieldArray } from "react-hook-form";
 import { DataTable } from "./_components/DataTable";
 import { FormField } from "./_components/FormField";
@@ -23,6 +23,7 @@ import { HoverPreviewIcon } from "./_components/HoverPreview";
 import MultiSelect from "./_components/MultiSelect";
 import { useAdminForm } from "./_hooks/useAdminForm";
 import { deleteImageFromImageKit } from "./_utils/imageKit";
+import EventImagePicker from "./_components/ImagePicker";
 
 interface EventFormData {
   title: string;
@@ -150,7 +151,7 @@ export default function EventsPage() {
     results: events,
     status,
     loadMore,
-  } = usePaginatedQuery(api.admin.paginateEvents, {}, { initialNumItems: 5 });
+  } = usePaginatedQuery(api.admin.paginateEvents, {}, { initialNumItems: 50 });
 
   const [editingId, setEditingId] = useState<Id<"events"> | null>(null);
   const [editingEvent, setEditingEvent] = useState<Doc<"events"> | null>(null);
@@ -166,6 +167,7 @@ export default function EventsPage() {
     watch,
     control,
     clearImage,
+    resetForm,
   } = useAdminForm<EventFormData>({
     defaultValues: {
       title: "",
@@ -182,7 +184,7 @@ export default function EventsPage() {
       description: "",
       artists: [],
     },
-    autoReset: false,
+    autoReset: true,
     onSubmit: async (data, imageKitData) => {
       const formData = mapFormToPatch(data);
 
@@ -199,11 +201,11 @@ export default function EventsPage() {
 
         await updateEvent({ id: editingId, patch });
 
+        // Clear editing state
         setEditingId(null);
         setEditingEvent(null);
-        reset(mapEventToForm(null));
         setImageError(false);
-        clearImage();
+        setFormKey((k) => k + 1);
       } else {
         const toCreate = {
           ...formData,
@@ -212,9 +214,9 @@ export default function EventsPage() {
         };
         await createEvent(toCreate);
 
-        reset(mapEventToForm(null));
+        // Clear error state
         setImageError(false);
-        clearImage();
+        setFormKey((k) => k + 1);
       }
     },
   });
@@ -237,6 +239,18 @@ export default function EventsPage() {
     await deleteEvent({ id: id as Id<"events"> });
   };
 
+  // Handle form population when editing vs creating
+  useEffect(() => {
+    if (editingEvent) {
+      const formData = mapEventToForm(editingEvent);
+      reset(formData);
+    }
+    // Note: We don't automatically reset when editingEvent becomes null
+    // because that would interfere with user input
+  }, [editingEvent, reset]);
+
+  const [formKey, setFormKey] = useState(0);
+
   return (
     <div>
       <h1 className="text-2xl font-bold">Events</h1>
@@ -249,13 +263,13 @@ export default function EventsPage() {
           </span>
           <button
             type="button"
-            className="ml-4 rounded bg-white/10 px-2 py-1 text-xs hover:bg-white/20"
+            className="ml-4 rounded bg-white/10 px-2 py-1 text-xs hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={loading}
             onClick={() => {
               setEditingId(null);
               setEditingEvent(null);
-              reset(mapEventToForm(null));
+              resetForm();
               setImageError(false);
-              clearImage();
             }}
           >
             Cancel
@@ -263,7 +277,11 @@ export default function EventsPage() {
         </div>
       )}
 
-      <form key={editingId} onSubmit={handleSubmit} className="space-y-6">
+      <form
+        key={`${editingId ?? "new"}-${formKey}`}
+        onSubmit={handleSubmit}
+        className="space-y-6"
+      >
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <FormField
             label="Event Title"
@@ -312,43 +330,15 @@ export default function EventsPage() {
             {...register("dressCode")}
           />
 
-          <div className="md:col-span-3">
-            <input
-              id="event-poster"
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                handleFileChange(e as React.ChangeEvent<HTMLInputElement>);
-                setImageError(false);
-              }}
-              className="sr-only"
-            />
-            <label
-              htmlFor="event-poster"
-              className={`group block w-full cursor-pointer rounded-xl border-2 border-dashed bg-white/5 transition-colors ${imageError ? "border-red-500" : "border-white/20 hover:border-white/40"}`}
-            >
-              <div className="flex min-h-48 items-center justify-center p-4">
-                {imagePreview ? (
-                  <div className="relative aspect-video w-full max-w-2xl">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={imagePreview}
-                      alt="Event poster preview"
-                      className="h-full w-full object-contain"
-                    />
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center py-10 text-white/70">
-                    <FileImage className="mb-3 h-10 w-10" />
-
-                    <span className="text-sm">
-                      Choose image <span className="text-red-500">*</span>
-                    </span>
-                  </div>
-                )}
-              </div>
-            </label>
-          </div>
+          <EventImagePicker
+            imagePreview={imagePreview}
+            imageError={imageError}
+            disabled={loading}
+            onChange={(e) => {
+              handleFileChange(e as React.ChangeEvent<HTMLInputElement>);
+              setImageError(false);
+            }}
+          />
           <div className="md:col-span-1">
             <Controller
               control={control}
@@ -404,6 +394,7 @@ export default function EventsPage() {
                       type="button"
                       variant="secondary"
                       onClick={() => removeArtist(idx)}
+                      disabled={loading}
                     >
                       Remove
                     </Button>
@@ -414,6 +405,7 @@ export default function EventsPage() {
                 type="button"
                 variant="secondary"
                 onClick={() => appendArtist({ name: "", role: "" })}
+                disabled={loading}
               >
                 Add artist
               </Button>
@@ -488,13 +480,10 @@ export default function EventsPage() {
           }}
           onDelete={handleDelete}
           loading={status === "LoadingFirstPage"}
+          actionsDisabled={loading}
+          onLoadMore={() => loadMore(50)}
+          canLoadMore={status === "CanLoadMore"}
         />
-
-        {status === "CanLoadMore" && (
-          <Button variant="secondary" onClick={() => loadMore(5)}>
-            Load More
-          </Button>
-        )}
       </div>
     </div>
   );

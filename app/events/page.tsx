@@ -7,7 +7,7 @@ import EventsGridView from "./_components/EventsPage/EventsGridView";
 import EventsListView from "./_components/EventsPage/EventsListView";
 import FiltersHeader from "./_components/EventsPage/FiltersHeader";
 import ModeToggle from "./_components/EventsPage/ModeToggle";
-import { useEventsFilters } from "./_hooks/useEventsFilters";
+import { useMixedEventsFilters } from "./_hooks/useMixedEventsFilters";
 
 export default function EventsPage() {
   return (
@@ -28,7 +28,7 @@ function EventsPageBody() {
     mode,
     toggleMode,
     isLoading,
-  } = useEventsFilters();
+  } = useMixedEventsFilters();
 
   if (isLoading) {
     return (
