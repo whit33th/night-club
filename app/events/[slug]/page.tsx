@@ -3,6 +3,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import { preloadQuery, preloadedQueryResult } from "convex/nextjs";
 import { notFound } from "next/navigation";
 import EventPageClient from "./EventPageClient";
+import { extractIdFromSlug } from "@/lib/slugUtils";
 
 export default async function EventPage({
   params,
@@ -12,7 +13,7 @@ export default async function EventPage({
   const { slug } = await params;
 
   // Extract event ID from slug (last part after last hyphen)
-  const eventId = slug.split("-").pop() ?? "";
+  const eventId = extractIdFromSlug(slug);
 
   try {
     const preloadedEvent = await preloadQuery(api.admin.getEvent, {

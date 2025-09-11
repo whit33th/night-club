@@ -37,7 +37,7 @@ export function useFilters<T = string>({
         return newFilters;
       });
     },
-    [onFiltersChange]
+    [onFiltersChange],
   );
 
   const toggleFilter = useCallback(
@@ -48,14 +48,14 @@ export function useFilters<T = string>({
           : [...filters.selected, value],
       });
     },
-    [filters.selected, updateFilters]
+    [filters.selected, updateFilters],
   );
 
   const setSearchQuery = useCallback(
     (query: string) => {
       updateFilters({ searchQuery: query });
     },
-    [updateFilters]
+    [updateFilters],
   );
 
   const clearFilters = useCallback(() => {
@@ -73,15 +73,15 @@ export function useFilters<T = string>({
   // Computed values
   const hasActiveFilters = useMemo(
     () => filters.selected.length > 0 || filters.searchQuery.length > 0,
-    [filters.selected.length, filters.searchQuery.length]
+    [filters.selected.length, filters.searchQuery.length],
   );
 
   const filteredOptions = useMemo(() => {
     if (!filters.searchQuery) return options;
-    
+
     const query = filters.searchQuery.toLowerCase();
     return options.filter((option) =>
-      option.label.toLowerCase().includes(query)
+      option.label.toLowerCase().includes(query),
     );
   }, [options, filters.searchQuery]);
 

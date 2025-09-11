@@ -1,20 +1,20 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import Button from "@/components/UI/Form/Button";
-import {
-  TableContainer,
-  Table,
-  THead,
-  TBody,
-  Tr,
-  Th,
-  Td,
-  ActionsHeader,
-  ActionsCell,
-} from "./Table";
-import { Checkbox } from "./Checkbox";
 import { TableIcon } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Checkbox } from "./Checkbox";
+import {
+  ActionsCell,
+  ActionsHeader,
+  Table,
+  TableContainer,
+  TBody,
+  Td,
+  Th,
+  THead,
+  Tr,
+} from "./Table";
 
 interface Column<T> {
   key: keyof T | string;
@@ -50,7 +50,6 @@ export function DataTable<T extends BaseRow>({
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const loadingMoreRef = useRef(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const loadingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const toggleSelection = (id: string, checked: boolean) => {
     setSelectedIds((prev) => {

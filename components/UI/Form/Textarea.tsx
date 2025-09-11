@@ -21,23 +21,21 @@ const Textarea = forwardRef<HTMLTextAreaElement, Props>(
       icon ? "py-2 pl-8 pr-3" : "px-3 py-2",
       error ? "border-red-500/60 focus:ring-red-500" : "",
       className,
-    ].filter(Boolean).join(" ");
+    ]
+      .filter(Boolean)
+      .join(" ");
 
     return (
       <label className="block text-sm">
-        <FormLabel 
-          label={label} 
-          required={required} 
-          format={format}
-        />
-        
+        <FormLabel label={label} required={required} format={format} />
+
         <div className="relative">
           {icon && (
             <span className="pointer-events-none absolute left-2 top-3 text-white/50">
               {icon}
             </span>
           )}
-          
+
           <textarea
             ref={ref}
             required={required}
@@ -45,7 +43,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, Props>(
             className={textareaClasses}
           />
         </div>
-        
+
         <FormMessage error={error} hint={hint} />
       </label>
     );

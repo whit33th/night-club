@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
  */
 export function useLocalStorage<T>(
   key: string,
-  initialValue: T
+  initialValue: T,
 ): [T, (value: T | ((prev: T) => T)) => void] {
   // State to store our value
   const [storedValue, setStoredValue] = useState<T>(initialValue);
@@ -31,11 +31,12 @@ export function useLocalStorage<T>(
   const setValue = (value: T | ((prev: T) => T)) => {
     try {
       // Allow value to be a function so we have the same API as useState
-      const valueToStore = value instanceof Function ? value(storedValue) : value;
-      
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
+
       // Save state
       setStoredValue(valueToStore);
-      
+
       // Save to localStorage
       if (typeof window !== "undefined") {
         window.localStorage.setItem(key, JSON.stringify(valueToStore));
@@ -53,7 +54,7 @@ export function useLocalStorage<T>(
  */
 export function useSessionStorage<T>(
   key: string,
-  initialValue: T
+  initialValue: T,
 ): [T, (value: T | ((prev: T) => T)) => void] {
   // State to store our value
   const [storedValue, setStoredValue] = useState<T>(initialValue);
@@ -77,12 +78,13 @@ export function useSessionStorage<T>(
   const setValue = (value: T | ((prev: T) => T)) => {
     try {
       // Allow value to be a function so we have the same API as useState
-      const valueToStore = value instanceof Function ? value(storedValue) : value;
-      
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
+
       // Save state
       setStoredValue(valueToStore);
-      
-      // Save to sessionStorage  
+
+      // Save to sessionStorage
       if (typeof window !== "undefined") {
         window.sessionStorage.setItem(key, JSON.stringify(valueToStore));
       }

@@ -5,7 +5,10 @@ import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
 import Input from "@/components/UI/Form/Input";
 import Textarea from "@/components/UI/Form/Textarea";
 
-type FormFieldError = FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined;
+type FormFieldError =
+  | FieldError
+  | Merge<FieldError, FieldErrorsImpl<Record<string, unknown>>>
+  | undefined;
 
 interface FormFieldProps {
   label?: string;
@@ -43,7 +46,8 @@ export const FormField = forwardRef<
     ref,
   ) => {
     const hasError = !!error;
-    const errorMessage = typeof error === 'string' ? error : error?.message || '';
+    const errorMessage: string =
+      typeof error === "string" ? error : (error?.message as string) || "";
     const errorClassName = hasError ? "!border-red-500/60 !bg-red-500/10" : "";
 
     if (type === "textarea") {

@@ -43,7 +43,7 @@ export default function FilePicker({
   };
 
   const handleClick = () => ref.current?.click();
-  
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
@@ -61,7 +61,7 @@ export default function FilePicker({
   return (
     <div className="text-sm">
       <FormLabel label={label} required={required} />
-      
+
       <div className="relative">
         <input
           ref={ref}
@@ -73,7 +73,7 @@ export default function FilePicker({
           required={required}
           className="hidden"
         />
-        
+
         <div
           role="button"
           tabIndex={0}
@@ -86,7 +86,7 @@ export default function FilePicker({
           <span>{multiple ? "Choose files" : "Choose file"}</span>
         </div>
       </div>
-      
+
       <FormError error={error} />
     </div>
   );

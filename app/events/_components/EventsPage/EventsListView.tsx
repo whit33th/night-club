@@ -1,35 +1,12 @@
 "use client";
 
+import { Doc } from "@/convex/_generated/dataModel";
 import Link from "next/link";
 import { unstable_ViewTransition as ViewTransition } from "react";
-
-type ConvexEvent = {
-  _id: string;
-  _creationTime: number;
-  title: string;
-  date: string;
-  startAt: string;
-  doorsAt?: string;
-  imageKitId: string;
-  imageKitPath?: string;
-  artists?: Array<{
-    index?: number;
-    name: string;
-    imageKitId?: string;
-    imageKitPath?: string;
-    role?: string;
-  }>;
-  musicGenres?: string[];
-  priceFrom?: number;
-  minAge?: number;
-  dressCode?: string;
-  currency?: string;
-  ticketUrl?: string;
-  description?: string;
-};
+import { generateSlug } from "@/lib/slugUtils";
 
 type EventsListViewProps = {
-  items: Array<ConvexEvent>;
+  items: Array<Doc<"events">>;
 };
 
 export default function EventsListView({ items }: EventsListViewProps) {
@@ -61,10 +38,7 @@ export default function EventsListView({ items }: EventsListViewProps) {
             p.artists?.map((artist) => artist.name).join(", ") || "";
 
           // Generate SEO-friendly URL: event-name-date-id
-          const eventSlug = `${p.title
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/^-+|-+$/g, "")}-${p.date}-${p._id}`;
+          const eventSlug = generateSlug(p.title, p.date, p._id);
 
           return (
             <ViewTransition name={`event-${p._id}`} key={p._id}>

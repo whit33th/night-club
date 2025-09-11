@@ -17,7 +17,7 @@ export default function Hero() {
         poster="/imgs/1.jpg"
         className="-z-50 col-start-1 row-start-1 h-full w-full rounded object-cover"
       />
-      
+
       <div className="absolute inset-0 -z-40 h-full w-full bg-gradient-to-t from-black to-transparent" />
 
       <div className="absolute inset-0 col-start-1 row-start-1 grid select-none grid-cols-2 grid-rows-2 gap-3 p-4 text-white">

@@ -4,31 +4,8 @@ import { Image } from "@imagekit/next";
 import Link from "next/link";
 import { unstable_ViewTransition as ViewTransition } from "react";
 import { motion } from "framer-motion";
-
-type ConvexEvent = {
-  _id: string;
-  _creationTime: number;
-  title: string;
-  date: string;
-  startAt: string;
-  doorsAt?: string;
-  imageKitId: string;
-  imageKitPath?: string;
-  artists?: Array<{
-    index?: number;
-    name: string;
-    imageKitId?: string;
-    imageKitPath?: string;
-    role?: string;
-  }>;
-  musicGenres?: string[];
-  priceFrom?: number;
-  minAge?: number;
-  dressCode?: string;
-  currency?: string;
-  ticketUrl?: string;
-  description?: string;
-};
+import { Doc } from "@/convex/_generated/dataModel";
+import { generateSlug } from "@/lib/slugUtils";
 
 export default function ConvexEventsCard({
   event,
@@ -36,7 +13,7 @@ export default function ConvexEventsCard({
   href,
   isPast = false,
 }: {
-  event: ConvexEvent;
+  event: Doc<"events">;
   index: number;
   href?: string;
   isPast?: boolean;
@@ -54,10 +31,7 @@ export default function ConvexEventsCard({
     event.artists?.map((artist) => artist.name).join(", ") ?? "";
 
   // Generate SEO-friendly URL: event-name-date-id
-  const eventSlug = `${event.title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")}-${event.date}-${event._id}`;
+  const eventSlug = generateSlug(event.title, event.date, event._id);
 
   // Use custom href if provided, otherwise generate default URL
   const linkHref = href || `/events/${eventSlug}`;

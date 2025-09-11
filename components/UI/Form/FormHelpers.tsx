@@ -45,7 +45,13 @@ export function FormHint({ hint }: { hint?: string }) {
   return <span className="mt-1 block text-xs text-white/50">{hint}</span>;
 }
 
-export function FormMessage({ error, hint }: { error?: string; hint?: string }) {
+export function FormMessage({
+  error,
+  hint,
+}: {
+  error?: string;
+  hint?: string;
+}) {
   if (error) return <FormError error={error} />;
   if (hint) return <FormHint hint={hint} />;
   return null;

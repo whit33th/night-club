@@ -1,48 +1,21 @@
 "use client";
 
-import { useQuery } from "convex-helpers/react/cache";
+import { Preloaded, usePreloadedQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import ConvexEventsCard from "@/app/events/_components/EventsPage/ConvexEventsCard";
+import { generateSlug } from "@/lib/slugUtils";
 
-const generateSlug = (title: string, date: string, id: string) => {
-  const titleSlug = title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+export default function EventsGridSSR({
+  preloaded,
+}: {
+  preloaded: Preloaded<typeof api.admin.listUpcomingEvents>;
+}) {
+  const events = usePreloadedQuery(preloaded);
 
-  return `${titleSlug}-${date}-${id}`;
-};
-
-export default function ConvexEventsGrid() {
-  const events = useQuery(api.admin.listEvents);
-
-  if (events === undefined) {
-    return (
-      <section className="mt-4">
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] gap-4 xl:grid-cols-[repeat(auto-fill,minmax(315px,1fr))]">
-          {/* Loading skeleton */}
-          {Array.from({ length: 6 }).map((_, index) => (
-            <div key={index} className="animate-pulse">
-              <div className="relative p-5">
-                <div className="absolute left-0 top-0 z-10 h-16 w-16 rounded-xl bg-neutral-800" />
-                <div className="relative aspect-[9/12] h-full overflow-hidden p-4">
-                  <div className="absolute inset-0 rounded bg-neutral-800" />
-                </div>
-                <div className="absolute bottom-0 left-0 z-10 h-16 w-full rounded-xl bg-neutral-800" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-    );
-  }
-
-  // Sort events by date and take first 6
-  const sortedEvents = [...events]
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-    .slice(0, 6);
+  // Events are already filtered and sorted by the query, just take first 6
+  const sortedEvents = events.slice(0, 12);
 
   return (
     <section className="mt-4">
@@ -59,12 +32,31 @@ export default function ConvexEventsGrid() {
       <div className="grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] gap-4 xl:grid-cols-[repeat(auto-fill,minmax(315px,1fr))]">
         {sortedEvents.map((event, index) => {
           const eventSlug = generateSlug(event.title, event.date, event._id);
+
+          // Check if event is past (though it shouldn't be with upcoming events query)
+          const warsawTime = new Date().toLocaleString("en-US", {
+            timeZone: "Europe/Warsaw",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false,
+          });
+          const currentWarsawDate = new Date(warsawTime.replace(",", ""));
+          const eventDateTime = new Date(
+            `${event.date}T${event.startAt || "00:00"}`,
+          );
+          const isPast = eventDateTime < currentWarsawDate;
+
           return (
             <ConvexEventsCard
               key={event._id}
               event={event}
               index={index}
               href={`/events/${eventSlug}`}
+              isPast={isPast}
             />
           );
         })}

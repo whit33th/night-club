@@ -4,6 +4,7 @@ import { Image } from "@imagekit/next";
 import Link from "next/link";
 import { unstable_ViewTransition as ViewTransition } from "react";
 import { motion } from "framer-motion";
+import { generateSlug } from "@/lib/slugUtils";
 
 type ConvexEvent = {
   _id: string;
@@ -54,10 +55,7 @@ export default function ConvexEventsGridCard({
     event.artists?.map((artist) => artist.name).join(", ") ?? "";
 
   // Generate SEO-friendly URL: event-name-date-id
-  const eventSlug = `${event.title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")}-${event.date}-${event._id}`;
+  const eventSlug = generateSlug(event.title, event.date, event._id);
 
   // Use custom href if provided, otherwise generate default URL
   const linkHref = href || `/events/${eventSlug}`;

@@ -1,16 +1,15 @@
 "use client";
 
-import { useMutation } from "convex/react";
-import { usePaginatedQuery } from "convex-helpers/react/cache/hooks";
+import Button from "@/components/UI/Form/Button";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
-import { useAdminForm } from "../_hooks/useAdminForm";
-import { DataTable } from "../_components/DataTable";
-import Button from "@/components/UI/Form/Button";
-import { HoverPreviewIcon } from "../_components/HoverPreview";
+import { usePaginatedQuery } from "convex-helpers/react/cache/hooks";
+import { useMutation } from "convex/react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import Image from "next/image";
+import { DataTable } from "../_components/DataTable";
+import { HoverPreviewIcon } from "../_components/HoverPreview";
+import { useAdminForm } from "../_hooks/useAdminForm";
 import GalleryFilePicker from "./_components/GalleryFilePicker";
 import GallerySelectedGrid, {
   LocalItem,

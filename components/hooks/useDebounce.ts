@@ -26,7 +26,7 @@ export function useDebounce<T>(value: T, delay: number): T {
  */
 export function useDebounceCallback<Args extends unknown[]>(
   callback: (...args: Args) => void,
-  delay: number
+  delay: number,
 ): (...args: Args) => void {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const callbackRef = useRef(callback);
@@ -55,7 +55,7 @@ export function useDebounceCallback<Args extends unknown[]>(
         callbackRef.current(...args);
       }, delay);
     },
-    [delay]
+    [delay],
   );
 }
 
@@ -64,7 +64,7 @@ export function useDebounceCallback<Args extends unknown[]>(
  */
 export function useDebouncedCallback<Args extends unknown[]>(
   callback: (...args: Args) => void,
-  delay: number
+  delay: number,
 ): {
   debouncedCallback: (...args: Args) => void;
   cancel: () => void;
@@ -101,13 +101,13 @@ export function useDebouncedCallback<Args extends unknown[]>(
       cancel();
       callbackRef.current(...args);
     },
-    [cancel]
+    [cancel],
   );
 
   const debouncedCallback = useCallback(
     (...args: Args) => {
       argsRef.current = args;
-      
+
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
@@ -119,7 +119,7 @@ export function useDebouncedCallback<Args extends unknown[]>(
         }
       }, delay);
     },
-    [delay]
+    [delay],
   );
 
   return {

@@ -1,10 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
 import ImageWithPlaceholder from "@/components/UI/ImageKit/ImageWithPlaceholder";
 import type { Doc } from "@/convex/_generated/dataModel";
+import { motion } from "framer-motion";
 import { formatDate } from "./utils";
-import { head } from "framer-motion/client";
 
 export function NewsDetail({ news }: { news: Doc<"news"> }) {
   // Use ImageKit image path

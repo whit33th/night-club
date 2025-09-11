@@ -9,21 +9,20 @@ import {
   CalendarDays,
   Clock3,
   DollarSign,
-  FileImage,
   Link,
   MessageSquareText,
   Music2,
   Type,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useFieldArray } from "react-hook-form";
 import { DataTable } from "./_components/DataTable";
 import { FormField } from "./_components/FormField";
 import { HoverPreviewIcon } from "./_components/HoverPreview";
+import EventImagePicker from "./_components/ImagePicker";
 import MultiSelect from "./_components/MultiSelect";
 import { useAdminForm } from "./_hooks/useAdminForm";
 import { deleteImageFromImageKit } from "./_utils/imageKit";
-import EventImagePicker from "./_components/ImagePicker";
 
 interface EventFormData {
   title: string;

@@ -12,8 +12,6 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       { href: "/admin", label: "Events" },
       { href: "/admin/news", label: "News" },
       { href: "/admin/gallery", label: "Gallery" },
-      // { href: "/admin/residents", label: "Residents" },
-      // { href: "/admin/faqs", label: "FAQs" },
     ],
     [],
   );
@@ -126,7 +124,6 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                 method="POST"
                 className="mt-3"
                 onSubmit={async (e) => {
-                  // Ensure full reload so new cookie state is read immediately
                   e.preventDefault();
                   await fetch("/api/admin/logout", { method: "POST" });
                   window.location.assign("/admin/auth");

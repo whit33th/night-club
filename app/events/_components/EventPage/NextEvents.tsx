@@ -1,12 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import ImageWithPlaceholder from "@/components/UI/ImageKit/ImageWithPlaceholder";
-import { Preloaded, usePreloadedQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
+import { Preloaded, usePreloadedQuery } from "convex/react";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 import NextEventsSkeleton from "./NextEventsSkeleton";
+import { generateSlug } from "@/lib/slugUtils";
 
 type NextEventsProps = {
   currentId: string;
@@ -17,7 +18,6 @@ type NextEventsProps = {
 };
 
 export default function NextEvents({
-  currentId,
   currentEventDate,
   currentEventTime,
   preloadedUpcomingEvents,
@@ -61,10 +61,7 @@ export default function NextEvents({
       <div className="flex items-center gap-3">
         {displayEvents.map((e: Doc<"events">) => {
           // Generate SEO-friendly URL: event-name-date-id
-          const eventSlug = `${e.title
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/^-+|-+$/g, "")}-${e.date}-${e._id}`;
+          const eventSlug = generateSlug(e.title, e.date, e._id);
 
           // Use ImageKit image
           const imageSrc = e.imageKitPath

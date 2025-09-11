@@ -11,5 +11,5 @@ export const generateSlug = (title: string, date: string, id: string) => {
 
 export const extractIdFromSlug = (slug: string): string => {
   const parts = slug.split("-");
-  return parts[parts.length - 1] || "";
+  return parts[parts.length - 1] ?? "";
 };

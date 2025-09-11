@@ -17,7 +17,7 @@ export function useIntersectionObserver({
 }: UseIntersectionObserverProps = {}): [
   React.RefObject<Element | null>,
   IntersectionObserverEntry | undefined,
-  boolean
+  boolean,
 ] {
   const elementRef = useRef<Element>(null);
   const [entry, setEntry] = useState<IntersectionObserverEntry | undefined>();
@@ -52,7 +52,7 @@ export function useIntersectionObserver({
  */
 export function useInView(options?: UseIntersectionObserverProps) {
   const [ref, entry, isVisible] = useIntersectionObserver(options);
-  
+
   return {
     ref,
     inView: isVisible,

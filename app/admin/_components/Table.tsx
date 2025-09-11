@@ -45,7 +45,11 @@ export const TableContainer = forwardRef<
       onTouchStart={(e) => {
         // Ensure touch scrolling works properly on iOS
         const container = e.currentTarget;
-        (container.style as any).webkitOverflowScrolling = "touch";
+        (
+          container.style as React.CSSProperties & {
+            webkitOverflowScrolling?: string;
+          }
+        ).webkitOverflowScrolling = "touch";
       }}
       {...props}
     >
