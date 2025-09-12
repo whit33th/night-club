@@ -62,14 +62,16 @@ export default function EventsGridSSR({
         })}
       </div>
 
-      <div className="mt-3 flex justify-center xl:hidden">
-        <Link
-          href="/events"
-          className="bg-primary/5 border-primary/20 text-primary hover:bg-primary/10 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium backdrop-blur transition-colors"
-        >
-          More Events
-        </Link>
-      </div>
+      {events.length > 0 && (
+        <div className="mt-3 flex justify-center xl:hidden">
+          <Link
+            href="/events"
+            className="bg-primary/5 border-primary/20 text-primary hover:bg-primary/10 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium backdrop-blur transition-colors"
+          >
+            More Events
+          </Link>
+        </div>
+      )}
     </section>
   );
 }

@@ -270,6 +270,27 @@ export const updateEvent = mutation({
       description: v.optional(v.string()),
     }),
   },
+  returns: v.union(
+    v.null(),
+    v.object({
+      _id: v.id("events"),
+      _creationTime: v.number(),
+      title: v.string(),
+      date: v.string(),
+      startAt: v.string(),
+      doorsAt: v.optional(v.string()),
+      imageKitId: v.string(),
+      imageKitPath: v.optional(v.string()),
+      artists: v.optional(v.array(artistValidator)),
+      musicGenres: v.optional(v.array(v.string())),
+      priceFrom: v.optional(v.number()),
+      minAge: v.optional(v.number()),
+      dressCode: v.optional(v.string()),
+      currency: v.optional(v.string()),
+      ticketUrl: v.optional(v.string()),
+      description: v.optional(v.string()),
+    }),
+  ),
   handler: async (ctx, args) => {
     await ctx.db.patch(args.id, args.patch);
     const updated = await ctx.db.get(args.id);
@@ -358,7 +379,17 @@ export const updateNews = mutation({
       body: v.optional(v.string()),
     }),
   },
-
+  returns: v.union(
+    v.null(),
+    v.object({
+      _id: v.id("news"),
+      _creationTime: v.number(),
+      title: v.string(),
+      imageKitId: v.string(),
+      imageKitPath: v.optional(v.string()),
+      body: v.string(),
+    }),
+  ),
   handler: async (ctx, args) => {
     await ctx.db.patch(args.id, args.patch);
     const updated = await ctx.db.get(args.id);
@@ -600,7 +631,17 @@ export const updateResident = mutation({
       role: v.optional(v.string()),
     }),
   },
-
+  returns: v.union(
+    v.null(),
+    v.object({
+      _id: v.id("residents"),
+      _creationTime: v.number(),
+      name: v.string(),
+      imageKitId: v.string(),
+      imageKitPath: v.optional(v.string()),
+      role: v.optional(v.string()),
+    }),
+  ),
   handler: async (ctx, args) => {
     const patch = { ...args.patch };
     if (patch.name !== undefined) {
@@ -661,7 +702,15 @@ export const updateFaq = mutation({
       answer: v.optional(v.string()),
     }),
   },
-
+  returns: v.union(
+    v.null(),
+    v.object({
+      _id: v.id("faqs"),
+      _creationTime: v.number(),
+      question: v.string(),
+      answer: v.string(),
+    }),
+  ),
   handler: async (ctx, args) => {
     await ctx.db.patch(args.id, args.patch);
     const updated = await ctx.db.get(args.id);
