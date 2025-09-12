@@ -21,7 +21,7 @@ export default function NextEvents({
   currentEventDate,
   currentEventTime,
   preloadedUpcomingEvents,
-  max = 3,
+  max = 5,
 }: NextEventsProps) {
   const upcomingEvents = usePreloadedQuery(preloadedUpcomingEvents);
 
@@ -40,8 +40,6 @@ export default function NextEvents({
   // Take only the next events, limit to max
   const displayEvents: Doc<"events">[] = eventsAfterCurrent.slice(0, max);
 
-  const afterParam = currentDateTime.toISOString().slice(0, 10);
-
   return (
     <section className="relative w-full overflow-hidden rounded-xl bg-neutral-900/15 p-4 shadow-xl backdrop-blur">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(900px_300px_at_50%_-20%,color-mix(in_srgb,var(--primary)_14%,transparent),transparent)]" />
@@ -50,7 +48,7 @@ export default function NextEvents({
           Next Events
         </h3>
         <Link
-          href={{ pathname: "/events", query: { after: afterParam } }}
+          href="/events"
           className="group inline-flex items-center gap-1 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-semibold text-white/80 transition hover:bg-white/10"
         >
           View all

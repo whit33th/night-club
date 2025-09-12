@@ -1,10 +1,6 @@
-import { query, mutation } from "./_generated/server";
-import { v } from "convex/values";
 import { paginationOptsValidator } from "convex/server";
-import schema from "./schema";
-// All Zod-based validations removed. Runtime validation is limited to Convex validators above.
-
-// Removed Convex storage helpers; ImageKit is the sole storage
+import { v } from "convex/values";
+import { mutation, query } from "./_generated/server";
 
 // ==========================
 // Utility functions
@@ -65,7 +61,7 @@ export const listEvents = query({
       .order("desc")
       .collect();
     // Project to allowed fields only (omit legacy fields like address)
-    return rows.map((r: any) => ({
+    return rows.map((r) => ({
       _id: r._id,
       _creationTime: r._creationTime,
       title: r.title,
@@ -110,7 +106,6 @@ export const listUpcomingEvents = query({
   ),
   handler: async (ctx, args) => {
     const currentWarsawDate = getCurrentWarsawTime();
-    const currentDateStr = currentWarsawDate.toISOString().slice(0, 10); // YYYY-MM-DD
 
     // Use index to get events sorted by date ascending
     const rows = await ctx.db
@@ -120,7 +115,7 @@ export const listUpcomingEvents = query({
       .collect();
 
     // Filter for upcoming events only (check date and time)
-    const upcomingEvents = rows.filter((r: any) => {
+    const upcomingEvents = rows.filter((r) => {
       const eventDateTime = new Date(`${r.date}T${r.startAt}`);
       return eventDateTime >= currentWarsawDate;
     });
@@ -163,7 +158,7 @@ export const listPastEvents = query({
     const currentWarsawDate = getCurrentWarsawTime();
 
     // Filter for past events only
-    const pastEvents = rows.filter((r: any) => {
+    const pastEvents = rows.filter((r) => {
       const eventDateTime = new Date(`${r.date}T${r.startAt}`);
       return eventDateTime < currentWarsawDate;
     });
@@ -209,7 +204,7 @@ export const getEvent = query({
   ),
   handler: async (ctx, args) => {
     if (!args.id) return null;
-    const r: any = await ctx.db.get(args.id);
+    const r = await ctx.db.get(args.id);
     if (!r) return null;
     return {
       _id: r._id,
@@ -275,46 +270,10 @@ export const updateEvent = mutation({
       description: v.optional(v.string()),
     }),
   },
-  returns: v.object({
-    _id: v.id("events"),
-    _creationTime: v.number(),
-    title: v.string(),
-    date: v.string(),
-    startAt: v.string(),
-    doorsAt: v.optional(v.string()),
-    imageKitId: v.string(),
-    imageKitPath: v.optional(v.string()),
-    artists: v.optional(v.array(artistValidator)),
-    musicGenres: v.optional(v.array(v.string())),
-    priceFrom: v.optional(v.number()),
-    minAge: v.optional(v.number()),
-    dressCode: v.optional(v.string()),
-    currency: v.optional(v.string()),
-    ticketUrl: v.optional(v.string()),
-    description: v.optional(v.string()),
-  }),
   handler: async (ctx, args) => {
     await ctx.db.patch(args.id, args.patch);
-    const updated: any = await ctx.db.get(args.id);
-    // Project to allowed fields only (omit legacy fields like address)
-    return {
-      _id: updated._id,
-      _creationTime: updated._creationTime,
-      title: updated.title,
-      date: updated.date,
-      startAt: updated.startAt,
-      doorsAt: updated.doorsAt,
-      imageKitId: updated.imageKitId,
-      imageKitPath: updated.imageKitPath,
-      artists: updated.artists,
-      musicGenres: updated.musicGenres,
-      priceFrom: updated.priceFrom,
-      minAge: updated.minAge,
-      dressCode: updated.dressCode,
-      currency: updated.currency,
-      ticketUrl: updated.ticketUrl,
-      description: updated.description,
-    };
+    const updated = await ctx.db.get(args.id);
+    return updated;
   },
 });
 
@@ -372,7 +331,7 @@ export const getNews = query({
   ),
   handler: async (ctx, args) => {
     if (!args.id) return null;
-    return (await ctx.db.get(args.id)) as any;
+    return await ctx.db.get(args.id);
   },
 });
 
@@ -399,18 +358,11 @@ export const updateNews = mutation({
       body: v.optional(v.string()),
     }),
   },
-  returns: v.object({
-    _id: v.id("news"),
-    _creationTime: v.number(),
-    title: v.string(),
-    imageKitId: v.string(),
-    imageKitPath: v.optional(v.string()),
-    body: v.string(),
-  }),
+
   handler: async (ctx, args) => {
     await ctx.db.patch(args.id, args.patch);
     const updated = await ctx.db.get(args.id);
-    return updated as any;
+    return updated;
   },
 });
 
@@ -476,7 +428,7 @@ export const getResident = query({
   ),
   handler: async (ctx, args) => {
     if (!args.id) return null;
-    const r: any = await ctx.db.get(args.id);
+    const r = await ctx.db.get(args.id);
     if (!r) return null;
     return {
       _id: r._id,
@@ -512,7 +464,7 @@ export const getFaq = query({
   ),
   handler: async (ctx, args) => {
     if (!args.id) return null;
-    return (await ctx.db.get(args.id)) as any;
+    return await ctx.db.get(args.id);
   },
 });
 
@@ -607,7 +559,7 @@ export const listResidents = query({
   handler: async (ctx) => {
     const rows = await ctx.db.query("residents").order("desc").collect();
     // Project only allowed fields (omit nameLower, etc.)
-    return rows.map((r: any) => ({
+    return rows.map((r) => ({
       _id: r._id,
       _creationTime: r._creationTime,
       name: r.name,
@@ -648,16 +600,9 @@ export const updateResident = mutation({
       role: v.optional(v.string()),
     }),
   },
-  returns: v.object({
-    _id: v.id("residents"),
-    _creationTime: v.number(),
-    name: v.string(),
-    imageKitId: v.string(),
-    imageKitPath: v.optional(v.string()),
-    role: v.optional(v.string()),
-  }),
+
   handler: async (ctx, args) => {
-    const patch: any = { ...args.patch };
+    const patch = { ...args.patch };
     if (patch.name !== undefined) {
       const trimmed = patch.name.trim();
       patch.name = trimmed;
@@ -667,16 +612,9 @@ export const updateResident = mutation({
       patch.role = t.length ? t : undefined;
     }
     await ctx.db.patch(args.id, patch);
-    const updated: any = await ctx.db.get(args.id);
+    const updated = await ctx.db.get(args.id);
     // Project to allowed fields only (omit nameLower)
-    return {
-      _id: updated._id,
-      _creationTime: updated._creationTime,
-      name: updated.name,
-      imageKitId: updated.imageKitId,
-      imageKitPath: updated.imageKitPath,
-      role: updated.role,
-    };
+    return updated;
   },
 });
 
@@ -723,16 +661,11 @@ export const updateFaq = mutation({
       answer: v.optional(v.string()),
     }),
   },
-  returns: v.object({
-    _id: v.id("faqs"),
-    _creationTime: v.number(),
-    question: v.string(),
-    answer: v.string(),
-  }),
+
   handler: async (ctx, args) => {
     await ctx.db.patch(args.id, args.patch);
     const updated = await ctx.db.get(args.id);
-    return updated as any;
+    return updated;
   },
 });
 

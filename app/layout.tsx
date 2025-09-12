@@ -1,13 +1,14 @@
 import AppearanceEffect from "@/components/Providers/AppearanceEffect";
 import ConvexClientProvider from "@/components/Providers/ConvexClientProvider";
+import { ImageKitProviderWrapper } from "@/components/Providers/ImageKitProvider";
 import LenisProvider from "@/components/Providers/LenisProvider";
-import Nav from "@/components/UI/Header/Header";
+import Footer from "@/components/UI/Footer/Footer";
+import Nav from "@/components/UI/Header/Nav";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
 import "./globals.css";
-import { ImageKitProviderWrapper } from "@/components/Providers/ImageKitProvider";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -28,6 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <LenisProvider>
       <body className={`${inter.variable} antialiased`}>
         <NextTopLoader
           color="var(--primary)"
@@ -37,16 +39,21 @@ export default function RootLayout({
           showSpinner={false}
         />
         <ConvexClientProvider>
+
           <ImageKitProviderWrapper>
-            <LenisProvider>
-              <Nav>
-                <AppearanceEffect>{children}</AppearanceEffect>
-              </Nav>
-            </LenisProvider>
+            <Nav />
+
+            <main className="relative flex-1 *:p-4">
+              <AppearanceEffect>{children}</AppearanceEffect>
+            </main>
+
+            <Footer />
           </ImageKitProviderWrapper>
           <Toaster richColors position="bottom-right" />
+          
         </ConvexClientProvider>
       </body>
+      </LenisProvider>
     </html>
   );
 }

@@ -9,10 +9,8 @@ import { useMemo } from "react";
 type UseMixedEventsFiltersResult = {
   filters: string[];
   activeGenre: string;
-  after: string | null;
   posters: Doc<"events">[];
   setGenre: (value: string) => void;
-  clearAfter: () => void;
   mode: "grid" | "list";
   toggleMode: () => void;
   isLoading: boolean;
@@ -29,7 +27,6 @@ export function useMixedEventsFilters(): UseMixedEventsFiltersResult {
   const router = useRouter();
   const pathname = usePathname();
 
-  const after = searchParams.get("after");
   const genreParam = (searchParams.get("genre") || "all").toLowerCase();
   const modeParam = (searchParams.get("mode") || "list").toLowerCase();
   const mode: "grid" | "list" = modeParam === "grid" ? "grid" : "list";
@@ -47,35 +44,11 @@ export function useMixedEventsFilters(): UseMixedEventsFiltersResult {
     }
   }, [upcomingEvents, pastEvents, mode]);
 
-  const afterTime = useMemo(() => {
-    if (!after) return null as number | null;
-
-    // Parse the date and set to start of day
-    const date = new Date(after);
-    if (Number.isNaN(date.getTime())) return null;
-
-    // Set to start of the day to include events on that date
-    date.setHours(0, 0, 0, 0);
-    return date.getTime();
-  }, [after]);
-
-  const filteredByDate = useMemo(() => {
-    if (!allEvents) return [];
-
-    return afterTime
-      ? allEvents.filter((p) => {
-          const eventDate = new Date(p.date);
-          eventDate.setHours(0, 0, 0, 0); // Normalize to start of day for comparison
-          return eventDate.getTime() < afterTime;
-        })
-      : allEvents;
-  }, [allEvents, afterTime]);
-
   const filters: string[] = useMemo(() => {
-    // Get unique genres from the date-filtered events only
+    // Get unique genres from all events
     const allGenres = new Set<string>();
 
-    filteredByDate.forEach((event) => {
+    allEvents.forEach((event) => {
       if (event.musicGenres && Array.isArray(event.musicGenres)) {
         event.musicGenres.forEach((genre) => {
           if (genre && typeof genre === "string") {
@@ -87,28 +60,22 @@ export function useMixedEventsFilters(): UseMixedEventsFiltersResult {
 
     // Convert to array and sort, with "all" at the beginning
     return ["all", ...Array.from(allGenres).sort()];
-  }, [filteredByDate]);
+  }, [allEvents]);
 
   const activeGenre = filters.includes(genreParam) ? genreParam : "all";
 
   const posters = useMemo(() => {
-    if (!filteredByDate) return [];
+    if (!allEvents) return [];
 
     return activeGenre === "all"
-      ? filteredByDate
-      : filteredByDate.filter((p) => p.musicGenres?.includes(activeGenre));
-  }, [filteredByDate, activeGenre]);
+      ? allEvents
+      : allEvents.filter((p) => p.musicGenres?.includes(activeGenre));
+  }, [allEvents, activeGenre]);
 
   const setGenre = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     if (value === "all") params.delete("genre");
     else params.set("genre", value);
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  };
-
-  const clearAfter = () => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("after");
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
@@ -123,10 +90,8 @@ export function useMixedEventsFilters(): UseMixedEventsFiltersResult {
   return {
     filters,
     activeGenre,
-    after,
     posters,
     setGenre,
-    clearAfter,
     mode,
     toggleMode,
     isLoading,

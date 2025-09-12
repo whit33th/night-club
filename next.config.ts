@@ -5,7 +5,6 @@ const nextConfig: NextConfig = {
   experimental: {
     reactCompiler: true,
     viewTransition: true,
-    typedRoutes: true,
   },
 
   images: {

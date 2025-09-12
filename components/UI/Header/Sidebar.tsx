@@ -1,8 +1,8 @@
 "use client";
 
+import { unstable_Activity as Activity } from "react";
 import NavigationList from "./_components/NavigationList";
 import SidebarFooter from "./_components/SidebarFooter";
-import { useSidebar } from "./_hooks/useSidebar";
 
 interface SidebarProps {
   open: boolean;
@@ -10,27 +10,20 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ open, setOpen }: SidebarProps) => {
-  const { closeSidebar } = useSidebar({ open, setOpen });
-
   return (
-    <aside
-      className={`fixed inset-0 top-14 z-50 w-full border-b border-[color-mix(in_srgb,var(--primary)_20%,transparent)] bg-black/85 backdrop-blur-2xl transition-transform will-change-transform md:hidden ${
-        open ? "translate-y-0" : "hidden -translate-y-full"
-      }`}
-      role="dialog"
-      aria-modal
-      aria-labelledby="sidebar-title"
-      aria-describedby="sidebar-description"
-      aria-hidden={!open}
-    >
-      <div className="relative h-full w-full">
-        {/* Ambient glow effect */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-[radial-gradient(ellipse_at_bottom,rgba(185,53,16,0.22),transparent_60%)] blur-2xl" />
-
-        <NavigationList onItemClick={closeSidebar} />
-        <SidebarFooter onClose={closeSidebar} />
-      </div>
-    </aside>
+    <Activity mode={open ? "visible" : "hidden"}>
+      <aside
+        className={`fixed inset-0 top-14 z-50 h-[calc(100%-3.5rem)] w-full border-b border-[color-mix(in_srgb,var(--primary)_20%,transparent)] md:hidden`}
+        role="dialog"
+        aria-modal
+        aria-labelledby="sidebar-title"
+        aria-describedby="sidebar-description"
+        aria-hidden={!open}
+      >
+        <NavigationList onItemClick={() => setOpen(false)} />
+        <SidebarFooter onClose={() => setOpen(false)} />
+      </aside>
+    </Activity>
   );
 };
 

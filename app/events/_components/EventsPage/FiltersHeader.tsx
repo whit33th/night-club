@@ -8,7 +8,6 @@ type FiltersHeaderProps = {
   filters: ReadonlyArray<string>;
   active: string;
   onChange: (value: string) => void;
-  after?: string | null;
 };
 
 export default function FiltersHeader({

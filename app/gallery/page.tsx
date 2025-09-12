@@ -10,7 +10,7 @@ import { useState } from "react";
 export default function GalleryPage() {
   const [active, setActive] = useState<number | null>(null);
 
-  const galleryImages = useQuery(api.admin_temp.listGallery);
+  const galleryImages = useQuery(api.admin.listGallery);
   const isLoading = galleryImages === undefined;
   return (
     <div className="flex flex-col gap-6">

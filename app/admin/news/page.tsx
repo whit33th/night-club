@@ -37,7 +37,7 @@ const newsColumns = [
     key: "body",
     label: "Body",
     render: (n: Doc<"news">) =>
-      (n.body?.length ?? 0) > 120 ? `${n.body.slice(0, 120)}…` : n.body || "—",
+      (n.body?.length ?? 0) > 60 ? `${n.body.slice(0, 60)}…` : n.body || "—",
   },
   {
     key: "imageKitId",
@@ -70,6 +70,7 @@ export default function NewsPage() {
 
   const [editingId, setEditingId] = useState<Id<"news"> | null>(null);
   const [editingNews, setEditingNews] = useState<Doc<"news"> | null>(null);
+  const [formKey, setFormKey] = useState(0);
 
   const {
     register,
@@ -108,6 +109,9 @@ export default function NewsPage() {
         setEditingId(null);
         setEditingNews(null);
         setImageError(false);
+        clearImage();
+        // Force remount to ensure absolutely clean slate (helps with any lingering RHF internal state)
+        setFormKey((k) => k + 1);
       } else {
         const toCreate = {
           ...formData,
@@ -118,6 +122,8 @@ export default function NewsPage() {
 
         // Clear error state
         setImageError(false);
+        clearImage();
+        setFormKey((k) => k + 1);
       }
     },
   });
@@ -131,7 +137,6 @@ export default function NewsPage() {
       const formData = mapNewsToForm(editingNews);
       reset(formData);
     }
-    // Do not auto-reset in create mode to avoid clearing chosen image
   }, [editingNews, reset]);
 
   const handleDelete = async (id: string, opts?: { skipConfirm?: boolean }) => {
@@ -168,11 +173,11 @@ export default function NewsPage() {
         </div>
       )}
       <form
-        key={editingNews?._id || "new"}
+        key={`${editingNews?._id ?? "new"}-${formKey}`}
         onSubmit={handleSubmit}
         className="space-y-6"
       >
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4">
           <FormField
             label="Title"
             icon={<Type className="h-4 w-4" />}

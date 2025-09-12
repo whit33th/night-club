@@ -14,9 +14,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as admin from "../admin.js";
-import type * as admin_temp from "../admin_temp.js";
 import type * as http from "../http.js";
-import type * as validation from "../validation.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -28,9 +26,7 @@ import type * as validation from "../validation.js";
  */
 declare const fullApi: ApiFromModules<{
   admin: typeof admin;
-  admin_temp: typeof admin_temp;
   http: typeof http;
-  validation: typeof validation;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

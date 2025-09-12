@@ -1,4 +1,4 @@
-import { navLinks } from "../Header";
+import { navLinks } from "../Nav";
 import NavigationItem from "./NavigationItem";
 
 interface NavigationListProps {
