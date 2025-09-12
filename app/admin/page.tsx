@@ -204,6 +204,7 @@ export default function EventsPage() {
         setEditingId(null);
         setEditingEvent(null);
         setImageError(false);
+        clearImage();
         setFormKey((k) => k + 1);
       } else {
         const toCreate = {
@@ -215,6 +216,7 @@ export default function EventsPage() {
 
         // Clear error state
         setImageError(false);
+        clearImage();
         setFormKey((k) => k + 1);
       }
     },
@@ -238,15 +240,8 @@ export default function EventsPage() {
     await deleteEvent({ id: id as Id<"events"> });
   };
 
-  // Handle form population when editing vs creating
-  useEffect(() => {
-    if (editingEvent) {
-      const formData = mapEventToForm(editingEvent);
-      reset(formData);
-    }
-    // Note: We don't automatically reset when editingEvent becomes null
-    // because that would interfere with user input
-  }, [editingEvent, reset]);
+  // Note: We handle form population directly in onEdit instead of useEffect
+  // to avoid timing issues and ensure immediate population
 
   const [formKey, setFormKey] = useState(0);
 
@@ -347,20 +342,31 @@ export default function EventsPage() {
                   label="Music Genres"
                   icon={<Music2 className="h-4 w-4" />}
                   options={[
-                    { value: "techno", label: "Techno" },
-                    { value: "house", label: "House" },
+                    { value: "pop", label: "Pop" },
+                    { value: "hip-hop", label: "Hip Hop" },
+                    { value: "rock", label: "Rock" },
                     { value: "electronic", label: "Electronic" },
+                    { value: "reggae", label: "Reggae" },
+                    { value: "country", label: "Country" },
+                    { value: "folk", label: "Folk" },
+                    { value: "punk", label: "Punk" },
+                    { value: "jazz", label: "Jazz" },
+                    { value: "blues", label: "Blues" },
+                    { value: "metal", label: "Metal" },
+                    { value: "classical", label: "Classical" },
+                    { value: "house", label: "House" },
+                    { value: "techno", label: "Techno" },
                     { value: "deep-house", label: "Deep House" },
                     { value: "progressive-house", label: "Progressive House" },
-                    { value: "minimal", label: "Minimal" },
                     { value: "melodic-techno", label: "Melodic Techno" },
-                    { value: "acid", label: "Acid" },
-                    { value: "breaks", label: "Breaks" },
-                    { value: "drum-and-bass", label: "Drum & Bass" },
+                    { value: "minimal", label: "Minimal" },
                     { value: "trance", label: "Trance" },
-                    { value: "disco", label: "Disco" },
+                    { value: "drum-and-bass", label: "Drum & Bass" },
+                    { value: "breaks", label: "Breaks" },
+                    { value: "acid", label: "Acid" },
                     { value: "electro", label: "Electro" },
                     { value: "garage", label: "UK Garage" },
+                    { value: "disco", label: "Disco" },
                     { value: "ambient", label: "Ambient" },
                   ]}
                   selected={field.value || []}

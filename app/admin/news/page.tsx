@@ -132,12 +132,8 @@ export default function NewsPage() {
 
   const liveTitle = watch("title");
 
-  useEffect(() => {
-    if (editingNews) {
-      const formData = mapNewsToForm(editingNews);
-      reset(formData);
-    }
-  }, [editingNews, reset]);
+  // Note: We handle form population directly in onEdit instead of useEffect
+  // to avoid timing issues and ensure immediate population
 
   const handleDelete = async (id: string, opts?: { skipConfirm?: boolean }) => {
     if (!opts?.skipConfirm) {
@@ -241,6 +237,9 @@ export default function NewsPage() {
             setEditingNews(item);
             setImageError(false);
             clearImage();
+
+            // Immediately populate form with item data
+            reset(mapNewsToForm(item));
           }}
           onDelete={handleDelete}
           loading={status === "LoadingFirstPage"}
