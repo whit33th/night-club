@@ -41,8 +41,6 @@ export default function EventPageClient({
   const subtitle = artistsDisplay || event.title;
   const currency = event.currency ?? "PLN";
 
-  const imageSrc = event.imageKitPath ?? "/imgs/posters/1.jpg";
-
   return (
     <>
       <div className="flex h-full flex-col gap-4">
@@ -54,7 +52,11 @@ export default function EventPageClient({
           locale={locale}
         />
         <div className="container m-auto grid grid-cols-1 gap-4 lg:grid-cols-2 lg:grid-rows-[1fr_auto]">
-          <HeroImage id={event._id} src={imageSrc} alt={event.title} />
+          <HeroImage
+            id={event._id}
+            src={event.imageKitPath!}
+            alt={event.title}
+          />
 
           <InfoCard
             title={event.title}
@@ -72,7 +74,7 @@ export default function EventPageClient({
           <PaymentCard
             basePrice={event.priceFrom}
             currency={currency}
-            imageSrc={imageSrc}
+            imageSrc={event.imageKitPath!}
             title={
               event.priceFrom === 0
                 ? dict.events.freeEntry

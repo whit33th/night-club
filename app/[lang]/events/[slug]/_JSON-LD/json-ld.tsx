@@ -65,9 +65,7 @@ export default function JsonLd({ event, locale }: JsonLdProps) {
         name: event.title,
         description: event.description || `${event.title} at ${clubInfo.name}`,
         url: eventUrl,
-        image: event.imageKitPath
-          ? [event.imageKitPath]
-          : [`${clubInfo.website}/imgs/posters/1.jpg`],
+        image: event.imageKitPath!,
         startDate: eventDateTime.toISOString(),
         ...(doorsDateTime && { doorTime: doorsDateTime.toISOString() }),
         eventStatus: "https://schema.org/EventScheduled",

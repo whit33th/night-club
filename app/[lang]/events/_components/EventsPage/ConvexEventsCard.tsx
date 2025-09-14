@@ -35,7 +35,6 @@ export default function ConvexEventsCard({
   const day = date.toLocaleDateString(localeMap[locale], { day: "numeric" });
 
   // Use imageKitPath if available (new format), otherwise fall back to imageKitId (legacy)
-  const imageSrc = event.imageKitPath ?? "/imgs/posters/1.jpg";
 
   // Format artists for display
   const artistsDisplay =
@@ -77,7 +76,7 @@ export default function ConvexEventsCard({
         <div className="relative aspect-[9/12] h-full overflow-hidden p-4">
           <ViewTransition name={`event-${event._id}`} key={event._id}>
             <Image
-              src={imageSrc}
+              src={event.imageKitPath!}
               alt={event.title}
               fill
               className={`group-hover:scale-103 absolute inset-0 rounded object-cover object-center transition-all duration-300 ease-in-out group-hover:opacity-80 ${

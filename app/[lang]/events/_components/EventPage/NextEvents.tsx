@@ -61,12 +61,6 @@ export default function NextEvents({
         {displayEvents.map((e: Doc<"events">) => {
           const eventSlug = generateSlug(e.title, e.date, e._id);
 
-          const imageSrc = e.imageKitPath
-            ? e.imageKitPath
-            : e.imageKitId
-              ? `/${e.imageKitId}`
-              : "/imgs/posters/1.jpg";
-
           const isPastEvent = false;
 
           return (
@@ -81,7 +75,7 @@ export default function NextEvents({
               title={e.title}
             >
               <ImageWithPlaceholder
-                src={imageSrc}
+                src={e.imageKitPath!}
                 alt={e.title}
                 fill
                 className={`object-cover transition ${isPastEvent ? "grayscale" : ""}`}

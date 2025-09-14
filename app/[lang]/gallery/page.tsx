@@ -27,7 +27,7 @@ export default function GalleryPage({ params }: Props) {
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <Image
-          src="/imgs/backgrounds/gallery.jpg"
+          src="/imgs/backgrounds/gallery.webp"
           alt="Gallery"
           width={256}
           height={256}

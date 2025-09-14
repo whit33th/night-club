@@ -15,7 +15,7 @@ export default async function AboutPage({ params }: Props) {
     <div className="flex flex-col gap-8">
       <div className="relative flex min-h-[40dvh] items-center justify-center overflow-hidden rounded-xl">
         <Image
-          src="/imgs/backgrounds/about.jpg"
+          src="/imgs/backgrounds/about.webp"
           alt={dict.about.title}
           width={100}
           height={100}
@@ -107,10 +107,10 @@ export default async function AboutPage({ params }: Props) {
         <h2 className="text-xl font-semibold">{dict.about.residents}</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {[
-            { name: "DJ Kira", img: "/imgs/residents/1.png" },
-            { name: "Neon Wave", img: "/imgs/residents/2.png" },
-            { name: "Ghost Unit", img: "/imgs/residents/3.png" },
-            { name: "MC Nova", img: "/imgs/residents/4.png" },
+            { name: "DJ Kira", img: "/imgs/residents/1.webp" },
+            { name: "Neon Wave", img: "/imgs/residents/2.webp" },
+            { name: "Ghost Unit", img: "/imgs/residents/3.webp" },
+            { name: "MC Nova", img: "/imgs/residents/4.webp" },
           ].map((a, i) => (
             <div
               key={i}

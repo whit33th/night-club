@@ -33,8 +33,6 @@ export default function ConvexEventsGridCard({
   const month = monthName.charAt(0).toUpperCase() + monthName.slice(1);
   const day = date.toLocaleDateString(localeMap[locale], { day: "numeric" });
 
-  const imageSrc = event.imageKitPath ?? "/imgs/posters/1.jpg";
-
   const artistsDisplay =
     event.artists?.map((artist) => artist.name).join(", ") ?? "";
 
@@ -74,7 +72,7 @@ export default function ConvexEventsGridCard({
           </motion.div>
           <div className="relative aspect-[9/12] h-full overflow-hidden p-4">
             <Image
-              src={imageSrc}
+              src={event.imageKitPath!}
               alt={event.title}
               fill
               className={`group-hover:scale-103 absolute inset-0 rounded object-cover object-center transition-all duration-300 ease-in-out group-hover:opacity-80 ${
