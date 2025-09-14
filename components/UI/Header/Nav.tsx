@@ -32,7 +32,13 @@ export default function Nav({ lang, dict }: { lang: Locale; dict: Dict }) {
       {/* Navigation Bar */}
       <nav className="flex items-center justify-between gap-3 px-3 py-2">
         <Link href={`/${lang}`} className="flex items-center gap-2">
-          <Image src="/imgs/logo.png" alt="Logo" width={40} height={40} />
+          <Image
+            src="/imgs/logo.png"
+            alt="Logo"
+            width={40}
+            height={40}
+            priority
+          />
         </Link>
         <div className="flex items-center gap-4">
           <ul className="hidden items-center gap-4 text-sm font-semibold md:flex">

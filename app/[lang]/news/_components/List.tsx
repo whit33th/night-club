@@ -1,8 +1,9 @@
 "use client";
 
 import type { Doc } from "@/convex/_generated/dataModel";
-import { NewsCard } from "./Card";
+import { Dict } from "@/lib/get-dictionary-client";
 import { Locale } from "@/lib/i18n-config";
+import { NewsCard } from "./Card";
 
 export function NewsList({
   posts,

@@ -2,9 +2,9 @@
 
 import ImageWithPlaceholder from "@/components/UI/ImageKit/ImageWithPlaceholder";
 import type { Doc } from "@/convex/_generated/dataModel";
+import { Locale } from "@/lib/i18n-config";
 import { motion } from "framer-motion";
 import { formatDate } from "./utils";
-import { Locale } from "@/lib/i18n-config";
 
 export function NewsDetail({
   news,

@@ -1,31 +1,16 @@
 "use client";
 
-import { Facebook, Instagram, type LucideIcon } from "lucide-react";
+import { SocialLinks } from "@/components/Containers/SocialLinks";
+import { Dict } from "@/lib/get-dictionary-client";
+import { Locale } from "@/lib/i18n-config";
 import Image from "next/image";
 import Link from "next/link";
-import { Locale } from "@/lib/i18n-config";
-import { Dict } from "@/lib/get-dictionary-client";
 
 type NavLink = { href: string; label: string };
 type NavSection = { title: string; links: Array<NavLink> };
-type SocialLink = { href: string; label: string; Icon: LucideIcon };
 
 const SECTION_TITLE_CLASS = "text-xs uppercase tracking-[0.2em] text-white/60";
 const LINK_CLASS = "text-white/85 transition hover:text-white";
-const SOCIAL_ICON_CLASS = "h-5 w-5";
-
-const SOCIAL_LINKS: Array<SocialLink> = [
-  {
-    href: "https://instagram.com/2progi",
-    label: "Instagram",
-    Icon: Instagram,
-  },
-  {
-    href: "https://facebook.com/2progi",
-    label: "Facebook",
-    Icon: Facebook,
-  },
-];
 
 function FooterSection({ title, links }: NavSection) {
   return (
@@ -73,7 +58,13 @@ export default function Footer({ lang, dict }: { lang: Locale; dict: Dict }) {
       <div className="mx-auto max-w-6xl space-y-6">
         {/* Brand: full width on small screens */}
         <div className="flex items-start gap-3">
-          <Image src="/imgs/logo.png" alt="Logo" width={32} height={32} />
+          <Image
+            src="/imgs/logo.png"
+            alt="Logo"
+            width={32}
+            height={32}
+            priority
+          />
           <div className="leading-tight">
             <p className="text-sm font-semibold tracking-wide">
               2Progi Night Club
@@ -95,18 +86,7 @@ export default function Footer({ lang, dict }: { lang: Locale; dict: Dict }) {
         <div className="flex flex-col items-start gap-3 border-t border-white/10 pt-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3">
-              {SOCIAL_LINKS.map(({ href, label, Icon }) => (
-                <Link
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="text-white/80 transition hover:text-white"
-                >
-                  <Icon className={SOCIAL_ICON_CLASS} />
-                </Link>
-              ))}
+              <SocialLinks />
             </div>
           </div>
           <div className="text-[10px] uppercase tracking-[0.25em] text-white/50">

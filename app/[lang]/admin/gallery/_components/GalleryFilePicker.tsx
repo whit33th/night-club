@@ -1,7 +1,7 @@
 "use client";
 
-import React, { memo } from "react";
 import { ImagePlusIcon } from "lucide-react";
+import { memo } from "react";
 
 type Props = {
   inputId?: string;

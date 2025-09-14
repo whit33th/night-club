@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { Dict } from "@/lib/get-dictionary-client";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
-export function BackLink({ dict }: { dict: Dict  }) {
+export function BackLink({ dict }: { dict: Dict }) {
   return (
     <Link
       href="/news"

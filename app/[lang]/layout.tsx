@@ -5,14 +5,15 @@ import LenisProvider from "@/components/Providers/LenisProvider";
 import JsonLdMainPage from "@/components/SEO/StructuredData";
 import Footer from "@/components/UI/Footer/Footer";
 import Nav from "@/components/UI/Header/Nav";
+import { clubInfo } from "@/lib/data/club-info";
 import { localeMap } from "@/lib/date-utils";
 import { getDictionary } from "@/lib/get-dictionary";
-import { Locale } from "@/lib/i18n-config";
+import { i18n, Locale } from "@/lib/i18n-config";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
-import "../globals.css";
+import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -20,50 +21,65 @@ const inter = Inter({
 });
 
 export async function generateStaticParams() {
-  return [{ lang: "pl" }, { lang: "en" }];
+  return i18n.locales.map((locale) => ({ lang: locale }));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ lang: Locale }>;
+  params: Promise<{ lang: string }>;
 }): Promise<Metadata> {
   const { lang } = await params;
-  const dict = await getDictionary(lang);
+  const dict = await getDictionary(lang as Locale);
   const locale = lang === "pl" ? "pl" : "en";
 
   return {
     title: {
       default:
         lang === "pl"
-          ? "2progi - Klub Nocny | Poznań"
-          : "2progi - Night Club | Poznan",
-      template: `%s | 2progi - ${dict.hero.subtitle}`,
+          ? `${clubInfo.name} - Klub Nocny | Poznań`
+          : `${clubInfo.name} - Night Club | Poznan`,
+      template: `%s | ${clubInfo.name} - ${dict.hero.subtitle}`,
     },
     description: dict.hero.description,
 
+    alternates: {
+      canonical: `${clubInfo.website}/${lang}`,
+      languages: {
+        pl: `${clubInfo.website}/pl`,
+        en: `${clubInfo.website}/en`,
+        "x-default": `${clubInfo.website}/pl`,
+      },
+    },
+
+    metadataBase: new URL("https://2progi.pl"),
     keywords: [
+      // ✅ Общие ключевые слова для всех языков
       "night club",
-      "2progi",
-      "Poznań",
-      "club",
       "parties",
-      "dancing",
       "music",
       "DJ",
       "events",
-      "Aleja Niepodległości",
-      "Poland",
       "concerts",
       "electronic music",
+      "raves",
+      `${clubInfo.name}`,
+      `${clubInfo.address.city}`,
+      `${clubInfo.address.street}`,
       ...(lang === "pl"
-        ? ["klub nocny", "imprezy", "koncerty", "muzyka elektroniczna"]
-        : []),
+        ? [
+            "klub nocny",
+            "imprezy",
+            "koncerty",
+            "muzyka elektroniczna",
+            "Polska",
+          ]
+        : ["dancing", "Poznan", "Greater Poland", "Poland"]),
     ],
 
-    authors: [{ name: "2progi Night Club" }],
-    creator: "2progi Night Club",
-    publisher: "2progi Entertainment",
+    authors: [{ name: `${clubInfo.name} Night Club` }],
+    creator: `${clubInfo.name} Night Club`,
+    publisher: `${clubInfo.name} Entertainment`,
     category: "Entertainment",
 
     robots: {
@@ -109,59 +125,39 @@ export async function generateMetadata({
     openGraph: {
       type: "website",
       locale: localeMap[locale],
-      url: `https://2progi.pl/${lang}`,
+      url: `${clubInfo.website}/${lang}`,
       title: dict.hero.title,
       description: dict.hero.description,
-      siteName: "2progi Night Club",
+      siteName: `${clubInfo.name} Night Club`,
     },
 
     twitter: {
       card: "summary_large_image",
-      site: "@2progi_club",
-      creator: "@2progi_club",
+      site: `@${clubInfo.name}_club`,
+      creator: `@${clubInfo.name}_club`,
       title: dict.hero.title,
       description: dict.hero.description,
-    },
-
-    alternates: {
-      canonical: `https://2progi.pl/${lang}`,
-      languages: {
-        pl: "https://2progi.pl/pl",
-        en: "https://2progi.pl/en",
-        "x-default": "https://2progi.pl/pl",
-      },
-    },
-
-    // canonical base for alternates (useful for metadataBase in Next)
-    metadataBase: new URL("https://2progi.pl"),
-
-    // Verification (keep placeholders or replace with real codes)
-    verification: {
-      google: "your-google-verification-code",
-      yandex: "your-yandex-verification-code",
-      yahoo: "your-yahoo-verification-code",
-      other: {
-        "msvalidate.01": "your-bing-verification-code",
-      },
     },
 
     // Updated local / geo / contact info (from public listings)
     other: {
       "geo.region": "PL",
-      "geo.placename": "Poznań",
-      "geo.position": "52.415087;16.926991",
-      ICBM: "52.415087, 16.926991",
-      contact: "biuro@2progi.pl",
-      phone: "+48 606 277 256", // listed on official site
-      "phone:alt": "+48 881 277 500", // alternative/booking number from listings
-      address: "Aleja Niepodległości 36, 61-714 Poznań, Poland",
+      "geo.placename": `${clubInfo.address.city}, ${clubInfo.address.region}`,
+      "geo.position": `${clubInfo.address.lat};${clubInfo.address.lng}`,
+      ICBM: `${clubInfo.address.lat}, ${clubInfo.address.lng}`,
+      contact: `${clubInfo.email}`,
+      phone: `${clubInfo.phone}`,
+      // "phone:alt": "+48 881 277 500", // alternative/booking number from listings
+      address: `${clubInfo.address.street}, ${clubInfo.address.postalCode} ${clubInfo.address.city}, ${clubInfo.address.country}`,
       "business.hours":
         "Hours vary by event — typical event hours ~22:00–06:00 (check event page)",
-      "price.range": "PLN - mid",
+      "price.range": `${clubInfo.priceRange}`,
       "og:see_also": [
-        "https://instagram.com/2progi",
-        "https://facebook.com/2progi",
-        "https://linktr.ee/2progiVenu",
+        `${clubInfo.socialMedia.facebook}`,
+        `${clubInfo.socialMedia.instagram}`,
+        `${clubInfo.socialMedia.telegram}`,
+        `${clubInfo.socialMedia.tiktok}`,
+        `${clubInfo.socialMedia.linktree}`,
       ],
       rating: "mature",
       audience: "18+",
@@ -169,14 +165,13 @@ export async function generateMetadata({
       "content-language": lang,
       "format-detection": "telephone=yes, address=yes, email=yes",
       referrer: "origin-when-cross-origin",
-      "apple-mobile-web-app-capable": "yes",
       "apple-mobile-web-app-status-bar-style": "black-translucent",
-      "apple-mobile-web-app-title": "2progi",
+      "apple-mobile-web-app-title": `${clubInfo.name}`,
       "msapplication-TileColor": "#000000",
       "msapplication-config": "/browserconfig.xml",
       "msapplication-TileImage": "/web-app-manifest-192x192.png",
       "theme-color": "#000000",
-      "application-name": "2progi",
+      "application-name": `${clubInfo.name}`,
     },
   };
 }
@@ -186,10 +181,10 @@ export default async function RootLayout({
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ lang: Locale }>;
+  params: Promise<{ lang: string }>;
 }>) {
   const { lang } = await params;
-  const dict = await getDictionary(lang);
+  const dict = await getDictionary(lang as Locale);
 
   return (
     <html lang={lang}>
@@ -208,13 +203,13 @@ export default async function RootLayout({
         <LenisProvider>
           <ConvexClientProvider>
             <ImageKitProviderWrapper>
-              <Nav lang={lang} dict={dict} />
+              <Nav lang={lang as Locale} dict={dict} />
 
               <main className="relative flex-1 *:p-4">
                 <AppearanceEffect>{children}</AppearanceEffect>
               </main>
 
-              <Footer lang={lang} dict={dict} />
+              <Footer lang={lang as Locale} dict={dict} />
             </ImageKitProviderWrapper>
             <Toaster richColors position="bottom-right" />
           </ConvexClientProvider>

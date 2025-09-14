@@ -1,7 +1,7 @@
 "use client";
 
-import React, { ReactNode } from "react";
 import Button from "@/components/UI/Form/Button";
+import { ReactNode } from "react";
 
 interface AdminFormProps {
   children: ReactNode;

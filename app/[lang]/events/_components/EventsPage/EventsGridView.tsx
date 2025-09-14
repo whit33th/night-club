@@ -5,6 +5,7 @@ import ConvexEventsGridCard from "./ConvexEventsGridCard";
 
 import { Locale } from "@/lib/i18n-config";
 import { isPastEvent } from "@/lib/date-utils";
+import { Dict } from "@/lib/get-dictionary-client";
 
 export default function EventsGridView({
   items,

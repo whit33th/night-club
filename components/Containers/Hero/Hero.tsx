@@ -23,6 +23,7 @@ export default function Hero({ dict }: HeroProps) {
         loop
         playsInline
         poster="/imgs/1.jpg"
+        preload="metadata"
         className="-z-50 col-start-1 row-start-1 h-full w-full rounded object-cover"
       />
 

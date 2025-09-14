@@ -27,11 +27,12 @@ export default function GalleryPage({ params }: Props) {
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <Image
-          src="/imgs/10.jpg"
+          src="/imgs/backgrounds/gallery.jpg"
           alt="Gallery"
           width={256}
           height={256}
           className="absolute inset-0 -z-10 h-full w-full object-cover blur-xl"
+          priority
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black to-transparent" />
         <div className="relative z-10 flex flex-col items-center justify-center p-6 text-center">

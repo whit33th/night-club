@@ -110,6 +110,9 @@ export default function LocaleSwitcher({
                   key={locale}
                   href={redirectedPathName(locale)}
                   onClick={() => setIsOpen(false)}
+                  lang={locale}
+                  hrefLang={locale}
+                  aria-label={`Switch to ${info.name}`}
                   className={`flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm transition-all ${
                     isActive
                       ? "bg-white/5 text-white"

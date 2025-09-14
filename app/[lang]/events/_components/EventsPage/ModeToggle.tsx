@@ -1,5 +1,6 @@
 "use client";
 
+import { Dict } from "@/lib/get-dictionary-client";
 import React from "react";
 
 type Mode = "grid" | "list";

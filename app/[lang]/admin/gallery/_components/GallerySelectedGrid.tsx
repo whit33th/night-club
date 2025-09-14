@@ -1,8 +1,8 @@
 "use client";
 
-import React, { memo } from "react";
-import Image from "next/image";
 import { X } from "lucide-react";
+import Image from "next/image";
+import { memo } from "react";
 
 export type LocalItem = { id: string; file: File; url: string };
 

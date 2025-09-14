@@ -1,8 +1,8 @@
 "use client";
 
-import React, { memo } from "react";
 import { FileImage } from "lucide-react";
 import Image from "next/image";
+import React, { memo } from "react";
 
 type Props = {
   inputId?: string;
@@ -13,8 +13,8 @@ type Props = {
   onClearError?: () => void;
 };
 
-function NewsImagePickerBase({
-  inputId = "news-image",
+function ImagePickerBase({
+  inputId = "event-poster",
   imagePreview,
   imageError,
   disabled,
@@ -22,7 +22,7 @@ function NewsImagePickerBase({
   onClearError,
 }: Props) {
   return (
-    <div className="md:col-span-2">
+    <div className="md:col-span-3">
       <input
         id={inputId}
         type="file"
@@ -40,11 +40,11 @@ function NewsImagePickerBase({
       >
         <div className="flex min-h-48 items-center justify-center p-4">
           {imagePreview ? (
-            <div className="relative aspect-video w-full max-w-xl">
+            <div className="relative aspect-video w-full max-w-2xl">
               <Image
                 fill
                 src={imagePreview}
-                alt="News preview"
+                alt="Event poster preview"
                 className="h-full w-full object-contain"
               />
             </div>
@@ -62,5 +62,5 @@ function NewsImagePickerBase({
   );
 }
 
-const NewsImagePicker = memo(NewsImagePickerBase);
-export default NewsImagePicker;
+const EventImagePicker = memo(ImagePickerBase);
+export default EventImagePicker;

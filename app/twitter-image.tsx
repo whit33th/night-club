@@ -1,7 +1,8 @@
+import { clubInfo } from "@/lib/data/club-info";
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "2progi Night Club";
+export const alt = `${clubInfo.name} Night Club`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -37,7 +38,7 @@ export default async function TwitterImage() {
               letterSpacing: "-0.03em",
             }}
           >
-            2progi
+            {clubInfo.name}
           </div>
 
           <div
@@ -48,7 +49,7 @@ export default async function TwitterImage() {
               lineHeight: 1.3,
             }}
           >
-            Klub muzyczno-eventowy Poznań
+            Klub muzyczno-eventowy {clubInfo.address.city}
           </div>
 
           <div

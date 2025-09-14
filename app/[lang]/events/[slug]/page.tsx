@@ -6,6 +6,7 @@ import EventPageClient from "./EventPageClient";
 import { extractIdFromSlug } from "@/lib/slugUtils";
 import { getDictionary } from "@/lib/get-dictionary";
 import { Locale } from "@/lib/i18n-config";
+import JsonLd from "./_JSON-LD/json-ld";
 
 export default async function EventPage({
   params,
@@ -32,12 +33,16 @@ export default async function EventPage({
     }
 
     return (
-      <EventPageClient
-        preloadedEvent={preloadedEvent}
-        preloadedUpcomingEvents={preloadedUpcomingEvents}
-        dict={dict}
-        locale={lang as Locale}
-      />
+      <>
+        <JsonLd event={event} locale={lang as Locale} />
+
+        <EventPageClient
+          preloadedEvent={preloadedEvent}
+          preloadedUpcomingEvents={preloadedUpcomingEvents}
+          dict={dict}
+          locale={lang as Locale}
+        />
+      </>
     );
   } catch {
     notFound();

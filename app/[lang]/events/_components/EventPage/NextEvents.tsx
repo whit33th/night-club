@@ -3,12 +3,12 @@
 import ImageWithPlaceholder from "@/components/UI/ImageKit/ImageWithPlaceholder";
 import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
+import { Dict } from "@/lib/get-dictionary-client";
+import { generateSlug } from "@/lib/slugUtils";
 import { Preloaded, usePreloadedQuery } from "convex/react";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import NextEventsSkeleton from "./NextEventsSkeleton";
-import { generateSlug } from "@/lib/slugUtils";
-import { Dict } from "@/lib/get-dictionary-client";
 
 type NextEventsProps = {
   currentId: string;

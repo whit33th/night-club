@@ -1,12 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
 import ImageWithPlaceholder from "@/components/UI/ImageKit/ImageWithPlaceholder";
-import Link from "next/link";
 import type { Doc } from "@/convex/_generated/dataModel";
+import { Locale } from "@/lib/i18n-config";
+import { motion } from "framer-motion";
+import Link from "next/link";
 import { generateNewsSlug } from "../_utils/slugUtils";
 import { formatDate } from "./utils";
-import { Locale } from "@/lib/i18n-config";
 
 export function NewsCard({
   post,
@@ -17,16 +17,12 @@ export function NewsCard({
   index: number;
   locale: Locale;
 }) {
-  // Generate SEO-friendly slug
   const newsSlug = generateNewsSlug(
     post.title,
     new Date(post._creationTime).toISOString().split("T")[0],
     post._id,
   );
 
-  // Use ImageKit image path
-
-  // Format date from timestamp
   const formattedDate = formatDate(
     new Date(post._creationTime).toISOString(),
     locale,

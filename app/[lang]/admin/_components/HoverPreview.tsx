@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { Image as ImageIcon } from "lucide-react";
 import ImageWithPlaceholder from "@/components/UI/ImageKit/ImageWithPlaceholder";
+import { Image as ImageIcon } from "lucide-react";
+import { useState } from "react";
 
 export function HoverPreviewIcon({
   imageKitId,

@@ -2,7 +2,7 @@
 
 import { ConvexError } from "convex/values";
 import { useSearchParams } from "next/navigation";
-import { useState, Suspense } from "react";
+import { Suspense, useState } from "react";
 import { toast } from "sonner";
 
 function AdminAuthForm() {

@@ -3,8 +3,8 @@
 import {
   HTMLAttributes,
   ReactNode,
-  ThHTMLAttributes,
   TdHTMLAttributes,
+  ThHTMLAttributes,
   forwardRef,
 } from "react";
 

@@ -1,4 +1,6 @@
+import { SocialLinks } from "@/components/Containers/SocialLinks";
 import Map from "@/components/UI/Map/Map";
+import { clubInfo } from "@/lib/data/club-info";
 import { getDictionary } from "@/lib/get-dictionary";
 import { Locale } from "@/lib/i18n-config";
 import Image from "next/image";
@@ -13,7 +15,7 @@ export default async function AboutPage({ params }: Props) {
     <div className="flex flex-col gap-8">
       <div className="relative flex min-h-[40dvh] items-center justify-center overflow-hidden rounded-xl">
         <Image
-          src="/imgs/5.jpg"
+          src="/imgs/backgrounds/about.jpg"
           alt={dict.about.title}
           width={100}
           height={100}
@@ -64,7 +66,8 @@ export default async function AboutPage({ params }: Props) {
                 {dict.navigation.contact}
               </h3>
               <p className="text-white/90">
-                {dict.footer.address.replace(/<br>/g, ", ")}
+                {/* {dict.footer.address.replace(/<br>/g, ", ")} */}
+                {`${clubInfo.address.street}, ${clubInfo.address.postalCode} ${clubInfo.address.city}`}
               </p>
             </div>
             <div className="grid gap-1 text-sm">
@@ -72,10 +75,10 @@ export default async function AboutPage({ params }: Props) {
                 {dict.footer.phone}
               </h3>
               <a
-                href="tel:+48606277256"
+                href={`tel:${clubInfo.phone}`}
                 className="text-white/90 hover:text-[var(--primary)]"
               >
-                +48 606 277 256
+                {clubInfo.phone}
               </a>
             </div>
             <div className="grid gap-1 text-sm">
@@ -83,11 +86,18 @@ export default async function AboutPage({ params }: Props) {
                 {dict.contact.email}
               </h3>
               <a
-                href="mailto:biuro@2progi.pl"
+                href={`mailto:${clubInfo.email}`}
                 className="text-white/90 hover:text-[var(--primary)]"
               >
-                biuro@2progi.pl
+                {clubInfo.email}
               </a>
+            </div>
+            <div className="grid gap-1 text-sm">
+              <h3 className="text-xs uppercase tracking-wide text-white/60">
+                {/* {dict.contact.email} */}
+                {dict.footer.followUs}
+              </h3>
+              <SocialLinks />
             </div>
           </div>
         </div>

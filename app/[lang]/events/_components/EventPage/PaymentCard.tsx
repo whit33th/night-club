@@ -1,6 +1,7 @@
 "use client";
 
 import ImageWithPlaceholder from "@/components/UI/ImageKit/ImageWithPlaceholder";
+import { Dict } from "@/lib/get-dictionary-client";
 import Link from "next/link";
 
 type PaymentCardProps = {
