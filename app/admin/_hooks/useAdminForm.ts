@@ -10,7 +10,7 @@ interface UseAdminFormOptions<T extends FieldValues> {
     data: T,
     imageKitData?: { fileId: string; filePath: string },
   ) => Promise<void>;
-  autoReset?: boolean; // when true, reset form to defaults after successful submit
+  autoReset?: boolean;
 }
 
 export function useAdminForm<T extends FieldValues>({
@@ -18,7 +18,6 @@ export function useAdminForm<T extends FieldValues>({
   onSubmit,
   autoReset = true,
 }: UseAdminFormOptions<T>) {
-  // Keep an immutable snapshot of initial defaults for reliable resets
   const initialDefaultsRef = useRef(defaultValues);
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string>("");
@@ -26,7 +25,7 @@ export function useAdminForm<T extends FieldValues>({
 
   const form = useForm<T>({
     defaultValues,
-    mode: "onTouched", // Validate on input
+    mode: "onTouched",
   });
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +37,6 @@ export function useAdminForm<T extends FieldValues>({
       : /\.(png|jpe?g|webp|gif|bmp|tiff|svg)$/i.test(file.name);
 
     if (!isImage) {
-      // Reset input and notify user
       event.target.value = "";
       setSelectedFile(null);
       if (imagePreview) URL.revokeObjectURL(imagePreview);
@@ -48,10 +46,10 @@ export function useAdminForm<T extends FieldValues>({
     }
 
     setSelectedFile(file);
-    // Create preview URL
+
     const previewUrl = URL.createObjectURL(file);
     setImagePreview(previewUrl);
-    // Clear input so selecting the same file again will fire onChange
+
     try {
       event.target.value = "";
     } catch {}
@@ -61,7 +59,6 @@ export function useAdminForm<T extends FieldValues>({
     file: File,
   ): Promise<{ fileId: string; filePath: string }> => {
     try {
-      // Compress before upload
       const MAX_SIZE_MB = 3;
       const compressed = await imageCompression(file, {
         maxSizeMB: MAX_SIZE_MB,
@@ -74,13 +71,11 @@ export function useAdminForm<T extends FieldValues>({
         throw new Error("Image is too large (max 3 MB)");
       }
 
-      // Get auth token from API
       const authRes = await fetch("/api/imagekit/auth");
       if (!authRes.ok) throw new Error("Failed to get auth token");
 
       const { token, expire, signature, publicKey } = await authRes.json();
 
-      // Upload to ImageKit
       const formData = new FormData();
       formData.append("file", compressed);
       formData.append("fileName", file.name);
@@ -118,7 +113,6 @@ export function useAdminForm<T extends FieldValues>({
 
       let imageKitData: { fileId: string; filePath: string } | undefined;
 
-      // Upload image if selected
       if (selectedFile) {
         imageKitData = await uploadImageToImageKit(selectedFile);
       }
@@ -126,8 +120,6 @@ export function useAdminForm<T extends FieldValues>({
       await onSubmit(data, imageKitData);
       toast.success("Saved successfully!");
 
-      // Always reset after successful submit regardless of autoReset
-      // This ensures the form state is immediately clean
       if (autoReset) {
         form.reset(initialDefaultsRef.current);
         setImagePreview("");

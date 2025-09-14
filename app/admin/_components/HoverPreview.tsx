@@ -15,7 +15,6 @@ export function HoverPreviewIcon({
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
-  // Check if we have a valid image path
   const hasValidImage = !!imageKitPath;
 
   return (
@@ -73,7 +72,6 @@ function PreviewAtCursor({
     );
   }
 
-  // Use imageKitPath if available (new format), otherwise fall back to imageKitId (legacy)
   const imageSrc = imageKitPath
     ? imageKitPath
     : imageKitId

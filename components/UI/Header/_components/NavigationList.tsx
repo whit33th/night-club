@@ -1,11 +1,11 @@
-import { navLinks } from "../Nav";
 import NavigationItem from "./NavigationItem";
 
 interface NavigationListProps {
   onItemClick: () => void;
+  navLinks: { href: string; label: string }[];
 }
 
-const NavigationList = ({ onItemClick }: NavigationListProps) => (
+const NavigationList = ({ onItemClick, navLinks }: NavigationListProps) => (
   <ul className="flex flex-col">
     {navLinks.map((item) => (
       <NavigationItem

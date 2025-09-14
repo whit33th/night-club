@@ -30,9 +30,9 @@ interface DataTableProps<T extends BaseRow> {
   onEdit?: (item: T) => void;
   onDelete?: (id: string, opts?: { skipConfirm?: boolean }) => void;
   loading?: boolean;
-  actionsDisabled?: boolean; // New prop to disable action buttons
-  onLoadMore?: () => void; // optional: auto-load more when scroll near bottom
-  canLoadMore?: boolean; // indicate if there is more to load
+  actionsDisabled?: boolean;
+  onLoadMore?: () => void;
+  canLoadMore?: boolean;
 }
 
 export function DataTable<T extends BaseRow>({
@@ -82,7 +82,6 @@ export function DataTable<T extends BaseRow>({
     const key = column.key as keyof T;
     const value = item[key];
 
-    // Format common fields
     if (column.key === "_creationTime" && typeof value === "number") {
       return new Date(value).toLocaleDateString();
     }
@@ -104,7 +103,6 @@ export function DataTable<T extends BaseRow>({
     return String(value) || "—";
   };
 
-  // Auto-load more on scroll near bottom with debouncing
   useEffect(() => {
     if (!onLoadMore || !canLoadMore) return;
     const el = scrollRef.current;
@@ -117,14 +115,12 @@ export function DataTable<T extends BaseRow>({
           if (entry.isIntersecting && !loadingMoreRef.current) {
             loadingMoreRef.current = true;
 
-            // Show loader with slight delay to avoid flash for instant loads
             const showTimeout = setTimeout(() => {
               setIsLoadingMore(true);
             }, 200);
 
             onLoadMore();
 
-            // Reset flag after a delay to allow next load
             setTimeout(() => {
               clearTimeout(showTimeout);
               loadingMoreRef.current = false;

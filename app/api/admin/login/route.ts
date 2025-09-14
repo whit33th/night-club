@@ -25,14 +25,12 @@ export async function POST(req: Request) {
     );
   }
 
-  // Constant-time compare
   const enc = new TextEncoder();
   const ok = constantTimeEqual(enc.encode(password), enc.encode(adminPassword));
   if (!ok) {
     return NextResponse.json({ error: "Invalid password" }, { status: 401 });
   }
 
-  // Create signed session cookie with short expiration (e.g., 12h)
   const exp = Date.now() + 1000 * 60 * 60 * 12;
   const payload = encodeURIComponent(JSON.stringify({ exp }));
   const key = await crypto.subtle.importKey(
@@ -55,7 +53,7 @@ export async function POST(req: Request) {
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
     path: "/",
-    maxAge: 60 * 60 * 12, // 12 hours
+    maxAge: 60 * 60 * 12,
   });
   return res;
 }

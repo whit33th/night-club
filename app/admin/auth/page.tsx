@@ -30,7 +30,7 @@ function AdminAuthForm() {
         throw new Error(data?.error || "Invalid password");
       }
       toast.success("Welcome, admin.");
-      // Hard navigation so middleware re-evaluates with the new cookie immediately
+
       window.location.assign(redirect);
     } catch (err) {
       toast.error(

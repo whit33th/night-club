@@ -4,17 +4,23 @@ import { Preloaded, usePreloadedQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import ConvexEventsCard from "@/app/events/_components/EventsPage/ConvexEventsCard";
 import { generateSlug } from "@/lib/slugUtils";
+import ConvexEventsCard from "@/app/[lang]/events/_components/EventsPage/ConvexEventsCard";
+import { Locale } from "@/lib/i18n-config";
+import { Dict } from "@/lib/get-dictionary-client";
 
 export default function EventsGridSSR({
   preloaded,
+  locale,
+  dict,
 }: {
   preloaded: Preloaded<typeof api.admin.listUpcomingEvents>;
+  locale: Locale;
+
+  dict: Dict;
 }) {
   const events = usePreloadedQuery(preloaded);
 
-  // Events are already filtered and sorted by the query, just take first 6
   const sortedEvents = events.slice(0, 12);
 
   return (
@@ -24,7 +30,7 @@ export default function EventsGridSSR({
           href="/events"
           className="group inline-flex items-center gap-2 rounded-md px-2 py-1 text-sm uppercase tracking-wide text-white/80 hover:text-white"
         >
-          More Events
+          {dict.events.moreEvents}
           <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
         </Link>
       </div>
@@ -33,7 +39,6 @@ export default function EventsGridSSR({
         {sortedEvents.map((event, index) => {
           const eventSlug = generateSlug(event.title, event.date, event._id);
 
-          // Check if event is past (though it shouldn't be with upcoming events query)
           const warsawTime = new Date().toLocaleString("en-US", {
             timeZone: "Europe/Warsaw",
             year: "numeric",
@@ -52,11 +57,13 @@ export default function EventsGridSSR({
 
           return (
             <ConvexEventsCard
+              dict={dict}
               key={event._id}
               event={event}
               index={index}
               href={`/events/${eventSlug}`}
               isPast={isPast}
+              locale={locale}
             />
           );
         })}
@@ -68,7 +75,7 @@ export default function EventsGridSSR({
             href="/events"
             className="bg-primary/5 border-primary/20 text-primary hover:bg-primary/10 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium backdrop-blur transition-colors"
           >
-            More Events
+            {dict.events.moreEvents}
           </Link>
         </div>
       )}

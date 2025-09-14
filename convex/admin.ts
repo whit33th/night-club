@@ -2,9 +2,6 @@ import { paginationOptsValidator } from "convex/server";
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 
-// ==========================
-// Utility functions
-// ==========================
 function getCurrentWarsawTime(): Date {
   const warsawTime = new Date().toLocaleString("en-US", {
     timeZone: "Europe/Warsaw",
@@ -18,11 +15,6 @@ function getCurrentWarsawTime(): Date {
   });
   return new Date(warsawTime.replace(",", ""));
 }
-
-// ==========================
-// Events CRUD
-// ==========================
-// address removed from events schema
 
 const artistValidator = v.object({
   index: v.optional(v.number()),
@@ -60,7 +52,7 @@ export const listEvents = query({
       .withIndex("by_date")
       .order("desc")
       .collect();
-    // Project to allowed fields only (omit legacy fields like address)
+
     return rows.map((r) => ({
       _id: r._id,
       _creationTime: r._creationTime,
@@ -107,20 +99,17 @@ export const listUpcomingEvents = query({
   handler: async (ctx, args) => {
     const currentWarsawDate = getCurrentWarsawTime();
 
-    // Use index to get events sorted by date ascending
     const rows = await ctx.db
       .query("events")
       .withIndex("by_date")
       .order("asc")
       .collect();
 
-    // Filter for upcoming events only (check date and time)
     const upcomingEvents = rows.filter((r) => {
       const eventDateTime = new Date(`${r.date}T${r.startAt}`);
       return eventDateTime >= currentWarsawDate;
     });
 
-    // Apply limit if provided (already sorted by index)
     return args.limit ? upcomingEvents.slice(0, args.limit) : upcomingEvents;
   },
 });
@@ -148,7 +137,6 @@ export const listPastEvents = query({
     }),
   ),
   handler: async (ctx, args) => {
-    // Use index to get events sorted by date descending
     const rows = await ctx.db
       .query("events")
       .withIndex("by_date")
@@ -157,13 +145,11 @@ export const listPastEvents = query({
 
     const currentWarsawDate = getCurrentWarsawTime();
 
-    // Filter for past events only
     const pastEvents = rows.filter((r) => {
       const eventDateTime = new Date(`${r.date}T${r.startAt}`);
       return eventDateTime < currentWarsawDate;
     });
 
-    // Apply limit if provided (already sorted by index in descending order)
     return args.limit ? pastEvents.slice(0, args.limit) : pastEvents;
   },
 });
@@ -307,9 +293,6 @@ export const deleteEvent = mutation({
   },
 });
 
-// ==========================
-// News CRUD
-// ==========================
 export const listNews = query({
   args: {},
   returns: v.array(
@@ -406,9 +389,6 @@ export const deleteNews = mutation({
   },
 });
 
-// ==========================
-// Gallery CRUD
-// ==========================
 export const listGallery = query({
   args: {},
   returns: v.array(
@@ -522,9 +502,6 @@ export const deleteGalleryImage = mutation({
   },
 });
 
-// ==========================
-// Club info (singleton)
-// ==========================
 const socialMedia = v.object({
   facebook: v.optional(v.string()),
   instagram: v.optional(v.string()),
@@ -572,9 +549,6 @@ export const upsertClubInfo = mutation({
   },
 });
 
-// ==========================
-// Residents CRUD
-// ==========================
 export const listResidents = query({
   args: {},
   returns: v.array(
@@ -589,7 +563,7 @@ export const listResidents = query({
   ),
   handler: async (ctx) => {
     const rows = await ctx.db.query("residents").order("desc").collect();
-    // Project only allowed fields (omit nameLower, etc.)
+
     return rows.map((r) => ({
       _id: r._id,
       _creationTime: r._creationTime,
@@ -654,7 +628,7 @@ export const updateResident = mutation({
     }
     await ctx.db.patch(args.id, patch);
     const updated = await ctx.db.get(args.id);
-    // Project to allowed fields only (omit nameLower)
+
     return updated;
   },
 });
@@ -668,9 +642,6 @@ export const deleteResident = mutation({
   },
 });
 
-// ==========================
-// FAQs CRUD
-// ==========================
 export const listFaqs = query({
   args: {},
   returns: v.array(

@@ -1,0 +1,32 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://2progi.pl/sitemap.xml
+
+# Block administrative sections
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /convex/
+
+# Allow images and media
+Allow: /imgs/
+Allow: /videos/
+
+# Block temporary and service files
+Disallow: /*.json$
+Disallow: /*_buildManifest.js$
+Disallow: /*_ssgManifest.js$
+
+# Crawl-delay for bots
+Crawl-delay: 1
+
+# Special rules for Googlebot
+User-agent: Googlebot
+Allow: /
+
+# Special rules for Yandex
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 2

@@ -12,13 +12,12 @@ const socialMedia = v.object({
   telegram: v.optional(v.string()),
 });
 export default defineSchema({
-  // Events (program)
   events: defineTable({
     title: v.string(),
-    date: v.string(), // ISO YYYY-MM-DD
-    startAt: v.string(), // HH:mm
-    doorsAt: v.optional(v.string()), // HH:mm
-    // Primary storage in ImageKit
+    date: v.string(),
+    startAt: v.string(),
+    doorsAt: v.optional(v.string()),
+
     imageKitId: v.string(),
     imageKitPath: v.optional(v.string()),
     artists: v.optional(
@@ -27,7 +26,7 @@ export default defineSchema({
           index: v.optional(v.number()),
           name: v.string(),
           imageKitId: v.optional(v.string()),
-          imageKitPath: v.optional(v.string()), // Added filePath for artist images
+          imageKitPath: v.optional(v.string()),
           role: v.optional(v.string()),
         }),
       ),
@@ -41,36 +40,31 @@ export default defineSchema({
     description: v.optional(v.string()),
   }).index("by_date", ["date"]),
 
-  // News posts
   news: defineTable({
     title: v.string(),
     imageKitId: v.string(),
-    imageKitPath: v.optional(v.string()), // Added filePath from ImageKit
+    imageKitPath: v.optional(v.string()),
     body: v.string(),
   }),
 
-  // Gallery assets
   galleryImages: defineTable({
     imageKitId: v.string(),
-    imageKitPath: v.optional(v.string()), // Added filePath from ImageKit
+    imageKitPath: v.optional(v.string()),
   }),
 
-  // Club info (singleton)
   clubInfo: defineTable({
     phone: v.optional(v.string()),
     email: v.optional(v.string()),
     socialMedia: v.optional(socialMedia),
   }),
 
-  // Residents (DJs)
   residents: defineTable({
     name: v.string(),
     imageKitId: v.string(),
-    imageKitPath: v.optional(v.string()), // Added filePath from ImageKit
+    imageKitPath: v.optional(v.string()),
     role: v.optional(v.string()),
   }),
 
-  // Frequently Asked Questions
   faqs: defineTable({
     question: v.string(),
     answer: v.string(),

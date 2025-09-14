@@ -1,10 +1,11 @@
-import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
+import { Facebook, Instagram } from "lucide-react";
 import SocialIcon from "./SocialIcon";
+import { Dict } from "@/lib/get-dictionary-client";
 
-const SocialLinks = () => (
+const SocialLinks = ({ dict }: { dict: Dict }) => (
   <div className="flex items-center justify-between">
     <p className="text-[11px] uppercase tracking-[0.25em] text-white/60">
-      Follow us
+      {dict.common.followUs}
     </p>
     <div className="flex items-center gap-2">
       <SocialIcon
@@ -12,20 +13,11 @@ const SocialLinks = () => (
         icon={Instagram}
         label="Instagram"
       />
-      <SocialIcon
-        href="https://x.com/yourclub"
-        icon={Twitter}
-        label="Twitter"
-      />
+
       <SocialIcon
         href="https://facebook.com/yourclub"
         icon={Facebook}
         label="Facebook"
-      />
-      <SocialIcon
-        href="https://youtube.com/@yourclub"
-        icon={Youtube}
-        label="YouTube"
       />
     </div>
   </div>

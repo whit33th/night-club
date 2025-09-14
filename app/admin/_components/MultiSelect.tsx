@@ -20,7 +20,6 @@ type MultiSelectProps = {
   onChange: (next: string[]) => void;
 };
 
-// Accessible multi-select dropdown styled like the admin Input component
 export default function MultiSelect({
   label,
   placeholder = "Select options",
@@ -53,7 +52,7 @@ export default function MultiSelect({
 
   const openAndFocus = () => {
     setOpen(true);
-    // Set initial activeIndex to first item, or the first selected if present
+
     const firstSelectedIdx = options.findIndex((o) => selectedSet.has(o.value));
     setActiveIndex(firstSelectedIdx >= 0 ? firstSelectedIdx : 0);
   };
@@ -63,7 +62,6 @@ export default function MultiSelect({
     setActiveIndex(-1);
   };
 
-  // Close on outside click
   useEffect(() => {
     if (!open) return;
     const onDocClick = (e: MouseEvent) => {
@@ -76,7 +74,6 @@ export default function MultiSelect({
     return () => document.removeEventListener("mousedown", onDocClick);
   }, [open]);
 
-  // Keep active option scrolled into view
   useEffect(() => {
     if (!open) return;
     if (activeIndex < 0) return;
@@ -84,7 +81,6 @@ export default function MultiSelect({
     el?.scrollIntoView({ block: "nearest" });
   }, [activeIndex, open]);
 
-  // Ensure listbox receives focus when opening so Arrow keys work
   useEffect(() => {
     if (!open) return;
     const id = requestAnimationFrame(() => {
@@ -102,7 +98,7 @@ export default function MultiSelect({
         else listRef.current?.focus();
         break;
       case "Enter":
-      case " ": // Space
+      case " ":
         e.preventDefault();
         if (!open) openAndFocus();
         break;
@@ -145,7 +141,6 @@ export default function MultiSelect({
         buttonRef.current?.focus();
         break;
       case "Tab":
-        // Let focus move, but close the menu
         closeMenu();
         break;
       default:
@@ -219,7 +214,6 @@ export default function MultiSelect({
             data-lenis-prevent
             data-lenis-prevent-wheel
             onWheelCapture={(e) => {
-              // Allow native scroll inside list, but keep Lenis from capturing
               e.stopPropagation();
             }}
             onTouchMoveCapture={(e) => {

@@ -1,8 +1,10 @@
 "use client";
 
-import { Facebook, Instagram, Twitter, type LucideIcon } from "lucide-react";
+import { Facebook, Instagram, type LucideIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Locale } from "@/lib/i18n-config";
+import { Dict } from "@/lib/get-dictionary-client";
 
 type NavLink = { href: string; label: string };
 type NavSection = { title: string; links: Array<NavLink> };
@@ -12,46 +14,14 @@ const SECTION_TITLE_CLASS = "text-xs uppercase tracking-[0.2em] text-white/60";
 const LINK_CLASS = "text-white/85 transition hover:text-white";
 const SOCIAL_ICON_CLASS = "h-5 w-5";
 
-const NAV_SECTIONS: Array<NavSection> = [
-  {
-    title: "Info",
-    links: [
-      { href: "/about", label: "About" },
-      { href: "/events", label: "Events" },
-      { href: "/faq", label: "FAQ" },
-    ],
-  },
-  {
-    title: "More",
-    links: [
-      { href: "/news", label: "News" },
-      { href: "/gallery", label: "Gallery" },
-      { href: "/legal/privacy", label: "Privacy" },
-      { href: "/legal/terms", label: "Terms" },
-    ],
-  },
-  {
-    title: "Contact",
-    links: [
-      { href: "mailto:info@2progi.club", label: "info@2progi.club" },
-      { href: "tel:+1234567890", label: "+1 (234) 567-890" },
-    ],
-  },
-];
-
 const SOCIAL_LINKS: Array<SocialLink> = [
   {
-    href: "https://instagram.com/yourclub",
+    href: "https://instagram.com/2progi",
     label: "Instagram",
     Icon: Instagram,
   },
   {
-    href: "https://x.com/yourclub",
-    label: "Twitter",
-    Icon: Twitter,
-  },
-  {
-    href: "https://facebook.com/yourclub",
+    href: "https://facebook.com/2progi",
     label: "Facebook",
     Icon: Facebook,
   },
@@ -70,7 +40,34 @@ function FooterSection({ title, links }: NavSection) {
   );
 }
 
-export default function Footer() {
+export default function Footer({ lang, dict }: { lang: Locale; dict: Dict }) {
+  const NAV_SECTIONS: Array<NavSection> = [
+    {
+      title: "Info",
+      links: [
+        { href: `/${lang}/about`, label: dict.navigation.about },
+        { href: `/${lang}/events`, label: dict.navigation.events },
+        { href: `/${lang}/faq`, label: dict.navigation.faq },
+      ],
+    },
+    {
+      title: "More",
+      links: [
+        { href: `/${lang}/news`, label: dict.navigation.news },
+        { href: `/${lang}/gallery`, label: dict.navigation.gallery },
+        { href: `/${lang}/legal/privacy`, label: "Privacy" },
+        { href: `/${lang}/legal/terms`, label: "Terms" },
+      ],
+    },
+    {
+      title: dict.navigation.contact,
+      links: [
+        { href: "mailto:biuro@2progi.pl", label: "biuro@2progi.pl" },
+        { href: "tel:+48606277256", label: "+48 606 277 256" },
+      ],
+    },
+  ];
+
   return (
     <footer className="w-full border-t border-white/10 bg-black/20 px-4 py-6 text-white backdrop-blur-3xl">
       <div className="mx-auto max-w-6xl space-y-6">
@@ -113,7 +110,7 @@ export default function Footer() {
             </div>
           </div>
           <div className="text-[10px] uppercase tracking-[0.25em] text-white/50">
-            © 2025, 2Progi.pl
+            {dict.footer.rights}
           </div>
         </div>
       </div>

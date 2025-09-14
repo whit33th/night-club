@@ -1,0 +1,178 @@
+{
+  "navigation": {
+    "home": "Home",
+    "events": "Events",
+    "gallery": "Gallery",
+    "news": "News",
+    "about": "About",
+    "faq": "FAQ",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "2progi",
+    "subtitle": "Music and event club in the heart of Poznań",
+    "description": "Concerts, parties, DJ sets and event space rental",
+    "cta": "View events",
+    "address": "Aleja Niepodległości 36, Poznań",
+    "texts": {
+      "afterDark": "After Dark",
+      "neonHeart": "Neon Heart",
+      "midnightRhythm": "Midnight Rhythm",
+      "noSleepClub": "No Sleep Club"
+    }
+  },
+  "events": {
+    "title": "Upcoming events",
+    "subtitle": "Exclusive parties · Limited capacity · 18+ · Dress code · International DJs · Secure entry",
+    "viewAll": "View all",
+    "noEvents": "No upcoming events",
+    "bookTickets": "Book tickets",
+    "moreInfo": "More info",
+    "date": "Date",
+    "time": "Time",
+    "price": "Price",
+    "toggleView": "Toggle view",
+    "switchToList": "Switch to list",
+    "switchToGrid": "Switch to grid",
+    "listView": "List view",
+    "gridView": "Grid view",
+    "eventNotFound": "Event not found.",
+    "freeEntry": "Free Entry",
+    "generalAdmission": "General Admission",
+    "nextEvents": "Next Events",
+    "noEventsAvailable": "No events available",
+    "featuredArtists": "Featured Artists",
+    "artists": "Artists",
+    "dressCode": "Dress code",
+    "ageLimit": "Age Limit",
+    "minAge": "Minimum age",
+    "noAgeRestrictions": "No age restrictions",
+    "music": "Music",
+    "genres": "Music genres",
+    "entry": "Entry",
+    "paidEntry": "Paid entry",
+    "bar": "Bar",
+    "barAvailable": "Bar available",
+    "cocktailsBeerSoftDrinks": "Cocktails, beer, soft drinks, snacks",
+    "location": "Location",
+    "tickets": "Tickets",
+    "limited": "Limited",
+    "priceFrom": "Price from:",
+    "buyTickets": "Buy tickets",
+    "noTicketNeeded": "No ticket needed",
+    "welcomeMessage": "Feel free to come in — the night's yours!",
+    "moreEvents": "More Events",
+    "allEvents": "All events",
+    "doorsOpen": "Doors open",
+    "doors": "Doors",
+    "days": "Days",
+    "hours": "Hours",
+    "min": "Min",
+    "sec": "Sec",
+    "startsAt": "Starts at",
+    "liveNow": "Live now",
+    "eventEnded": "Event ended",
+    "pastEvent": "Past Event",
+    "casual": "Casual",
+    "band": "Band",
+    "dj": "DJ"
+  },
+  "gallery": {
+    "title": "Gallery",
+    "subtitle": "Photos from our events",
+    "viewMore": "View more",
+    "noImages": "No images in gallery yet"
+  },
+  "news": {
+    "title": "News",
+    "subtitle": "Latest updates, nights and announcements.",
+    "latest": "Latest",
+    "readMore": "Read more",
+    "backToList": "Back to list",
+    "back": "Back",
+    "notFound": "News not found",
+    "notFoundDescription": "The requested news item could not be found."
+  },
+  "about": {
+    "title": "About us",
+    "subtitle": "Get to know club 2progi",
+    "description": "2progi is more than a club - it's a place where music meets passion, and every event is an unforgettable experience.",
+    "slogan": "After Dark · Neon Heart · No Sleep Club",
+    "residents": "Residents",
+    "resident": "Resident",
+    "features": {
+      "sound": "Professional sound system",
+      "space": "Flexible event space",
+      "location": "Perfect location in the center",
+      "experience": "Years of industry experience"
+    }
+  },
+  "footer": {
+    "address": "Aleja Niepodległości 36<br>61-714 Poznań",
+    "phone": "Tel: +48 606 277 256",
+    "email": "biuro@2progi.pl",
+    "followUs": "Follow us",
+    "rights": "© 2024 2progi. All rights reserved."
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "tryAgain": "Try again",
+    "close": "Close",
+    "open": "Open",
+    "menu": "Menu",
+    "language": "Language",
+    "followUs": "Follow us"
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Get in touch with us",
+    "email": "Email",
+    "form": {
+      "name": "Full name",
+      "email": "Email",
+      "subject": "Subject",
+      "message": "Message",
+      "send": "Send",
+      "sending": "Sending...",
+      "sent": "Sent!",
+      "error": "Sending error"
+    }
+  },
+  "booking": {
+    "title": "Table reservation",
+    "form": {
+      "date": "Date",
+      "time": "Time",
+      "guests": "Number of guests",
+      "name": "Full name",
+      "phone": "Phone",
+      "email": "Email",
+      "message": "Additional information",
+      "submit": "Reserve",
+      "submitting": "Reserving...",
+      "success": "Reservation sent!",
+      "error": "Reservation error"
+    }
+  },
+  "faq": {
+    "title": "FAQ",
+    "subtitle": "Minimal answers. Maximum clarity.",
+    "questions": [
+      { "q": "Age restrictions?", "a": "18+ only. ID required." },
+      { "q": "Dress code?", "a": "Smart casual. No sportswear." },
+      {
+        "q": "Refunds?",
+        "a": "Tickets are non-refundable unless event is canceled."
+      },
+      {
+        "q": "Payment methods?",
+        "a": "Cards and contactless accepted at the bar."
+      },
+      {
+        "q": "Door policy?",
+        "a": "Management reserves the right of admission."
+      }
+    ]
+  }
+}

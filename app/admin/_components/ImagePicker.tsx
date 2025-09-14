@@ -2,6 +2,7 @@
 
 import React, { memo } from "react";
 import { FileImage } from "lucide-react";
+import Image from "next/image";
 
 type Props = {
   inputId?: string;
@@ -40,8 +41,8 @@ function ImagePickerBase({
         <div className="flex min-h-48 items-center justify-center p-4">
           {imagePreview ? (
             <div className="relative aspect-video w-full max-w-2xl">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
+                fill
                 src={imagePreview}
                 alt="Event poster preview"
                 className="h-full w-full object-contain"

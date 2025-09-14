@@ -14,7 +14,7 @@ import {
   Music2,
   Type,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Controller, useFieldArray } from "react-hook-form";
 import { DataTable } from "./_components/DataTable";
 import { FormField } from "./_components/FormField";
@@ -200,7 +200,6 @@ export default function EventsPage() {
 
         await updateEvent({ id: editingId, patch });
 
-        // Clear editing state
         setEditingId(null);
         setEditingEvent(null);
         setImageError(false);
@@ -214,7 +213,6 @@ export default function EventsPage() {
         };
         await createEvent(toCreate);
 
-        // Clear error state
         setImageError(false);
         clearImage();
         setFormKey((k) => k + 1);
@@ -239,9 +237,6 @@ export default function EventsPage() {
     }
     await deleteEvent({ id: id as Id<"events"> });
   };
-
-  // Note: We handle form population directly in onEdit instead of useEffect
-  // to avoid timing issues and ensure immediate population
 
   const [formKey, setFormKey] = useState(0);
 
@@ -480,7 +475,6 @@ export default function EventsPage() {
             setImageError(false);
             clearImage();
 
-            // Immediately populate form with item data
             reset(mapEventToForm(item));
           }}
           onDelete={handleDelete}

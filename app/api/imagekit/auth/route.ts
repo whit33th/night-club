@@ -12,13 +12,13 @@ export async function GET() {
       );
     }
     const token = crypto.randomBytes(16).toString("hex");
-    const expire = Math.floor(Date.now() / 1000) + 60 * 10; // 10 minutes
+    const expire = Math.floor(Date.now() / 1000) + 60 * 10;
     const signature = crypto
       .createHmac("sha1", privateKey)
       .update(token + expire)
       .digest("hex");
     return NextResponse.json({ token, expire, signature, publicKey });
-  } catch  {
+  } catch {
     return NextResponse.json({ error: "Auth error" }, { status: 500 });
   }
 }

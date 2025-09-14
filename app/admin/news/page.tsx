@@ -1,16 +1,16 @@
 "use client";
 
-import { useMutation } from "convex/react";
-import { usePaginatedQuery } from "convex-helpers/react/cache/hooks";
-import { api } from "@/convex/_generated/api";
-import { useAdminForm } from "../_hooks/useAdminForm";
-import { FormField } from "../_components/FormField";
-import { DataTable } from "../_components/DataTable";
-import { HoverPreviewIcon } from "../_components/HoverPreview";
-import type { Doc, Id } from "@/convex/_generated/dataModel";
 import Button from "@/components/UI/Form/Button";
-import { Type, MessageSquareText } from "lucide-react";
-import { useEffect, useState } from "react";
+import { api } from "@/convex/_generated/api";
+import type { Doc, Id } from "@/convex/_generated/dataModel";
+import { usePaginatedQuery } from "convex-helpers/react/cache/hooks";
+import { useMutation } from "convex/react";
+import { MessageSquareText, Type } from "lucide-react";
+import { useState } from "react";
+import { DataTable } from "../_components/DataTable";
+import { FormField } from "../_components/FormField";
+import { HoverPreviewIcon } from "../_components/HoverPreview";
+import { useAdminForm } from "../_hooks/useAdminForm";
 import { deleteImageFromImageKit } from "../_utils/imageKit";
 import NewsImagePicker from "./_components/NewsImagePicker";
 
@@ -46,8 +46,7 @@ const newsColumns = [
       n.imageKitId ? (
         <HoverPreviewIcon
           imageKitId={n.imageKitId}
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          imageKitPath={(n as any).imageKitPath}
+          imageKitPath={n.imageKitPath}
           size={160}
         />
       ) : (
@@ -105,12 +104,11 @@ export default function NewsPage() {
 
         await updateNews({ id: editingId, patch });
 
-        // Clear editing state
         setEditingId(null);
         setEditingNews(null);
         setImageError(false);
         clearImage();
-        // Force remount to ensure absolutely clean slate (helps with any lingering RHF internal state)
+
         setFormKey((k) => k + 1);
       } else {
         const toCreate = {
@@ -120,7 +118,6 @@ export default function NewsPage() {
         };
         await createNews(toCreate);
 
-        // Clear error state
         setImageError(false);
         clearImage();
         setFormKey((k) => k + 1);
@@ -131,9 +128,6 @@ export default function NewsPage() {
   const [imageError, setImageError] = useState(false);
 
   const liveTitle = watch("title");
-
-  // Note: We handle form population directly in onEdit instead of useEffect
-  // to avoid timing issues and ensure immediate population
 
   const handleDelete = async (id: string, opts?: { skipConfirm?: boolean }) => {
     if (!opts?.skipConfirm) {
@@ -238,7 +232,6 @@ export default function NewsPage() {
             setImageError(false);
             clearImage();
 
-            // Immediately populate form with item data
             reset(mapNewsToForm(item));
           }}
           onDelete={handleDelete}

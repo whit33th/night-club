@@ -1,0 +1,181 @@
+{
+  "navigation": {
+    "home": "Strona główna",
+    "events": "Wydarzenia",
+    "gallery": "Galeria",
+    "news": "Aktualności",
+    "about": "O nas",
+    "faq": "FAQ",
+    "contact": "Kontakt"
+  },
+  "hero": {
+    "title": "2progi",
+    "subtitle": "Klub muzyczno-eventowy w sercu Poznania",
+    "description": "Koncerty, imprezy, DJ-sety i wynajem przestrzeni eventowej",
+    "cta": "Zobacz wydarzenia",
+    "address": "Aleja Niepodległości 36, Poznań",
+    "texts": {
+      "afterDark": "Po Zmroku",
+      "neonHeart": "Neonowe Serce",
+      "midnightRhythm": "Północny Rytm",
+      "noSleepClub": "Klub Bez Snu"
+    }
+  },
+  "events": {
+    "title": "Nadchodzące wydarzenia",
+    "subtitle": "Ekskluzywne imprezy · Ograniczona pojemność · 18+ · Dress code · Międzynarodowi DJ-e · Bezpieczne wejście",
+    "viewAll": "Zobacz wszystkie",
+    "noEvents": "Brak nadchodzących wydarzeń",
+    "bookTickets": "Kup bilety",
+    "moreInfo": "Więcej informacji",
+    "date": "Data",
+    "time": "Godzina",
+    "price": "Cena",
+    "toggleView": "Przełącz widok",
+    "switchToList": "Przełącz na listę",
+    "switchToGrid": "Przełącz na siatkę",
+    "listView": "Widok listy",
+    "gridView": "Widok siatki",
+    "eventNotFound": "Wydarzenie nie znalezione.",
+    "freeEntry": "Wstęp wolny",
+    "generalAdmission": "Bilet ogólny",
+    "nextEvents": "Następne wydarzenia",
+    "noEventsAvailable": "Brak dostępnych wydarzeń",
+    "featuredArtists": "Główni Artyści",
+    "artists": "Artyści",
+    "dressCode": "Dress code",
+    "ageLimit": "Limit wiekowy",
+    "minAge": "Wiek minimalny",
+    "noAgeRestrictions": "Bez ograniczeń wiekowych",
+    "music": "Muzyka",
+    "genres": "Gatunki muzyczne",
+    "entry": "Wejście",
+    "paidEntry": "Płatne wejście",
+    "bar": "Bar",
+    "barAvailable": "Bar dostępny",
+    "cocktailsBeerSoftDrinks": "Koktajle, piwo, napoje bezalkoholowe, przekąski",
+    "location": "Lokalizacja",
+    "tickets": "Bilety",
+    "limited": "Ograniczone",
+    "priceFrom": "Cena od:",
+    "buyTickets": "Kup bilety",
+    "noTicketNeeded": "Bilet nie jest wymagany",
+    "welcomeMessage": "Zapraszamy — noc należy do Ciebie!",
+    "moreEvents": "Więcej Wydarzeń",
+    "allEvents": "Wszystkie wydarzenia",
+    "doorsOpen": "Otwarcie",
+    "doors": "Otwarcie",
+    "days": "Dni",
+    "hours": "Godz",
+    "min": "Min",
+    "sec": "Sek",
+    "startsAt": "Start o",
+    "liveNow": "Na żywo",
+    "eventEnded": "Wydarzenie zakończone",
+    "pastEvent": "Przeszłe wydarzenie",
+    "casual": "Casualowy",
+    "band": "Zespół",
+    "dj": "DJ"
+  },
+  "gallery": {
+    "title": "Galeria",
+    "subtitle": "Zdjęcia z naszych wydarzeń",
+    "viewMore": "Zobacz więcej",
+    "noImages": "Brak zdjęć w galerii"
+  },
+  "news": {
+    "title": "Aktualności",
+    "subtitle": "Najnowsze aktualizacje, imprezy i ogłoszenia.",
+    "latest": "Najnowsze",
+    "readMore": "Czytaj więcej",
+    "backToList": "Powrót do listy",
+    "back": "Wstecz",
+    "notFound": "Aktualność nie znaleziona",
+    "notFoundDescription": "Żądana aktualność nie mogła zostać znaleziona."
+  },
+  "about": {
+    "title": "O nas",
+    "subtitle": "Poznaj klub 2progi",
+    "description": "2progi to więcej niż klub - to miejsce, gdzie muzyka spotyka się z pasją, a każde wydarzenie to niezapomniane doświadczenie.",
+    "slogan": "Po Zmroku · Neonowe Serce · Bezsenna Noc",
+    "residents": "Rezydenci",
+    "resident": "Rezydent",
+    "features": {
+      "sound": "Profesjonalny system nagłośnienia",
+      "space": "Elastyczna przestrzeń eventowa",
+      "location": "Doskonała lokalizacja w centrum",
+      "experience": "Lata doświadczenia w branży"
+    }
+  },
+  "footer": {
+    "address": "Aleja Niepodległości 36<br>61-714 Poznań",
+    "phone": "Tel: +48 606 277 256",
+    "email": "biuro@2progi.pl",
+    "followUs": "Śledź nas",
+    "rights": "© 2024 2progi. Wszelkie prawa zastrzeżone."
+  },
+  "common": {
+    "loading": "Ładowanie...",
+    "error": "Wystąpił błąd",
+    "tryAgain": "Spróbuj ponownie",
+    "close": "Zamknij",
+    "open": "Otwórz",
+    "menu": "Menu",
+    "language": "Język",
+    "followUs": "Śledź nas"
+  },
+  "contact": {
+    "title": "Kontakt",
+    "subtitle": "Skontaktuj się z nami",
+    "email": "Email",
+    "form": {
+      "name": "Imię i nazwisko",
+      "email": "Email",
+      "subject": "Temat",
+      "message": "Wiadomość",
+      "send": "Wyślij",
+      "sending": "Wysyłanie...",
+      "sent": "Wysłano!",
+      "error": "Błąd wysyłania"
+    }
+  },
+  "booking": {
+    "title": "Rezerwacja stolika",
+    "form": {
+      "date": "Data",
+      "time": "Godzina",
+      "guests": "Liczba gości",
+      "name": "Imię i nazwisko",
+      "phone": "Telefon",
+      "email": "Email",
+      "message": "Dodatkowe informacje",
+      "submit": "Zarezerwuj",
+      "submitting": "Rezerwowanie...",
+      "success": "Rezerwacja wysłana!",
+      "error": "Błąd rezerwacji"
+    }
+  },
+  "faq": {
+    "title": "FAQ",
+    "subtitle": "Minimalne odpowiedzi. Maksymalna jasność.",
+    "questions": [
+      {
+        "q": "Ograniczenia wiekowe?",
+        "a": "Tylko 18+. Wymagany dowód tożsamości."
+      },
+      { "q": "Dress code?", "a": "Smart casual. Bez odzieży sportowej." },
+      {
+        "q": "Zwroty?",
+        "a": "Bilety nie podlegają zwrotowi, chyba że wydarzenie zostanie odwołane."
+      },
+      {
+        "q": "Metody płatności?",
+        "a": "Karty i płatności bezgotówkowe akceptowane w barze."
+      },
+      {
+        "q": "Polityka wejścia?",
+        "a": "Zarząd zastrzega sobie prawo do odmowy wstępu."
+      }
+    ]
+  }
+}

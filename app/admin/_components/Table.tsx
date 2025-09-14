@@ -27,7 +27,6 @@ export const TableContainer = forwardRef<
         isolation: "isolate",
       }}
       onWheel={(e) => {
-        // Force scroll within container, prevent page scroll
         const container = e.currentTarget;
         const atTop = container.scrollTop === 0;
         const atBottom =
@@ -35,15 +34,12 @@ export const TableContainer = forwardRef<
           container.scrollHeight - container.clientHeight;
 
         if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
-          // At boundary - let the event bubble up to page
           return;
         }
 
-        // Within scroll bounds - keep scrolling in container
         e.stopPropagation();
       }}
       onTouchStart={(e) => {
-        // Ensure touch scrolling works properly on iOS
         const container = e.currentTarget;
         (
           container.style as React.CSSProperties & {
