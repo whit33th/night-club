@@ -6,7 +6,7 @@ import { i18n } from "./lib/i18n-config";
 
 export const config = {
   matcher: [
-    "/((?!_next|api|favicon.ico|manifest.json|robots.txt|sitemap.xml|videos|.*\\.(?:png|jpg|jpeg|svg|gif|ico|mp4|webm|ogg)).*)",
+    "/((?!_next|api|favicon.ico|manifest.json|robots.txt|sitemap.xml|videos|.*\\.(?:png|jpg|webp|jpeg|svg|gif|ico|mp4|webm|ogg)).*)",
   ],
 };
 
