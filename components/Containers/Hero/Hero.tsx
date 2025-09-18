@@ -22,7 +22,7 @@ export default function Hero({ dict }: HeroProps) {
         muted
         loop
         playsInline
-        poster="/imgs/hero/hero.webp"
+        poster="/videos/hero/hero.webp"
         preload="metadata"
         className="absolute inset-0 -z-50 h-full w-full rounded object-cover object-center"
       />

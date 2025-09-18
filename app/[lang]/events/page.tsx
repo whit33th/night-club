@@ -65,10 +65,10 @@ function EventsPageBody({ lang }: { lang: Locale }) {
       ) : (
         <>
           <Activity mode={mode === "grid" ? "visible" : "hidden"}>
-            <EventsGridView items={posters} locale={lang} dict={dict} />
+            <EventsGridView items={posters} />
           </Activity>
           <Activity mode={mode === "list" ? "visible" : "hidden"}>
-            <EventsListView items={posters} locale={lang} />
+            <EventsListView items={posters} />
           </Activity>
         </>
       )}

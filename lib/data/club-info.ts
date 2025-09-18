@@ -12,7 +12,7 @@ class ClubInfo {
   };
   phone = "+48 606 277 256";
   email = "biuro@2progi.pl";
-  website = "https://2progi.pl";
+  website = "https://2progi.vercel.app";
   socialMedia = {
     instagram: "https://instagram.com/2progi",
     facebook: "https://facebook.com/2progi",

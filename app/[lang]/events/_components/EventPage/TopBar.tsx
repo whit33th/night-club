@@ -154,7 +154,7 @@ export default function TopBar({
               ].map((item) => (
                 <div
                   key={item.label}
-                  className="rounded-lg px-2 py-1.5 text-center backdrop-blur-sm md:px-4 md:py-2"
+                  className="rounded-lg px-2 py-1.5 text-center md:px-4 md:py-2"
                 >
                   <div className="text-base font-extrabold tabular-nums tracking-wider md:text-3xl">
                     {String(item.value).padStart(2, "0")}

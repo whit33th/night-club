@@ -5,7 +5,7 @@ import { getDictionary } from "@/lib/get-dictionary";
 import { Locale } from "@/lib/i18n-config";
 import { preloadQuery } from "convex/nextjs";
 
-export const revalidate = 3600;
+// export const revalidate = 3600;
 
 type Props = { params: Promise<{ lang: Locale }> };
 
@@ -19,7 +19,7 @@ export default async function HomePage({ params }: Props) {
   return (
     <>
       <Hero dict={dict} />
-      <EventsGridSSR preloaded={preloadedEvents} locale={lang} dict={dict} />
+      <EventsGridSSR preloaded={preloadedEvents} lang={lang} dict={dict} />
     </>
   );
 }

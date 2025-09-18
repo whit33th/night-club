@@ -1,6 +1,7 @@
 import AppearanceEffect from "@/components/Providers/AppearanceEffect";
 import ConvexClientProvider from "@/components/Providers/ConvexClientProvider";
 import { ImageKitProviderWrapper } from "@/components/Providers/ImageKitProvider";
+import { LanguageProvider } from "@/components/Providers/LanguageProvider";
 import LenisProvider from "@/components/Providers/LenisProvider";
 import JsonLdMainPage from "@/components/SEO/StructuredData";
 import Footer from "@/components/UI/Footer/Footer";
@@ -202,15 +203,17 @@ export default async function RootLayout({
         />
         <LenisProvider>
           <ConvexClientProvider>
-            <ImageKitProviderWrapper>
-              <Nav lang={lang as Locale} dict={dict} />
+            <LanguageProvider lang={lang as Locale} dict={dict}>
+              <ImageKitProviderWrapper>
+                <Nav />
 
-              <main className="relative flex-1 *:p-4">
-                <AppearanceEffect>{children}</AppearanceEffect>
-              </main>
+                <main className="relative flex-1 *:p-4">
+                  <AppearanceEffect>{children}</AppearanceEffect>
+                </main>
 
-              <Footer lang={lang as Locale} dict={dict} />
-            </ImageKitProviderWrapper>
+                <Footer />
+              </ImageKitProviderWrapper>
+            </LanguageProvider>
             <Toaster richColors position="bottom-right" />
           </ConvexClientProvider>
         </LenisProvider>

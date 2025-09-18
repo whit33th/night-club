@@ -5,46 +5,43 @@ import Link from "next/link";
 import { unstable_ViewTransition as ViewTransition } from "react";
 import { motion } from "framer-motion";
 import { generateSlug } from "@/lib/slugUtils";
-import { Locale } from "@/lib/i18n-config";
+import { useLanguage } from "@/components/Providers/LanguageProvider";
+import { useLocalizedLink } from "@/components/Providers/useLocalizedLink";
 import { Doc } from "@/convex/_generated/dataModel";
 import { localeMap } from "@/lib/date-utils";
-import { Dict } from "@/lib/get-dictionary-client";
 
 export default function ConvexEventsGridCard({
   event,
   index,
-  href,
   isPast = false,
-  locale,
-  dict,
 }: {
   event: Doc<"events">;
   index: number;
-  href?: string;
   isPast?: boolean;
-  locale: Locale;
-  dict: Dict;
 }) {
+  const { lang, dict } = useLanguage();
+  const localizedLink = useLocalizedLink();
   const date = new Date(event.date);
 
-  const monthName = date.toLocaleDateString(localeMap[locale], {
+  const monthName = date.toLocaleDateString(localeMap[lang], {
     month: "short",
   });
   const month = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-  const day = date.toLocaleDateString(localeMap[locale], { day: "numeric" });
+  const day = date.toLocaleDateString(localeMap[lang], { day: "numeric" });
 
   const artistsDisplay =
     event.artists?.map((artist) => artist.name).join(", ") ?? "";
 
   const eventSlug = generateSlug(event.title, event.date, event._id);
 
-  const linkHref = href || `/events/${eventSlug}`;
-
   return (
-    <Link href={linkHref}>
+    <Link
+      href={localizedLink(`events/${eventSlug}`)}
+      className="aspect-[9/12] h-full"
+    >
       <ViewTransition name={`event-card-${event._id}`} key={event._id}>
         <motion.div
-          className={`group relative flex flex-col p-5`}
+          className={`group relative flex h-full flex-col p-5`}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: isPast ? 0.75 : 1, y: 0 }}
           transition={{
@@ -70,7 +67,7 @@ export default function ConvexEventsGridCard({
             <p className="font-bold">{month}</p>
             <p className="text-3xl font-bold">{Number(day)}</p>
           </motion.div>
-          <div className="relative aspect-[9/12] h-full overflow-hidden p-4">
+          <div className="relative aspect-[9/12] flex-1 overflow-hidden p-4">
             <Image
               src={event.imageKitPath!}
               alt={event.title}

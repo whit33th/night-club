@@ -2,17 +2,18 @@
 
 import { Doc } from "@/convex/_generated/dataModel";
 import { isPastEvent } from "@/lib/date-utils";
-import { Locale } from "@/lib/i18n-config";
 import { generateSlug } from "@/lib/slugUtils";
+import { useLanguage } from "@/components/Providers/LanguageProvider";
+import { useLocalizedLink } from "@/components/Providers/useLocalizedLink";
 import Link from "next/link";
 import { unstable_ViewTransition as ViewTransition } from "react";
 
 type EventsListViewProps = {
   items: Array<Doc<"events">>;
-  locale: Locale;
 };
 
 export default function EventsListView({ items }: EventsListViewProps) {
+  const localizedLink = useLocalizedLink();
   return (
     <div className="mx-auto w-full max-w-6xl">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -31,7 +32,7 @@ export default function EventsListView({ items }: EventsListViewProps) {
             <ViewTransition name={`event-${p._id}`} key={p._id}>
               <Link
                 key={p._id}
-                href={`/events/${eventSlug}`}
+                href={localizedLink(`events/${eventSlug}`)}
                 className={`relative ${isPast ? "opacity-50" : "opacity-100 hover:opacity-80"}`}
               >
                 <div className="flex justify-between gap-4">

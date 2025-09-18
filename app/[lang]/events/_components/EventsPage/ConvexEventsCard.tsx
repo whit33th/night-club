@@ -2,9 +2,9 @@
 
 import { Doc } from "@/convex/_generated/dataModel";
 import { localeMap } from "@/lib/date-utils";
-import { Dict } from "@/lib/get-dictionary-client";
-import { Locale } from "@/lib/i18n-config";
 import { generateSlug } from "@/lib/slugUtils";
+import { useLanguage } from "@/components/Providers/LanguageProvider";
+import { useLocalizedLink } from "@/components/Providers/useLocalizedLink";
 import { Image } from "@imagekit/next";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -15,24 +15,21 @@ export default function ConvexEventsCard({
   index,
   href,
   isPast = false,
-  locale,
-  dict,
 }: {
   event: Doc<"events">;
   index: number;
   href?: string;
   isPast?: boolean;
-  locale: Locale;
-
-  dict: Dict;
 }) {
+  const { lang, dict } = useLanguage();
+  const localizedLink = useLocalizedLink();
   const date = new Date(event.date);
 
-  const monthName = date.toLocaleDateString(localeMap[locale], {
+  const monthName = date.toLocaleDateString(localeMap[lang], {
     month: "short",
   });
   const month = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-  const day = date.toLocaleDateString(localeMap[locale], { day: "numeric" });
+  const day = date.toLocaleDateString(localeMap[lang], { day: "numeric" });
 
   // Use imageKitPath if available (new format), otherwise fall back to imageKitId (legacy)
 
@@ -44,12 +41,15 @@ export default function ConvexEventsCard({
   const eventSlug = generateSlug(event.title, event.date, event._id);
 
   // Use custom href if provided, otherwise generate default URL
-  const linkHref = href ?? `/events/${eventSlug}`;
+  const linkHref = href ?? localizedLink(`events/${eventSlug}`);
 
   return (
-    <Link href={linkHref} className={`group flex flex-col`}>
+    <Link
+      href={linkHref}
+      className={`group flex aspect-[9/12] h-full flex-col`}
+    >
       <motion.div
-        className="relative p-5"
+        className="relative flex h-full flex-col p-5"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: isPast ? 0.75 : 1, y: 0 }}
         transition={{
@@ -73,7 +73,7 @@ export default function ConvexEventsCard({
           <p className="font-bold">{month}</p>
           <p className="text-3xl font-bold">{Number(day)}</p>
         </motion.div>
-        <div className="relative aspect-[9/12] h-full overflow-hidden p-4">
+        <div className="relative aspect-[9/12] flex-1 overflow-hidden p-4">
           <ViewTransition name={`event-${event._id}`} key={event._id}>
             <Image
               src={event.imageKitPath!}

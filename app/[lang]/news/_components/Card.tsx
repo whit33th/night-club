@@ -1,8 +1,9 @@
 "use client";
 
 import ImageWithPlaceholder from "@/components/UI/ImageKit/ImageWithPlaceholder";
+import { useLanguage } from "@/components/Providers/LanguageProvider";
+import { useLocalizedLink } from "@/components/Providers/useLocalizedLink";
 import type { Doc } from "@/convex/_generated/dataModel";
-import { Locale } from "@/lib/i18n-config";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { generateNewsSlug } from "../_utils/slugUtils";
@@ -11,12 +12,12 @@ import { formatDate } from "./utils";
 export function NewsCard({
   post,
   index,
-  locale,
 }: {
   post: Doc<"news">;
   index: number;
-  locale: Locale;
 }) {
+  const { lang } = useLanguage();
+  const localizedLink = useLocalizedLink();
   const newsSlug = generateNewsSlug(
     post.title,
     new Date(post._creationTime).toISOString().split("T")[0],
@@ -25,11 +26,11 @@ export function NewsCard({
 
   const formattedDate = formatDate(
     new Date(post._creationTime).toISOString(),
-    locale,
+    lang,
   );
 
   return (
-    <Link href={`/news/${newsSlug}`} className="group">
+    <Link href={localizedLink(`news/${newsSlug}`)} className="group">
       <motion.article
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}

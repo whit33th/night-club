@@ -88,7 +88,6 @@ export default function EventPageClient({
             currentEventDate={event.date}
             currentEventTime={event.startAt}
             preloadedUpcomingEvents={preloadedUpcomingEvents}
-            dict={dict}
           />
         </div>
       </div>

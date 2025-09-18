@@ -6,18 +6,20 @@ import Link from "next/link";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import { useSidebar } from "./_hooks";
-import { Locale } from "@/lib/i18n-config";
+import { useLanguage } from "@/components/Providers/LanguageProvider";
+import { useLocalizedLink } from "@/components/Providers/useLocalizedLink";
 import LocaleSwitcher from "../LocaleSwitcher";
-import { Dict } from "@/lib/get-dictionary-client";
 
-export default function Nav({ lang, dict }: { lang: Locale; dict: Dict }) {
+export default function Nav() {
   const [open, setOpen] = useState(false);
+  const { lang, dict } = useLanguage();
+  const localizedLink = useLocalizedLink();
 
   const navLinks = [
-    { href: `/${lang}/events`, label: dict.navigation.events },
-    { href: `/${lang}/gallery`, label: dict.navigation.gallery },
-    { href: `/${lang}/news`, label: dict.navigation.news },
-    { href: `/${lang}/about`, label: dict.navigation.about },
+    { href: localizedLink("events"), label: dict.navigation.events },
+    { href: localizedLink("gallery"), label: dict.navigation.gallery },
+    { href: localizedLink("news"), label: dict.navigation.news },
+    { href: localizedLink("about"), label: dict.navigation.about },
   ];
 
   useSidebar({ open, setOpen });
@@ -31,7 +33,7 @@ export default function Nav({ lang, dict }: { lang: Locale; dict: Dict }) {
     >
       {/* Navigation Bar */}
       <nav className="flex items-center justify-between gap-3 px-3 py-2">
-        <Link href={`/${lang}`} className="flex items-center gap-2">
+        <Link href={localizedLink("")} className="flex items-center gap-2">
           <Image
             src="/imgs/logo.png"
             alt="Logo"
@@ -65,7 +67,7 @@ export default function Nav({ lang, dict }: { lang: Locale; dict: Dict }) {
         </div>
       </nav>
 
-      <Sidebar open={open} setOpen={setOpen} navLinks={navLinks} dict={dict} />
+      <Sidebar open={open} setOpen={setOpen} navLinks={navLinks} />
     </header>
   );
 }

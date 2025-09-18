@@ -1,8 +1,8 @@
 "use client";
 
 import { SocialLinks } from "@/components/Containers/SocialLinks";
-import { Dict } from "@/lib/get-dictionary-client";
-import { Locale } from "@/lib/i18n-config";
+import { useLanguage } from "@/components/Providers/LanguageProvider";
+import { useLocalizedLink } from "@/components/Providers/useLocalizedLink";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -25,23 +25,26 @@ function FooterSection({ title, links }: NavSection) {
   );
 }
 
-export default function Footer({ lang, dict }: { lang: Locale; dict: Dict }) {
+export default function Footer() {
+  const { lang, dict } = useLanguage();
+  const localizedLink = useLocalizedLink();
+
   const NAV_SECTIONS: Array<NavSection> = [
     {
       title: "Info",
       links: [
-        { href: `/${lang}/about`, label: dict.navigation.about },
-        { href: `/${lang}/events`, label: dict.navigation.events },
-        { href: `/${lang}/faq`, label: dict.navigation.faq },
+        { href: localizedLink("about"), label: dict.navigation.about },
+        { href: localizedLink("events"), label: dict.navigation.events },
+        { href: localizedLink("faq"), label: dict.navigation.faq },
       ],
     },
     {
       title: "More",
       links: [
-        { href: `/${lang}/news`, label: dict.navigation.news },
-        { href: `/${lang}/gallery`, label: dict.navigation.gallery },
-        { href: `/${lang}/legal/privacy`, label: "Privacy" },
-        { href: `/${lang}/legal/terms`, label: "Terms" },
+        { href: localizedLink("news"), label: dict.navigation.news },
+        { href: localizedLink("gallery"), label: dict.navigation.gallery },
+        { href: localizedLink("legal/privacy"), label: "Privacy" },
+        { href: localizedLink("legal/terms"), label: "Terms" },
       ],
     },
     {

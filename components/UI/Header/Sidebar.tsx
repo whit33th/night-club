@@ -3,16 +3,16 @@
 import { unstable_Activity as Activity } from "react";
 import NavigationList from "./_components/NavigationList";
 import SidebarFooter from "./_components/SidebarFooter";
-import { Dict } from "@/lib/get-dictionary-client";
+import { useLanguage } from "@/components/Providers/LanguageProvider";
 
 interface SidebarProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   navLinks: { href: string; label: string }[];
-  dict: Dict;
 }
 
-const Sidebar = ({ open, setOpen, navLinks, dict }: SidebarProps) => {
+const Sidebar = ({ open, setOpen, navLinks }: SidebarProps) => {
+  const { dict } = useLanguage();
   return (
     <Activity mode={open ? "visible" : "hidden"}>
       <aside
@@ -27,7 +27,7 @@ const Sidebar = ({ open, setOpen, navLinks, dict }: SidebarProps) => {
           onItemClick={() => setOpen(false)}
           navLinks={navLinks}
         />
-        <SidebarFooter onClose={() => setOpen(false)} dict={dict} />
+        <SidebarFooter onClose={() => setOpen(false)} />
       </aside>
     </Activity>
   );

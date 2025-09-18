@@ -1,9 +1,10 @@
 "use client";
 
 import ImageWithPlaceholder from "@/components/UI/ImageKit/ImageWithPlaceholder";
+import { useLanguage } from "@/components/Providers/LanguageProvider";
+import { useLocalizedLink } from "@/components/Providers/useLocalizedLink";
 import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
-import { Dict } from "@/lib/get-dictionary-client";
 import { generateSlug } from "@/lib/slugUtils";
 import { Preloaded, usePreloadedQuery } from "convex/react";
 import { ArrowRight } from "lucide-react";
@@ -16,16 +17,15 @@ type NextEventsProps = {
   currentEventTime: string;
   preloadedUpcomingEvents: Preloaded<typeof api.admin.listUpcomingEvents>;
   max?: number;
-  dict: Dict;
 };
-
 export default function NextEvents({
   currentEventDate,
   currentEventTime,
   preloadedUpcomingEvents,
   max = 5,
-  dict,
 }: NextEventsProps) {
+  const { dict } = useLanguage();
+  const localizedLink = useLocalizedLink();
   const upcomingEvents = usePreloadedQuery(preloadedUpcomingEvents);
 
   if (!upcomingEvents) {
@@ -49,7 +49,7 @@ export default function NextEvents({
           {dict.events.nextEvents}
         </h3>
         <Link
-          href="/events"
+          href={localizedLink("events")}
           className="group inline-flex items-center gap-1 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-semibold text-white/80 transition hover:bg-white/10"
         >
           {dict.events.viewAll}
@@ -66,7 +66,7 @@ export default function NextEvents({
           return (
             <Link
               key={e._id}
-              href={`/events/${eventSlug}`}
+              href={localizedLink(`events/${eventSlug}`)}
               className={`group relative block h-24 w-24 overflow-hidden rounded-lg border transition hover:opacity-90 sm:h-28 sm:w-28 ${
                 isPastEvent
                   ? "border-white/5 bg-white/5 opacity-60"

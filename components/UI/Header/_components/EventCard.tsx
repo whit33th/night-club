@@ -1,4 +1,5 @@
 import ImageWithPlaceholder from "@/components/UI/ImageKit/ImageWithPlaceholder";
+import { useLocalizedLink } from "@/components/Providers/useLocalizedLink";
 import { Doc } from "@/convex/_generated/dataModel";
 import { generateSlug } from "@/lib/slugUtils";
 import Link from "next/link";
@@ -10,10 +11,11 @@ interface EventCardProps {
 
 const EventCard = ({ event, onClose }: EventCardProps) => {
   const eventSlug = generateSlug(event.title, event.date, event._id);
+  const localizedLink = useLocalizedLink();
 
   return (
     <Link
-      href={`/events/${eventSlug}`}
+      href={localizedLink(`events/${eventSlug}`)}
       onClick={onClose}
       className="group relative block aspect-square overflow-hidden rounded-md"
     >

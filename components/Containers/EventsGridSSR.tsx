@@ -11,12 +11,11 @@ import { Dict } from "@/lib/get-dictionary-client";
 
 export default function EventsGridSSR({
   preloaded,
-  locale,
+  lang,
   dict,
 }: {
   preloaded: Preloaded<typeof api.admin.listUpcomingEvents>;
-  locale: Locale;
-
+  lang: Locale;
   dict: Dict;
 }) {
   const events = usePreloadedQuery(preloaded);
@@ -27,7 +26,7 @@ export default function EventsGridSSR({
     <section className="mt-4">
       <div className="hidden items-center justify-end xl:flex">
         <Link
-          href="/events"
+          href={`/${lang}/events`}
           className="group inline-flex items-center gap-2 rounded-md px-2 py-1 text-sm uppercase tracking-wide text-white/80 hover:text-white"
         >
           {dict.events.moreEvents}
@@ -35,7 +34,7 @@ export default function EventsGridSSR({
         </Link>
       </div>
 
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] gap-4 xl:grid-cols-[repeat(auto-fill,minmax(315px,1fr))]">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] items-stretch gap-4 xl:grid-cols-[repeat(auto-fill,minmax(315px,1fr))]">
         {sortedEvents.map((event, index) => {
           const eventSlug = generateSlug(event.title, event.date, event._id);
 
@@ -57,13 +56,11 @@ export default function EventsGridSSR({
 
           return (
             <ConvexEventsCard
-              dict={dict}
               key={event._id}
               event={event}
               index={index}
-              href={`/events/${eventSlug}`}
+              href={`/${lang}/events/${eventSlug}`}
               isPast={isPast}
-              locale={locale}
             />
           );
         })}
@@ -72,7 +69,7 @@ export default function EventsGridSSR({
       {events.length > 0 && (
         <div className="mt-3 flex justify-center xl:hidden">
           <Link
-            href="/events"
+            href={`/${lang}/events`}
             className="bg-primary/5 border-primary/20 text-primary hover:bg-primary/10 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium backdrop-blur transition-colors"
           >
             {dict.events.moreEvents}
