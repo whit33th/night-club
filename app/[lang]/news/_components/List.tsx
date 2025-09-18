@@ -2,18 +2,14 @@
 
 import type { Doc } from "@/convex/_generated/dataModel";
 import { Dict } from "@/lib/get-dictionary-client";
-import { Locale } from "@/lib/i18n-config";
 import { NewsCard } from "./Card";
 
 export function NewsList({
   posts,
   dict,
-  locale,
 }: {
   posts: Array<Doc<"news">>;
-
   dict: Dict;
-  locale: Locale;
 }) {
   return (
     <section>
@@ -25,7 +21,7 @@ export function NewsList({
       <div className="columns-2 gap-3 sm:columns-3 sm:gap-4">
         {posts.map((post, index) => (
           <div key={post._id} className="mb-3 break-inside-avoid sm:mb-4">
-            <NewsCard post={post} index={index} locale={locale} />
+            <NewsCard post={post} index={index} />
           </div>
         ))}
       </div>

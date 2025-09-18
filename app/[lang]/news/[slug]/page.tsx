@@ -31,7 +31,7 @@ export default function NewsDetailPage({
         >
           <div className="absolute inset-x-0 -top-24 h-64 bg-[radial-gradient(260px_100px_at_50%_0%,color-mix(in_srgb,var(--primary)_18%,transparent),transparent)]" />
         </div>
-        <BackLink dict={dict} />
+        <BackLink />
         <div className="mt-8 animate-pulse">
           <div className="mb-4 h-8 rounded bg-neutral-800" />
           <div className="mb-4 h-64 rounded bg-neutral-800" />
@@ -54,7 +54,7 @@ export default function NewsDetailPage({
         >
           <div className="absolute inset-x-0 -top-24 h-64 bg-[radial-gradient(260px_100px_at_50%_0%,color-mix(in_srgb,var(--primary)_18%,transparent),transparent)]" />
         </div>
-        <BackLink dict={dict} />
+        <BackLink />
         <div className="mt-8">
           <h1 className="text-2xl font-bold text-white">
             {dict.news.notFound}
@@ -76,7 +76,7 @@ export default function NewsDetailPage({
         <div className="absolute inset-x-0 -top-24 h-64 bg-[radial-gradient(260px_100px_at_50%_0%,color-mix(in_srgb,var(--primary)_18%,transparent),transparent)]" />
       </div>
 
-      <BackLink dict={dict} />
+      <BackLink />
       <NewsDetail news={news} locale={lang} />
     </div>
   );

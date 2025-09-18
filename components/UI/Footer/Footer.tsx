@@ -26,7 +26,7 @@ function FooterSection({ title, links }: NavSection) {
 }
 
 export default function Footer() {
-  const { lang, dict } = useLanguage();
+  const { dict } = useLanguage();
   const localizedLink = useLocalizedLink();
 
   const NAV_SECTIONS: Array<NavSection> = [

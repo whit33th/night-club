@@ -3,7 +3,6 @@
 import { unstable_Activity as Activity } from "react";
 import NavigationList from "./_components/NavigationList";
 import SidebarFooter from "./_components/SidebarFooter";
-import { useLanguage } from "@/components/Providers/LanguageProvider";
 
 interface SidebarProps {
   open: boolean;
@@ -12,7 +11,6 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ open, setOpen, navLinks }: SidebarProps) => {
-  const { dict } = useLanguage();
   return (
     <Activity mode={open ? "visible" : "hidden"}>
       <aside

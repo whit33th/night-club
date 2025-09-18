@@ -1,10 +1,9 @@
 "use client";
 
+import { useLocalizedLink } from "@/components/Providers/useLocalizedLink";
 import { Doc } from "@/convex/_generated/dataModel";
 import { isPastEvent } from "@/lib/date-utils";
 import { generateSlug } from "@/lib/slugUtils";
-import { useLanguage } from "@/components/Providers/LanguageProvider";
-import { useLocalizedLink } from "@/components/Providers/useLocalizedLink";
 import Link from "next/link";
 import { unstable_ViewTransition as ViewTransition } from "react";
 

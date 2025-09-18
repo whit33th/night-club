@@ -53,7 +53,7 @@ export async function generateMetadata({
       },
     },
 
-    metadataBase: new URL("https://2progi.pl"),
+    metadataBase: new URL(clubInfo.website),
     keywords: [
       // ✅ Общие ключевые слова для всех языков
       "night club",

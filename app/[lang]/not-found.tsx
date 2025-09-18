@@ -1,10 +1,4 @@
-import Link from "next/link";
-
-export default async function NotFound({
-  params,
-}: {
-  params: Promise<{ lang: string }>;
-}) {
+export default async function NotFound() {
   // const { lang } = await params;
 
   return (
