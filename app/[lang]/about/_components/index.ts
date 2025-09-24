@@ -1,0 +1,1 @@
+export { TestimonialCarousel } from "./Testimonials";

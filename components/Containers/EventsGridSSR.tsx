@@ -24,15 +24,18 @@ export default function EventsGridSSR({
 
   return (
     <section className="mt-4">
-      <div className="hidden items-center justify-end xl:flex">
-        <Link
-          href={`/${lang}/events`}
-          className="group inline-flex items-center gap-2 rounded-md px-2 py-1 text-sm uppercase tracking-wide text-white/80 hover:text-white"
-        >
-          {dict.events.moreEvents}
-          <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-        </Link>
-      </div>
+      <h1 className="sr-only">Events</h1>
+      {events.length > 0 && (
+        <div className="hidden items-center justify-end xl:flex">
+          <Link
+            href={`/${lang}/events`}
+            className="group inline-flex items-center gap-2 rounded-md px-2 py-1 text-sm uppercase tracking-wide text-white/80 hover:text-white"
+          >
+            {dict.events.moreEvents}
+            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </Link>
+        </div>
+      )}
 
       <div className="grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] items-stretch gap-4 xl:grid-cols-[repeat(auto-fill,minmax(315px,1fr))]">
         {sortedEvents.map((event, index) => {

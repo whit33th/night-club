@@ -100,6 +100,18 @@
     "slogan": "After Dark · Neon Heart · No Sleep Club",
     "residents": "Residents",
     "resident": "Resident",
+    "gallery": {
+      "title": "Inside the club",
+      "subtitle": "A glimpse of our vibe"
+    },
+    "testimonials": {
+      "title": "What our guests say",
+      "subtitle": "Real reviews from real people"
+    },
+    "playlist": {
+      "title": "2progi playlist",
+      "subtitle": "Get into the mood with our Spotify picks"
+    },
     "features": {
       "sound": "Professional sound system",
       "space": "Flexible event space",

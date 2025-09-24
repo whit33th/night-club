@@ -140,7 +140,7 @@ export const listPastEvents = query({
     const rows = await ctx.db
       .query("events")
       .withIndex("by_date")
-      .order("desc")
+      .order("asc")
       .collect();
 
     const currentWarsawDate = getCurrentWarsawTime();

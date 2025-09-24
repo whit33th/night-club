@@ -5,6 +5,7 @@ import { getDictionary } from "@/lib/get-dictionary";
 import { Locale } from "@/lib/i18n-config";
 import Image from "next/image";
 import Link from "next/link";
+import { TestimonialCarousel } from "./_components/Testimonials";
 
 type Props = { params: Promise<{ lang: Locale }> };
 
@@ -103,38 +104,124 @@ export default async function AboutPage({ params }: Props) {
         </div>
       </section>
 
+      {/* Bento Gallery */}
+      <section className="container mx-auto flex flex-col gap-4">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <h2 className="text-xl font-semibold">
+              {dict.about.gallery.title}
+            </h2>
+          </div>
+        </div>
+        {(() => {
+          const base: Array<{ src: string; alt: string }> = [
+            { src: "/imgs/interior/2.jpg", alt: "Club interior" },
+            { src: "/imgs/interior/1.jpg", alt: "Dancefloor" },
+            { src: "/imgs/interior/3.jpg", alt: "Crowd 1" },
+            { src: "/imgs/interior/4.jpg", alt: "Crowd 2" },
+            { src: "/imgs/interior/5.jpg", alt: "Crowd 3" },
+            { src: "/imgs/interior/6.jpg", alt: "Crowd 4" },
+            { src: "/imgs/interior/7.jpg", alt: "Crowd 4" },
+          ];
+          const spans = [
+            "sm:col-span-2 sm:row-span-3",
+            "sm:col-span-1 sm:row-span-1",
+            "sm:col-span-1 sm:row-span-4",
+            "sm:col-span-1 sm:row-span-2",
+            "sm:col-span-1 sm:row-span-2",
+            "sm:col-span-2 sm:row-span-2",
+            "sm:col-span-1 sm:row-span-1",
+          ];
+          return (
+            <div className="grid grid-cols-1 gap-3 [grid-auto-rows:140px] sm:grid-cols-4 sm:[grid-auto-rows:120px] md:[grid-auto-rows:140px]">
+              {base.map((it, i) => (
+                <div
+                  key={`${it.src}-${i}`}
+                  className={`group overflow-hidden rounded-xl border border-white/10 ${spans[i % spans.length]}`}
+                >
+                  <Image
+                    src={it.src}
+                    alt={it.alt}
+                    width={800}
+                    height={800}
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  />
+                </div>
+              ))}
+            </div>
+          );
+        })()}
+      </section>
+
+      {/* Testimonials */}
+      <section className="container mx-auto flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold">
+            {dict.about.testimonials.title}
+          </h2>
+          <p className="text-sm text-white/70">
+            {dict.about.testimonials.subtitle}
+          </p>
+        </div>
+
+        <TestimonialCarousel />
+      </section>
+
+      {/* Spotify Playlists */}
+      <section className="container mx-auto flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold">{dict.about.playlist.title}</h2>
+          <p className="text-sm text-white/70">
+            {dict.about.playlist.subtitle}
+          </p>
+        </div>
+        <div className="flex flex-col gap-4 md:flex-row">
+          <iframe
+            title="2progi playlist 1"
+            src="https://open.spotify.com/embed/playlist/37i9dQZF1DWSXMERUaiq9M?utm_source=generator"
+            width="100%"
+            className="h-[152px] md:h-[450px]" // 👈 тут магия
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+          />
+          <iframe
+            title="2progi playlist 2"
+            src="https://open.spotify.com/embed/playlist/37i9dQZF1DX7SEhw42DW5b?utm_source=generator"
+            width="100%"
+            className="h-[152px] md:h-[450px]"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+          />
+        </div>
+      </section>
       <section className="container mx-auto flex flex-col gap-4">
         <h2 className="text-xl font-semibold">{dict.about.residents}</h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {[
             { name: "DJ Kira", img: "/imgs/residents/1.webp" },
             { name: "Neon Wave", img: "/imgs/residents/2.webp" },
             { name: "Ghost Unit", img: "/imgs/residents/3.webp" },
             { name: "MC Nova", img: "/imgs/residents/4.webp" },
           ].map((a, i) => (
-            <div
+            <figure
               key={i}
               className="group relative aspect-video overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--primary)_20%,transparent)]"
             >
               <Image
                 src={a.img}
                 alt={a.name}
-                width={1200}
-                height={900}
-                className="h-full w-full object-cover object-center transition duration-500 group-hover:scale-105"
+                width={300}
+                height={300}
+                className="duration-400 h-full w-full object-cover object-center transition group-hover:scale-105"
               />
               <div className="absolute inset-0 z-10 bg-gradient-to-t from-black via-black/30 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 z-20 flex items-center justify-between p-4">
-                <p className="text-lg font-bold">{a.name}</p>
-                <span className="backdrop-blur-xs rounded-full border border-[color-mix(in_srgb,var(--primary)_40%,transparent)] bg-[color-mix(in_srgb,var(--primary)_10%,transparent)] px-3 py-1 text-xs font-semibold text-[var(--primary)]">
-                  {dict.about.resident}
-                </span>
-              </div>
-            </div>
+              <figcaption className="absolute inset-x-0 bottom-0 z-20 flex items-center justify-between p-4 text-sm font-bold">
+                {a.name}
+              </figcaption>
+            </figure>
           ))}
         </div>
       </section>
-
       <section className="relative overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--primary)_25%,transparent)] p-6">
         <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(800px_260px_at_80%_120%,color-mix(in_srgb,var(--primary)_20%,transparent),transparent)]" />
         <div className="flex flex-col items-center gap-3 text-center">

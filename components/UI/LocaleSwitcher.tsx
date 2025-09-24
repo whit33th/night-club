@@ -99,35 +99,34 @@ export default function LocaleSwitcher({
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 top-full z-[100] mt-2 w-44 overflow-hidden rounded-lg border border-white/5 bg-black/90 shadow-2xl backdrop-blur-sm">
-          <div className="flex flex-col gap-1 p-1">
-            {i18n.locales.map((locale) => {
-              const info = localeInfo[locale];
-              const isActive = currentLocale === locale;
+        <div className="absolute right-0 top-full z-[100] mt-2 flex w-44 flex-col gap-1 overflow-hidden rounded-lg border border-white/5 bg-black/95 p-1 shadow-2xl backdrop-blur-2xl">
+          {i18n.locales.map((locale) => {
+            const info = localeInfo[locale];
+            const isActive = currentLocale === locale;
 
-              return (
-                <Link
-                  key={locale}
-                  href={redirectedPathName(locale)}
-                  onClick={() => setIsOpen(false)}
-                  lang={locale}
-                  hrefLang={locale}
-                  aria-label={`Switch to ${info.name}`}
-                  className={`flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm transition-all ${
-                    isActive
-                      ? "bg-white/5 text-white"
-                      : "text-white/70 hover:bg-white/5 hover:text-white/90"
-                  }`}
-                >
-                  <info.flag className="h-4 w-6 rounded-sm border border-white/10" />
-                  <span className="font-medium">{info.name}</span>
-                  {isActive && (
-                    <div className="ml-auto h-1.5 w-1.5 rounded-full bg-white/60"></div>
-                  )}
-                </Link>
-              );
-            })}
-          </div>
+            return (
+              <Link
+                key={locale}
+                href={redirectedPathName(locale)}
+                onClick={() => setIsOpen(false)}
+                lang={locale}
+                hrefLang={locale}
+                replace
+                aria-label={`Switch to ${info.name}`}
+                className={`flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm transition-all ${
+                  isActive
+                    ? "bg-white/5 text-white"
+                    : "text-white/70 hover:bg-white/5 hover:text-white/90"
+                }`}
+              >
+                <info.flag className="h-4 w-6 rounded-sm border border-white/10" />
+                <span className="font-medium">{info.name}</span>
+                {isActive && (
+                  <div className="ml-auto h-1.5 w-1.5 rounded-full bg-white/60"></div>
+                )}
+              </Link>
+            );
+          })}
         </div>
       )}
     </div>
