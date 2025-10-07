@@ -193,7 +193,7 @@ export default function NewsPage() {
             label="Body"
             type="textarea"
             icon={<MessageSquareText className="h-4 w-4" />}
-            placeholder="Full text..."
+            placeholder="Full text... (supports paragraphs and URLs)"
             required
             error={errors.body}
             className="md:col-span-2"

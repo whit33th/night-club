@@ -72,12 +72,6 @@ function PreviewAtCursor({
     );
   }
 
-  const imageSrc = imageKitPath
-    ? imageKitPath
-    : imageKitId
-      ? `/${imageKitId}`
-      : "";
-
   return (
     <div
       className="fixed z-50 -translate-x-1/2 -translate-y-full"
@@ -86,7 +80,7 @@ function PreviewAtCursor({
       <div className="pointer-events-none rounded-md border border-white/10 bg-black/80 p-1 shadow-lg backdrop-blur">
         <div className="relative" style={{ width: 300, height: 300 }}>
           <ImageWithPlaceholder
-            src={imageSrc}
+            src={imageKitPath!}
             alt="preview"
             fill
             className="rounded object-contain"
@@ -95,7 +89,7 @@ function PreviewAtCursor({
                 width: 300,
               },
             ]}
-            quality={80}
+            quality={50}
             blurQuality={10}
             blurAmount={50}
             sizes="300px"

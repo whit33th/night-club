@@ -21,7 +21,7 @@ export default function NextEventsSkeleton({
         {Array.from({ length: max }).map((_, index) => (
           <div
             key={index}
-            className="relative h-24 w-24 animate-pulse overflow-hidden rounded-lg border border-white/10 bg-white/10 sm:h-28 sm:w-28"
+            className={`relative h-24 w-24 animate-pulse overflow-hidden rounded-lg border border-white/10 bg-white/10 sm:h-28 sm:w-28 ${index >= 4 ? "hidden sm:block" : ""}`}
           />
         ))}
       </div>

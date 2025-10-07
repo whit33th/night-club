@@ -25,6 +25,7 @@ export default function Hero({ dict }: HeroProps) {
         poster="/videos/hero/hero.webp"
         preload="metadata"
         className="absolute inset-0 -z-50 h-full w-full rounded object-cover object-center"
+        disablePictureInPicture
       />
 
       <div className="absolute inset-0 -z-40 h-full w-full bg-gradient-to-t from-black to-transparent" />

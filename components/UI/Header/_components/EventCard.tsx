@@ -1,5 +1,5 @@
-import ImageWithPlaceholder from "@/components/UI/ImageKit/ImageWithPlaceholder";
 import { useLocalizedLink } from "@/components/Providers/useLocalizedLink";
+import ImageWithPlaceholder from "@/components/UI/ImageKit/ImageWithPlaceholder";
 import { Doc } from "@/convex/_generated/dataModel";
 import { generateSlug } from "@/lib/slugUtils";
 import Link from "next/link";

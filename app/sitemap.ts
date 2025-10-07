@@ -6,6 +6,9 @@ import { api } from "@/convex/_generated/api";
 import { generateNewsSlug } from "@/app/[lang]/news/_utils/slugUtils";
 import { generateSlug } from "@/lib/slugUtils";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 7200;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages = [
     { path: "/", changeFrequency: "daily" as const, priority: 1 },

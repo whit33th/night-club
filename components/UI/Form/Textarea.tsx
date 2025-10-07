@@ -17,7 +17,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, Props>(
     ref,
   ) => {
     const textareaClasses = [
-      "min-h-[100px] w-full rounded-lg border border-white/15 bg-white/5 text-sm text-white outline-none transition placeholder:text-white/40 focus:ring-2 focus:ring-[var(--primary)]",
+      "min-h-[200px] w-full rounded-lg border border-white/15 bg-white/5 text-sm text-white outline-none transition placeholder:text-white/40 focus:ring-2 focus:ring-[var(--primary)] resize-y whitespace-pre-wrap",
       icon ? "py-2 pl-8 pr-3" : "px-3 py-2",
       error ? "border-red-500/60 focus:ring-red-500" : "",
       className,

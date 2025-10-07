@@ -1,8 +1,8 @@
 "use client";
 
-import { unstable_Activity as Activity } from "react";
 import NavigationList from "./_components/NavigationList";
 import SidebarFooter from "./_components/SidebarFooter";
+import { unstable_Activity as Activity } from "react";
 
 interface SidebarProps {
   open: boolean;

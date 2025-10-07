@@ -32,7 +32,6 @@ export default function PaymentCard({
       <div className="absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-[var(--primary)] to-transparent opacity-40" />
 
       <div className="flex items-stretch">
-        {/* Left: square visual */}
         <div className="group relative aspect-square w-36 flex-shrink-0 overflow-hidden rounded-l-lg bg-white/5 md:w-48">
           {imageSrc ? (
             <ImageWithPlaceholder
@@ -46,10 +45,10 @@ export default function PaymentCard({
                   height: 800,
                 },
               ]}
-              quality={90}
+              quality={65}
               blurQuality={10}
               blurAmount={50}
-              sizes="(max-width: 768px) 144px, 192px"
+              // sizes="(max-width: 768px) 144px, 192px"
             />
           ) : (
             <div className="absolute inset-0 grid place-items-center text-xs uppercase tracking-[0.25em] text-white/50">

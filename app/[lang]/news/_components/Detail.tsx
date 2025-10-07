@@ -3,6 +3,7 @@
 import ImageWithPlaceholder from "@/components/UI/ImageKit/ImageWithPlaceholder";
 import type { Doc } from "@/convex/_generated/dataModel";
 import { Locale } from "@/lib/i18n-config";
+import { formatTextWithLinks } from "@/lib/text-utils";
 import { motion } from "framer-motion";
 import { formatDate } from "./utils";
 
@@ -49,16 +50,16 @@ export function NewsDetail({
             width={800}
             height={600}
             className="block h-auto w-full transform-gpu transition-all duration-700 ease-out hover:grayscale-0"
-            quality={90}
+            quality={65}
             blurQuality={5}
             blurAmount={30}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 800px"
           />
         </div>
         <div className="border-l-8 border-white/10 px-4 py-4 sm:px-5 sm:py-5">
-          <p className="text-lg font-semibold leading-relaxed text-neutral-300">
-            {news.body}
-          </p>
+          <div className="text-lg font-semibold leading-relaxed text-neutral-300">
+            {formatTextWithLinks(news.body)}
+          </div>
         </div>
       </motion.div>
     </div>

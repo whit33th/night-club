@@ -33,21 +33,29 @@ export default function FiltersHeader({
             "After Dark · Neon Heart · No Sleep Club"}
         </p>
 
-        <div className="mt-2.5 flex flex-wrap items-center justify-center gap-2">
+        <ul className="mt-2.5 flex flex-wrap items-center justify-center gap-2">
           {filters.map((f) => (
-            <button
-              key={f}
-              onClick={() => onChange(f)}
-              className={`rounded-full border px-3 py-1 text-sm font-semibold transition ${
-                active === f
-                  ? "border-[color-mix(in_srgb,var(--primary)_60%,transparent)] bg-[color-mix(in_srgb,var(--primary)_10%,transparent)] text-[var(--primary)]"
-                  : "border-white/15 bg-white/5 text-white/80 hover:bg-white/10"
-              }`}
-            >
-              {f.toUpperCase()}
-            </button>
+            <li key={f}>
+              <button
+                key={f}
+                onClick={() => {
+                  if (active === f && f !== "All") {
+                    onChange("All");
+                  } else {
+                    onChange(f);
+                  }
+                }}
+                className={`rounded-full border px-3 py-1 text-sm font-semibold transition ${
+                  active === f
+                    ? "border-[color-mix(in_srgb,var(--primary)_60%,transparent)] bg-[color-mix(in_srgb,var(--primary)_10%,transparent)] text-[var(--primary)]"
+                    : "border-white/15 bg-white/5 text-white/80 hover:bg-white/10"
+                }`}
+              >
+                {f.toUpperCase()}
+              </button>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

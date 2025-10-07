@@ -13,7 +13,7 @@ export default async function HomePage({ params }: Props) {
   const { lang } = await params;
   const dict = await getDictionary(lang);
   const preloadedEvents = await preloadQuery(api.admin.listUpcomingEvents, {
-    limit: 12,
+    limit: 7,
   });
 
   return (

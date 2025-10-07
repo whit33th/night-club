@@ -41,7 +41,7 @@ export default function ConvexEventsGridCard({
     >
       <ViewTransition name={`event-card-${event._id}`} key={event._id}>
         <motion.div
-          className={`group relative flex h-full flex-col p-5`}
+          className={`group relative flex h-full flex-col p-3`}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: isPast ? 0.75 : 1, y: 0 }}
           transition={{
@@ -78,9 +78,10 @@ export default function ConvexEventsGridCard({
               transformation={[
                 {
                   format: "webp",
-                  width: 800,
-                  height: 800,
-                  quality: 90,
+                  width: 350,
+                  height: 350,
+                  quality: 75,
+                  progressive: true,
                 },
               ]}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

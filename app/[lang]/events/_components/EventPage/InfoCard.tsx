@@ -1,6 +1,8 @@
 "use client";
 
+import { clubInfo } from "@/lib/data/club-info";
 import { Dict } from "@/lib/get-dictionary-client";
+import { formatTextWithLinks } from "@/lib/text-utils";
 
 type ScrollAreaProps = {
   className?: string;
@@ -10,7 +12,40 @@ type ScrollAreaProps = {
 function ScrollArea({ className, children }: ScrollAreaProps) {
   return (
     <div className="relative">
-      <div className={`max-h-48 overflow-y-auto ${className ? className : ""}`}>
+      <div
+        className={`max-h-48 overflow-y-auto ${className ? className : ""} [&::-webkit-scrollbar-thumb:active]:bg-white/40 [&::-webkit-scrollbar-thumb:hover]:bg-white/30 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:border-2 [&::-webkit-scrollbar-thumb]:border-transparent [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:bg-clip-padding [&::-webkit-scrollbar-thumb]:transition-colors [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-white/5 [&::-webkit-scrollbar]:w-2`}
+        data-lenis-prevent
+        data-lenis-prevent-wheel
+        data-lenis-prevent-touch
+        style={{
+          overscrollBehavior: "contain",
+          WebkitOverflowScrolling: "touch",
+          isolation: "isolate",
+          scrollbarWidth: "thin",
+          scrollbarColor: "rgba(255, 255, 255, 0.2) rgba(255, 255, 255, 0.05)",
+        }}
+        onWheel={(e) => {
+          const container = e.currentTarget;
+          const atTop = container.scrollTop === 0;
+          const atBottom =
+            container.scrollTop >=
+            container.scrollHeight - container.clientHeight;
+
+          if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
+            return;
+          }
+
+          e.stopPropagation();
+        }}
+        onTouchStart={(e) => {
+          const container = e.currentTarget;
+          (
+            container.style as React.CSSProperties & {
+              webkitOverflowScrolling?: string;
+            }
+          ).webkitOverflowScrolling = "touch";
+        }}
+      >
         {children}
       </div>
     </div>
@@ -97,21 +132,21 @@ export default function InfoCard({
               <div className="block lg:hidden">
                 <details className="group mb-1 mt-2">
                   <summary className="flex cursor-pointer select-none items-center gap-2 text-xs uppercase tracking-widest text-neutral-400 underline">
-                    #About this event
+                    #{dict.events.aboutThisEvent}
                   </summary>
                   <ScrollArea>
-                    <p className="mt-2 max-w-prose text-lg font-medium text-neutral-300">
-                      {description}
-                    </p>
+                    <div className="mt-2 max-w-prose font-medium text-neutral-300">
+                      {formatTextWithLinks(description)}
+                    </div>
                   </ScrollArea>
                 </details>
               </div>
               {/* On large screens, just show description */}
               <div className="mb-1 mt-2 hidden lg:block">
                 <ScrollArea>
-                  <p className="mt-2 max-w-prose text-lg font-medium text-neutral-300">
-                    {description}
-                  </p>
+                  <div className="mt-2 max-w-prose font-medium text-neutral-300">
+                    {formatTextWithLinks(description)}
+                  </div>
                 </ScrollArea>
               </div>
             </>
@@ -177,7 +212,7 @@ export default function InfoCard({
                 {dict.events.location}
               </dt>
               <dd className="mt-1 text-sm">
-                al. Niepodległości 36, 00-000 Poznań
+                {`${clubInfo.address.street}, ${clubInfo.address.postalCode} ${clubInfo.address.city}`}
               </dd>
             </div>
           </dl>

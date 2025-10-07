@@ -75,7 +75,8 @@
     "pastEvent": "Past Event",
     "casual": "Casual",
     "band": "Band",
-    "dj": "DJ"
+    "dj": "DJ",
+    "aboutThisEvent": "About this event"
   },
   "gallery": {
     "title": "Gallery",

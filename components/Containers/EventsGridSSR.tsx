@@ -5,7 +5,7 @@ import { api } from "@/convex/_generated/api";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { generateSlug } from "@/lib/slugUtils";
-import ConvexEventsCard from "@/app/[lang]/events/_components/EventsPage/ConvexEventsCard";
+import ConvexEventsCardSSR from "@/app/[lang]/events/_components/EventsPage/ConvexEventsCardSSR";
 import { Locale } from "@/lib/i18n-config";
 import { Dict } from "@/lib/get-dictionary-client";
 
@@ -19,8 +19,6 @@ export default function EventsGridSSR({
   dict: Dict;
 }) {
   const events = usePreloadedQuery(preloaded);
-
-  const sortedEvents = events.slice(0, 12);
 
   return (
     <section className="mt-4">
@@ -38,7 +36,7 @@ export default function EventsGridSSR({
       )}
 
       <div className="grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] items-stretch gap-4 xl:grid-cols-[repeat(auto-fill,minmax(315px,1fr))]">
-        {sortedEvents.map((event, index) => {
+        {events.map((event, index) => {
           const eventSlug = generateSlug(event.title, event.date, event._id);
 
           const warsawTime = new Date().toLocaleString("en-US", {
@@ -58,7 +56,7 @@ export default function EventsGridSSR({
           const isPast = eventDateTime < currentWarsawDate;
 
           return (
-            <ConvexEventsCard
+            <ConvexEventsCardSSR
               key={event._id}
               event={event}
               index={index}

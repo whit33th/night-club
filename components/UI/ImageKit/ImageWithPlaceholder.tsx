@@ -28,7 +28,7 @@ export default function ImageWithPlaceholder({
   fill = false,
   className = "",
   transformation = [],
-  quality = 90,
+  quality = 80,
   blurQuality = 10,
   blurAmount = 90,
   priority = false,

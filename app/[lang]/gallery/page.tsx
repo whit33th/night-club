@@ -14,6 +14,7 @@ type Props = { params: Promise<{ lang: Locale }> };
 export default function GalleryPage({ params }: Props) {
   const { lang } = use(params);
   const dict = getDictionaryClient(lang);
+
   const [active, setActive] = useState<number | null>(null);
 
   const galleryImages = useQuery(api.admin.listGallery);
@@ -71,12 +72,6 @@ export default function GalleryPage({ params }: Props) {
       ) : (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
           {galleryImages.map((image, idx) => {
-            const imageSrc = image.imageKitPath
-              ? image.imageKitPath
-              : image.imageKitId
-                ? `/${image.imageKitId}`
-                : "";
-
             return (
               <motion.button
                 key={image._id}
@@ -92,7 +87,7 @@ export default function GalleryPage({ params }: Props) {
                 }}
               >
                 <ImageWithPlaceholder
-                  src={imageSrc}
+                  src={image.imageKitPath!}
                   alt={`Gallery ${idx + 1}`}
                   fill
                   className="object-cover object-center"
@@ -102,7 +97,7 @@ export default function GalleryPage({ params }: Props) {
                       height: 400,
                     },
                   ]}
-                  quality={90}
+                  quality={60}
                   blurQuality={10}
                   blurAmount={50}
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1536px) 25vw, 20vw"
@@ -121,15 +116,10 @@ export default function GalleryPage({ params }: Props) {
           <div className="relative max-h-full max-w-full overflow-hidden shadow-2xl">
             {(() => {
               const activeImage = galleryImages[active];
-              const imageSrc = activeImage.imageKitPath
-                ? activeImage.imageKitPath
-                : activeImage.imageKitId
-                  ? `/${activeImage.imageKitId}`
-                  : "";
 
               return (
                 <ImageWithPlaceholder
-                  src={imageSrc}
+                  src={activeImage.imageKitPath!}
                   alt={`Modal ${active + 1}`}
                   width={1200}
                   height={800}
@@ -139,7 +129,7 @@ export default function GalleryPage({ params }: Props) {
                       width: 1200,
                     },
                   ]}
-                  quality={95}
+                  quality={90}
                   blurQuality={5}
                   blurAmount={30}
                   sizes="90vw"

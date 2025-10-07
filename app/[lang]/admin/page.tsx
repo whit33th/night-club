@@ -81,7 +81,7 @@ const mapFormToPatch = (f: EventFormData) => ({
   priceFrom: f.priceFrom ? Number(f.priceFrom) : undefined,
   currency: f.currency || undefined,
   ticketUrl: f.ticketUrl || undefined,
-  description: f.description || undefined,
+  description: f.description?.trim() || undefined,
   imageKitId: undefined as string | undefined,
   imageKitPath: undefined as string | undefined,
 });
@@ -112,6 +112,14 @@ const eventColumns = [
     label: "Genres",
     render: (event: Doc<"events">) =>
       (event.musicGenres ?? []).join(", ") || "—",
+  },
+  {
+    key: "description",
+    label: "Description",
+    render: (event: Doc<"events">) =>
+      event.description && (event.description.length ?? 0) > 50
+        ? `${event.description.slice(0, 50)}…`
+        : event.description || "—",
   },
   { key: "minAge", label: "Min Age" },
   { key: "dressCode", label: "Dress Code" },
@@ -437,7 +445,7 @@ export default function EventsPage() {
             label="Description"
             type="textarea"
             icon={<MessageSquareText className="h-4 w-4" />}
-            placeholder="Event description..."
+            placeholder="Event description... (supports paragraphs and URLs)"
             error={errors.description}
             className="md:col-span-3"
             {...register("description")}

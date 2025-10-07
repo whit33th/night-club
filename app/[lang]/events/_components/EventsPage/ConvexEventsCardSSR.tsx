@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { unstable_ViewTransition as ViewTransition } from "react";
 
-export default function ConvexEventsCard({
+export default function ConvexEventsCardSSR({
   event,
   index,
   href,
@@ -49,7 +49,7 @@ export default function ConvexEventsCard({
       className={`group flex aspect-[9/12] h-full flex-col`}
     >
       <motion.div
-        className="relative flex h-full flex-col p-5"
+        className="relative flex h-full flex-col p-3"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: isPast ? 0.75 : 1, y: 0 }}
         transition={{
@@ -85,12 +85,14 @@ export default function ConvexEventsCard({
               transformation={[
                 {
                   format: "webp",
-                  width: 800,
-                  height: 800,
+                  width: 350,
+                  height: 350,
                   quality: 90,
                 },
               ]}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 315px"
+              loading={index < 4 ? "eager" : "lazy"}
+              priority={index < 4}
             />
           </ViewTransition>
           <figure
@@ -123,14 +125,14 @@ export default function ConvexEventsCard({
         >
           <div className="flex w-full items-center justify-between gap-3">
             <div className="flex flex-col">
-              <h1 className={`font-bold ${isPast ? "text-neutral-300" : ""}`}>
+              <h2 className={`font-bold ${isPast ? "text-neutral-300" : ""}`}>
                 {(index + 1).toString().padStart(2, "0")}. {event.title}
-              </h1>
-              <p
+              </h2>
+              <h3
                 className={`text-xs ${isPast ? "text-neutral-500" : "text-neutral-400"}`}
               >
                 {artistsDisplay}
-              </p>
+              </h3>
             </div>
           </div>
         </motion.div>

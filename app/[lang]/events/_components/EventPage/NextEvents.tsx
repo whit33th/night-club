@@ -29,7 +29,7 @@ export default function NextEvents({
   const upcomingEvents = usePreloadedQuery(preloadedUpcomingEvents);
 
   if (!upcomingEvents) {
-    return <NextEventsSkeleton max={4} />;
+    return <NextEventsSkeleton max={5} />;
   }
 
   const currentDateTime = new Date(`${currentEventDate}T${currentEventTime}`);
@@ -57,54 +57,55 @@ export default function NextEvents({
         </Link>
       </header>
 
-      <div className="flex items-center gap-3">
-        {displayEvents.map((e: Doc<"events">) => {
+      <ul about="Next Events" className="flex items-center gap-3">
+        {displayEvents.map((e: Doc<"events">, index: number) => {
           const eventSlug = generateSlug(e.title, e.date, e._id);
 
           const isPastEvent = false;
 
           return (
-            <Link
-              key={e._id}
-              href={localizedLink(`events/${eventSlug}`)}
-              className={`group relative block h-24 w-24 overflow-hidden rounded-lg border transition hover:opacity-90 sm:h-28 sm:w-28 ${
-                isPastEvent
-                  ? "border-white/5 bg-white/5 opacity-60"
-                  : "border-white/10 bg-white/5"
-              }`}
-              title={e.title}
-            >
-              <ImageWithPlaceholder
-                src={e.imageKitPath!}
-                alt={e.title}
-                fill
-                className={`object-cover transition ${isPastEvent ? "grayscale" : ""}`}
-                transformation={[
-                  {
-                    width: 120,
-                    height: 120,
-                  },
-                ]}
-                quality={80}
-                blurQuality={10}
-                blurAmount={50}
-                sizes="120px"
-              />
-              <div
-                className={`pointer-events-none absolute inset-0 ${
+            <li key={e._id}>
+              <Link
+                href={localizedLink(`events/${eventSlug}`)}
+                className={`group relative block h-24 w-24 overflow-hidden rounded-lg border transition hover:opacity-90 sm:h-28 sm:w-28 ${
                   isPastEvent
-                    ? "bg-[radial-gradient(120px_80px_at_30%_20%,black/20,transparent)]"
-                    : "bg-[radial-gradient(120px_80px_at_30%_20%,white/10,transparent)]"
-                }`}
-              />
-              {isPastEvent && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="rounded bg-black/60 px-1 py-0.5 text-xs font-medium text-white/80">
-                    Past
-                  </span>
-                </div>
-              )}
-            </Link>
+                    ? "border-white/5 bg-white/5 opacity-60"
+                    : "border-white/10 bg-white/5"
+                } ${index >= 4 ? "hidden sm:block" : ""}`}
+                title={e.title}
+              >
+                <ImageWithPlaceholder
+                  src={e.imageKitPath!}
+                  alt={e.title}
+                  fill
+                  className={`object-cover transition ${isPastEvent ? "grayscale" : ""}`}
+                  transformation={[
+                    {
+                      width: 120,
+                      height: 120,
+                    },
+                  ]}
+                  quality={80}
+                  blurQuality={10}
+                  blurAmount={50}
+                  sizes="120px"
+                />
+                <div
+                  className={`pointer-events-none absolute inset-0 ${
+                    isPastEvent
+                      ? "bg-[radial-gradient(120px_80px_at_30%_20%,black/20,transparent)]"
+                      : "bg-[radial-gradient(120px_80px_at_30%_20%,white/10,transparent)]"
+                  }`}
+                />
+                {isPastEvent && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="rounded bg-black/60 px-1 py-0.5 text-xs font-medium text-white/80">
+                      Past
+                    </span>
+                  </div>
+                )}
+              </Link>
+            </li>
           );
         })}
         {displayEvents.length === 0 ? (
@@ -112,7 +113,7 @@ export default function NextEvents({
             {dict.events.noEventsAvailable}
           </div>
         ) : null}
-      </div>
+      </ul>
     </section>
   );
 }

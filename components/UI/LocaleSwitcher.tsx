@@ -91,6 +91,9 @@ export default function LocaleSwitcher({
   return (
     <div className="relative" ref={dropdownRef}>
       <button
+        aria-label="Select Language"
+        aria-expanded={isOpen}
+        aria-haspopup="true"
         onClick={() => setIsOpen(!isOpen)}
         className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/5 bg-black/20 text-white/70 transition-all hover:border-white/10 hover:bg-black/50 hover:text-white focus:outline-none focus:ring-1 focus:ring-white/20"
       >

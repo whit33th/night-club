@@ -16,7 +16,10 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     [],
   );
   const [open, setOpen] = useState(false);
-  const showLogout = pathname !== "/admin/auth";
+
+  // Remove language prefix from pathname for comparison
+  const pathWithoutLang = pathname.replace(/^\/(en|pl)/, "");
+  const showLogout = !pathWithoutLang.startsWith("/admin/auth");
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="mb-6 hidden text-3xl font-extrabold tracking-tight lg:block">
@@ -51,7 +54,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
               <nav className="text-sm">
                 <ul className="space-y-1">
                   {links.map((l) => {
-                    const isActive = pathname === l.href;
+                    const isActive = pathWithoutLang === l.href;
                     return (
                       <li key={l.href}>
                         <Link
@@ -99,7 +102,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             <nav className="text-sm">
               <ul className="space-y-1">
                 {links.map((l) => {
-                  const isActive = pathname === l.href;
+                  const isActive = pathWithoutLang === l.href;
                   return (
                     <li key={l.href}>
                       <Link

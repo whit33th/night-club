@@ -2,6 +2,8 @@
 
 import { getDictionaryClient } from "@/lib/get-dictionary-client";
 import { Locale } from "@/lib/i18n-config";
+import { motion } from "framer-motion";
+import { Loader2 } from "lucide-react";
 import { unstable_Activity as Activity, Suspense, use } from "react";
 import EventsGridView from "./_components/EventsPage/EventsGridView";
 import EventsListView from "./_components/EventsPage/EventsListView";
@@ -35,16 +37,20 @@ function EventsPageBody({ lang }: { lang: Locale }) {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col gap-4">
-        <div className="mx-auto w-full max-w-2xl text-center text-white/80">
-          <p>{dict?.common?.loading || "Loading events..."}</p>
-        </div>
+      <div className="mx-auto text-center text-white/80">
+        <Loader2 className="mx-auto mb-2 h-6 w-6 animate-spin text-white/50" />
+        <p>{dict?.common?.loading || "Loading events..."}</p>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <motion.div
+      className="flex flex-col gap-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+    >
       <FiltersHeader
         filters={filters}
         active={activeGenre}
@@ -64,14 +70,14 @@ function EventsPageBody({ lang }: { lang: Locale }) {
         </div>
       ) : (
         <>
-          <Activity mode={mode === "grid" ? "visible" : "hidden"}>
-            <EventsGridView items={posters} />
-          </Activity>
           <Activity mode={mode === "list" ? "visible" : "hidden"}>
             <EventsListView items={posters} />
           </Activity>
+          <Activity mode={mode === "grid" ? "visible" : "hidden"}>
+            <EventsGridView items={posters} />
+          </Activity>
         </>
       )}
-    </div>
+    </motion.div>
   );
 }
