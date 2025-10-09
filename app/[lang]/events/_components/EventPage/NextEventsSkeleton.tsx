@@ -11,7 +11,7 @@ export default function NextEventsSkeleton({
     <section className="relative w-full overflow-hidden rounded-xl bg-neutral-900/15 p-4 shadow-xl backdrop-blur">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(900px_300px_at_50%_-20%,color-mix(in_srgb,var(--primary)_14%,transparent),transparent)]" />
       <header className="mb-3 flex items-center justify-between">
-        <h3 className="text-sm font-extrabold uppercase tracking-widest text-white/80">
+        <h3 className="text-sm font-extrabold uppercase text-white/80">
           Next Events
         </h3>
         <div className="h-6 w-16 animate-pulse rounded-full bg-white/10" />

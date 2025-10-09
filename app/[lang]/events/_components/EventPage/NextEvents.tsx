@@ -22,14 +22,14 @@ export default function NextEvents({
   currentEventDate,
   currentEventTime,
   preloadedUpcomingEvents,
-  max = 5,
+  max = 6,
 }: NextEventsProps) {
   const { dict } = useLanguage();
   const localizedLink = useLocalizedLink();
   const upcomingEvents = usePreloadedQuery(preloadedUpcomingEvents);
 
   if (!upcomingEvents) {
-    return <NextEventsSkeleton max={5} />;
+    return <NextEventsSkeleton max={max} />;
   }
 
   const currentDateTime = new Date(`${currentEventDate}T${currentEventTime}`);
@@ -45,7 +45,7 @@ export default function NextEvents({
     <section className="relative w-full overflow-hidden rounded-xl bg-neutral-900/15 p-4 shadow-xl backdrop-blur">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(900px_300px_at_50%_-20%,color-mix(in_srgb,var(--primary)_14%,transparent),transparent)]" />
       <header className="mb-3 flex items-center justify-between">
-        <h3 className="text-sm font-extrabold uppercase tracking-widest text-white/80">
+        <h3 className="text-sm font-extrabold uppercase text-white/80">
           {dict.events.nextEvents}
         </h3>
         <Link
@@ -57,7 +57,41 @@ export default function NextEvents({
         </Link>
       </header>
 
-      <ul about="Next Events" className="flex items-center gap-3">
+      <ul
+        about="Next Events"
+        className="flex flex-nowrap items-center gap-3 overflow-x-auto pb-1 [&::-webkit-scrollbar-button]:hidden [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/30 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:h-1.5"
+        data-lenis-prevent
+        data-lenis-prevent-wheel
+        data-lenis-prevent-touch
+        style={{
+          overscrollBehavior: "contain",
+          WebkitOverflowScrolling: "touch",
+          isolation: "isolate",
+          scrollbarWidth: "thin",
+          scrollbarColor: "rgba(255, 255, 255, 0.3) transparent",
+        }}
+        onWheel={(e) => {
+          const container = e.currentTarget;
+          const atLeft = container.scrollLeft === 0;
+          const atRight =
+            container.scrollLeft >=
+            container.scrollWidth - container.clientWidth;
+
+          if ((e.deltaX < 0 && atLeft) || (e.deltaX > 0 && atRight)) {
+            return;
+          }
+
+          e.stopPropagation();
+        }}
+        onTouchStart={(e) => {
+          const container = e.currentTarget;
+          (
+            container.style as React.CSSProperties & {
+              webkitOverflowScrolling?: string;
+            }
+          ).webkitOverflowScrolling = "touch";
+        }}
+      >
         {displayEvents.map((e: Doc<"events">, index: number) => {
           const eventSlug = generateSlug(e.title, e.date, e._id);
 
@@ -67,7 +101,7 @@ export default function NextEvents({
             <li key={e._id}>
               <Link
                 href={localizedLink(`events/${eventSlug}`)}
-                className={`group relative block h-24 w-24 overflow-hidden rounded-lg border transition hover:opacity-90 sm:h-28 sm:w-28 ${
+                className={`group relative block aspect-square h-24 w-24 overflow-hidden rounded-lg border transition hover:opacity-90 sm:h-28 sm:w-28 ${
                   isPastEvent
                     ? "border-white/5 bg-white/5 opacity-60"
                     : "border-white/10 bg-white/5"
@@ -77,9 +111,9 @@ export default function NextEvents({
                 <Image
                   src={e.imageKitPath!}
                   alt={e.title}
-                  className={`object-cover transition ${isPastEvent ? "grayscale" : ""}`}
-                  width={120}
-                  height={120}
+                  className={`aspect-square object-cover transition ${isPastEvent ? "grayscale" : ""}`}
+                  width={112}
+                  height={112}
                   transformation={[
                     {
                       format: "webp",
