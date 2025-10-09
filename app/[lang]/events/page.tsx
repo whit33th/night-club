@@ -51,6 +51,9 @@ function EventsPageBody({ lang }: { lang: Locale }) {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
+      <p className="w-full text-center text-[10px] uppercase tracking-[0.4em] text-white/70">
+        {dict?.events?.subtitle}
+      </p>
       <FiltersHeader
         filters={filters}
         active={activeGenre}
@@ -58,10 +61,6 @@ function EventsPageBody({ lang }: { lang: Locale }) {
         dict={dict}
       />
 
-      <p className="w-full px-1 py-1 text-center text-[10px] uppercase tracking-[0.4em] text-white/70">
-        {dict?.events?.subtitle ||
-          "Exclusive parties · Limited capacity · 18+ · Dress code · International DJs · Secure entry"}
-      </p>
       <ModeToggle mode={mode} onToggle={toggleMode} dict={dict} />
 
       {posters.length === 0 ? (

@@ -24,14 +24,9 @@ export default function FiltersHeader({
     <section className="relative overflow-hidden rounded-xl">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(1200px_400px_at_50%_-50%,color-mix(in_srgb,var(--primary)_25%,transparent),transparent)]" />
       <div className="relative rounded-xl border border-white/10 bg-black/30 p-4 backdrop-blur">
-        <h1 className="text-center text-4xl font-extrabold tracking-tight">
+        <h1 className="mb-2 text-center text-4xl font-extrabold tracking-tight">
           {title || dict?.events?.title || "Upcoming Nights"}
         </h1>
-        <p className="mt-2 text-center text-xs uppercase tracking-[0.25em] text-white/60">
-          {subtitle ||
-            dict?.events?.subtitle ||
-            "After Dark · Neon Heart · No Sleep Club"}
-        </p>
 
         <ul className="mt-2.5 flex flex-wrap items-center justify-center gap-2">
           {filters.map((f) => (
