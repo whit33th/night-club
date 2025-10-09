@@ -1,11 +1,11 @@
 "use client";
 
-import ImageWithPlaceholder from "@/components/UI/ImageKit/ImageWithPlaceholder";
 import { useLanguage } from "@/components/Providers/LanguageProvider";
 import { useLocalizedLink } from "@/components/Providers/useLocalizedLink";
 import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
 import { generateSlug } from "@/lib/slugUtils";
+import { Image } from "@imagekit/next";
 import { Preloaded, usePreloadedQuery } from "convex/react";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -74,22 +74,22 @@ export default function NextEvents({
                 } ${index >= 4 ? "hidden sm:block" : ""}`}
                 title={e.title}
               >
-                <ImageWithPlaceholder
+                <Image
                   src={e.imageKitPath!}
                   alt={e.title}
-                  fill
                   className={`object-cover transition ${isPastEvent ? "grayscale" : ""}`}
+                  width={120}
+                  height={120}
                   transformation={[
                     {
-                      width: 120,
-                      height: 120,
+                      format: "webp",
+                      crop: "maintain_ratio",
+                      quality: 40,
                     },
                   ]}
-                  quality={80}
-                  blurQuality={10}
-                  blurAmount={50}
                   sizes="120px"
                 />
+
                 <div
                   className={`pointer-events-none absolute inset-0 ${
                     isPastEvent

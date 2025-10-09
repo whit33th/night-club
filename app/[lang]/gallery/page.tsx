@@ -95,6 +95,7 @@ export default function GalleryPage({ params }: Props) {
                     {
                       width: 400,
                       height: 400,
+                      crop: "maintain_ratio",
                     },
                   ]}
                   quality={60}
@@ -126,7 +127,7 @@ export default function GalleryPage({ params }: Props) {
                   className="max-h-[90vh] max-w-full object-contain"
                   transformation={[
                     {
-                      width: 1200,
+                      crop: "maintain_ratio",
                     },
                   ]}
                   quality={90}

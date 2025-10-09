@@ -71,16 +71,17 @@ export default function ConvexEventsGridCard({
             <Image
               src={event.imageKitPath!}
               alt={event.title}
-              fill
-              className={`group-hover:scale-103 absolute inset-0 rounded object-cover object-center transition-all duration-300 ease-in-out group-hover:opacity-80 ${
+              width={350}
+              height={450}
+              className={`group-hover:scale-103 h-full w-full rounded object-cover object-center transition-all duration-300 ease-in-out group-hover:opacity-80 ${
                 isPast ? "grayscale" : ""
               }`}
               transformation={[
                 {
                   format: "webp",
-                  width: 350,
-                  height: 450,
-                  aspectRatio: "9:12",
+                  width: "350",
+                  height: "450",
+                  crop: "maintain_ratio",
                   quality: 75,
                   progressive: true,
                 },

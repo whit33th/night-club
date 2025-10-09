@@ -68,6 +68,7 @@ export default function ImageWithPlaceholder({
       {
         format: "webp",
         quality,
+        crop: "maintain_ratio",
       },
     ],
     onLoad: () => {
@@ -78,6 +79,7 @@ export default function ImageWithPlaceholder({
 
   if (fill) {
     return (
+      // <div className="relative h-full w-full">
       <Image
         {...imageProps}
         loading={loading}
@@ -89,6 +91,7 @@ export default function ImageWithPlaceholder({
         }
         alt={alt}
       />
+      // </div>
     );
   }
 

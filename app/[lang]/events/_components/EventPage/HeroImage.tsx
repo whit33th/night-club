@@ -17,14 +17,16 @@ export default function HeroImage({ id, alt, src }: HeroImageProps) {
         <Image
           src={src}
           alt={alt ?? id}
-          fill
-          className="object-cover"
+          width={800}
+          height={800}
+          className="h-full w-full object-cover"
           priority
           transformation={[
             {
               format: "webp",
-              width: 800,
-              height: 800,
+              width: "800",
+              height: "800",
+              crop: "maintain_ratio",
               quality: 80,
             },
           ]}

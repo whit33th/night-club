@@ -82,13 +82,14 @@ export default function ConvexEventsCard({
           <p className="font-bold">{month}</p>
           <p className="text-3xl font-bold">{Number(day)}</p>
         </motion.div>
-        <div className="relative aspect-[4/5] flex-1 overflow-hidden rounded p-4">
+        <div className="relative aspect-[4/5] flex-1 overflow-hidden rounded p-2">
           <ViewTransition name={`event-${event._id}`} key={event._id}>
             <Image
               src={event.imageKitPath!}
               alt={event.title}
-              fill
-              className={`group-hover:scale-103 absolute inset-0 rounded object-cover object-center transition-all duration-300 ease-in-out group-hover:opacity-80 ${
+              width={imageConfig.width}
+              height={imageConfig.height}
+              className={`group-hover:scale-103 h-full w-full rounded object-cover object-center transition-all duration-300 ease-in-out group-hover:opacity-80 ${
                 isPast ? "grayscale" : ""
               }`}
               transformation={[
@@ -96,7 +97,7 @@ export default function ConvexEventsCard({
                   format: "webp",
                   width: imageConfig.width,
                   height: imageConfig.height,
-                  aspectRatio: imageConfig.aspectRatio,
+                  crop: "maintain_ratio",
                   quality: imageConfig.quality,
                 },
               ]}
