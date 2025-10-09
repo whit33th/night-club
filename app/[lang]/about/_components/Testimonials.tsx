@@ -170,7 +170,7 @@ export function TestimonialCarousel() {
   return (
     <div
       ref={containerRef}
-      className="relative flex h-[500px] w-full items-center"
+      className="relative flex h-full w-full items-center"
     >
       {showArrows && (
         <>
@@ -206,19 +206,20 @@ export function TestimonialCarousel() {
         }}
       >
         <div
-          className="flex h-full gap-[2px]"
+          className="grid h-full auto-rows-fr gap-[2px]"
           style={{
             width: `${displayedCards.length * cardWidth + (displayedCards.length - 1) * 2}px`,
+            gridTemplateColumns: `repeat(${displayedCards.length}, ${cardWidth}px)`,
           }}
         >
           {displayedCards.map((testimonial, index) => (
             <div
               key={`${index}-${testimonial.name}`}
-              className="h-full flex-shrink-0"
+              className="flex flex-shrink-0"
               style={{ width: `${cardWidth}px` }}
             >
               <div
-                className={`h-full w-full bg-gradient-to-br ${testimonial.gradientFrom} ${testimonial.gradientTo} relative flex flex-col overflow-hidden`}
+                className={`h-full w-full bg-gradient-to-br ${testimonial.gradientFrom} ${testimonial.gradientTo} relative grid grid-rows-[auto_auto_1fr] overflow-hidden`}
               >
                 <div className="absolute inset-0">
                   {Array.from({ length: 12 }).map((_, i) => (
@@ -248,7 +249,7 @@ export function TestimonialCarousel() {
                   </div>
                 </div>
 
-                <div className="z-10 flex flex-1 items-center justify-center border-y border-black">
+                <div className="z-10 flex items-center justify-center border-y border-black py-4">
                   <div className="h-50 w-50 overflow-hidden rounded-full border border-white/5 lg:h-36 lg:w-36">
                     <Image
                       width={150}
@@ -260,7 +261,7 @@ export function TestimonialCarousel() {
                   </div>
                 </div>
 
-                <div className="z-10 flex p-6">
+                <div className="z-10 flex items-center p-6">
                   <blockquote className="text-2xl font-medium leading-relaxed text-white">
                     {`"${testimonial.quote}"`}
                   </blockquote>
