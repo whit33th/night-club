@@ -132,8 +132,8 @@ export default function TopBar({
       </div>
       <div className="bg-primary drop-shadow-primary relative flex min-w-0 flex-1 items-center justify-center overflow-hidden rounded-xl drop-shadow-lg">
         {countdown.state === "upcoming" ? (
-          <div className="z-10 flex flex-col items-center px-3 text-black">
-            <div className="grid grid-cols-4 gap-2 md:gap-4">
+          <div className="z-10 flex flex-col items-center text-black">
+            <div className="grid grid-cols-4 gap-2 px-2 md:gap-4">
               {[
                 {
                   label: dict.events.days,
@@ -154,7 +154,7 @@ export default function TopBar({
               ].map((item) => (
                 <div
                   key={item.label}
-                  className="rounded-lg px-2 py-1.5 text-center md:px-4 md:py-2"
+                  className="rounded-lg py-1.5 text-center md:px-4 md:py-2"
                 >
                   <div className="text-base font-extrabold tabular-nums tracking-wider md:text-3xl">
                     {String(item.value).padStart(2, "0")}

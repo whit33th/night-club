@@ -28,7 +28,7 @@ export default function HireSection({ dict }: HireSectionProps) {
     <section className="relative mt-6 flex w-full items-center justify-center overflow-hidden rounded-2xl">
       <Image
         src="/imgs/backgrounds/hire.webp"
-        alt={"asd"}
+        alt={"Hire 2progi background"}
         width={100}
         height={100}
         className="contrast-105 hue-rotate-120 absolute inset-0 -z-10 h-full w-full object-cover opacity-65 blur-lg"
