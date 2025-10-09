@@ -110,7 +110,33 @@
     },
     "testimonials": {
       "title": "Co mówią nasi goście",
-      "subtitle": "Prawdziwe opinie prawdziwych ludzi"
+      "subtitle": "Prawdziwe opinie prawdziwych ludzi",
+      "reviews": [
+        {
+          "company": "@anna_k",
+          "name": "Anna Kowalski",
+          "title": "Stały Gość",
+          "quote": "Najlepszy klimat w Poznaniu! Atmosfera jest niesamowita, a muzyka zawsze na najwyższym poziomie. Wracam tu co weekend!"
+        },
+        {
+          "company": "@marek_dj",
+          "name": "Marek Nowak",
+          "title": "DJ & Producent",
+          "quote": "Świetny dźwięk i bar. To miejsce gdzie każdy znajdzie coś dla siebie - od techno po house. Najlepszy sound system w mieście!"
+        },
+        {
+          "company": "@julia_music",
+          "name": "Julia Wiśniewska",
+          "title": "Miłośniczka Muzyki",
+          "quote": "Wracam co weekend! Nigdy nie jest nudno, zawsze świetna muzyka i wspaniali ludzie. To moje ulubione miejsce w Poznaniu."
+        },
+        {
+          "company": "@tom_events",
+          "name": "Tom Kowalczyk",
+          "title": "Organizator Wydarzeń",
+          "quote": "Wyjątkowe imprezy."
+        }
+      ]
     },
     "playlist": {
       "title": "Playlista 2progi",

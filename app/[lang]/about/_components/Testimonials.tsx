@@ -15,53 +15,46 @@ interface Testimonial {
   gradientTo: string;
 }
 
-const testimonials: Testimonial[] = [
+interface TestimonialReview {
+  company: string;
+  name: string;
+  title: string;
+  quote: string;
+}
+
+const testimonialImages = [
   {
-    company: "@anna_k",
-    logo: "anna_k",
-    name: "Anna Kowalski",
-    title: "Regular Guest",
-    quote:
-      "Najlepszy klimat w Poznaniu! Atmosfera jest niesamowita, a muzyka zawsze na najwyższym poziomie. Wracam tu co weekend!",
     image: "/imgs/residents/1.webp",
     gradientFrom: "from-black/50",
     gradientTo: "to-rose-950",
   },
   {
-    company: "@marek_dj",
-    logo: "marek_dj",
-    name: "Marek Nowak",
-    title: "DJ & Producer",
-    quote:
-      "Świetny dźwięk i bar. To miejsce gdzie każdy znajdzie coś dla siebie - od techno po house. Najlepszy sound system w mieście!",
     image: "/imgs/residents/2.webp",
     gradientFrom: "from-black/50",
     gradientTo: "to-red-950",
   },
   {
-    company: "@julia_music",
-    logo: "julia_music",
-    name: "Julia Wiśniewska",
-    title: "Music Lover",
-    quote:
-      "Wracam co weekend! Nigdy nie jest nudno, zawsze świetna muzyka i wspaniali ludzie. To moje ulubione miejsce w Poznaniu.",
     image: "/imgs/residents/3.webp",
     gradientFrom: "from-black/50",
     gradientTo: "to-emerald-950",
   },
   {
-    company: "@tom_events",
-    logo: "tom_events",
-    name: "Tom Kowalczyk",
-    title: "Event Organizer",
-    quote: "Wyjątkowe imprezy.",
     image: "/imgs/residents/4.webp",
     gradientFrom: "from-black/50",
     gradientTo: "to-cyan-950",
   },
 ];
 
-export function TestimonialCarousel() {
+export function TestimonialCarousel({
+  reviews,
+}: {
+  reviews: TestimonialReview[];
+}) {
+  const testimonials: Testimonial[] = reviews.map((review, index) => ({
+    ...review,
+    logo: review.company.replace("@", ""),
+    ...testimonialImages[index % testimonialImages.length],
+  }));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardsPerView, setCardsPerView] = useState(1);
   const [cardWidth, setCardWidth] = useState(400);

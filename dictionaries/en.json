@@ -110,7 +110,33 @@
     },
     "testimonials": {
       "title": "What our guests say",
-      "subtitle": "Real reviews from real people"
+      "subtitle": "Real reviews from real people",
+      "reviews": [
+        {
+          "company": "@anna_k",
+          "name": "Anna Kowalski",
+          "title": "Regular Guest",
+          "quote": "Best atmosphere in Poznań! The vibe is amazing, and the music is always top-notch. I come back every weekend!"
+        },
+        {
+          "company": "@marek_dj",
+          "name": "Marek Nowak",
+          "title": "DJ & Producer",
+          "quote": "Great sound and bar. A place where everyone finds something for themselves - from techno to house. Best sound system in the city!"
+        },
+        {
+          "company": "@julia_music",
+          "name": "Julia Wiśniewska",
+          "title": "Music Lover",
+          "quote": "I come back every weekend! Never boring, always great music and wonderful people. This is my favorite place in Poznań."
+        },
+        {
+          "company": "@tom_events",
+          "name": "Tom Kowalczyk",
+          "title": "Event Organizer",
+          "quote": "Exceptional events."
+        }
+      ]
     },
     "playlist": {
       "title": "2progi playlist",

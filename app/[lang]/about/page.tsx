@@ -164,7 +164,7 @@ export default async function AboutPage({ params }: Props) {
           </p>
         </div>
 
-        <TestimonialCarousel />
+        <TestimonialCarousel reviews={dict.about.testimonials.reviews} />
       </section>
 
       {/* Spotify Playlists */}
