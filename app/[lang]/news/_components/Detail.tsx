@@ -29,7 +29,7 @@ export function NewsDetail({
 
   return (
     <div>
-      <header className="mb-8 sm:mb-12">
+      <header className="mb-8">
         <h1 className="mt-3 text-3xl font-black uppercase tracking-tight sm:text-4xl">
           {formattedDate}
           <span className="mx-2 text-neutral-500">{"///"}</span>
@@ -38,8 +38,8 @@ export function NewsDetail({
       </header>
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="overflow-hidden"
       >

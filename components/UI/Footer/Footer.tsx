@@ -34,9 +34,9 @@ export default function Footer() {
     {
       title: "Info",
       links: [
+        { href: localizedLink("faq"), label: dict.navigation.faq },
         { href: localizedLink("about"), label: dict.navigation.about },
         { href: localizedLink("events"), label: dict.navigation.events },
-        { href: localizedLink("faq"), label: dict.navigation.faq },
       ],
     },
     {
