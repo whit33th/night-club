@@ -2,16 +2,17 @@
 import { Facebook, Instagram } from "lucide-react";
 import React from "react";
 import { LinktreeIcon, TelegramIcon, TikTokIcon } from "../UI/Icons/Social";
+import { clubInfo } from "@/lib/data/club-info";
 
 type IconProps = React.SVGAttributes<SVGSVGElement>;
 
 export const SocialLinks: React.FC<{ size?: number }> = ({ size = 20 }) => {
   const socialItems: { href: string; Icon: React.FC<IconProps> }[] = [
-    { href: "https://instagram.com/yourclub", Icon: Instagram },
-    { href: "https://facebook.com/yourclub", Icon: Facebook },
-    { href: "https://tiktok.com/@yourclub", Icon: TikTokIcon },
-    { href: "https://t.me/yourclub", Icon: TelegramIcon },
-    { href: "https://linktr.ee/yourclub", Icon: LinktreeIcon },
+    { href: clubInfo.socialMedia.instagram, Icon: Instagram },
+    { href: clubInfo.socialMedia.facebook, Icon: Facebook },
+    { href: clubInfo.socialMedia.tiktok, Icon: TikTokIcon },
+    { href: clubInfo.socialMedia.telegram, Icon: TelegramIcon },
+    { href: clubInfo.socialMedia.linktree, Icon: LinktreeIcon },
   ];
 
   return (

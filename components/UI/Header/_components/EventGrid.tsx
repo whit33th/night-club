@@ -26,7 +26,9 @@ const EventGrid = ({
   return (
     <>
       {events.map((event) => (
-        <EventCard key={event._id} event={event} onClose={onEventClick} />
+        <article key={event._id}>
+          <EventCard event={event} onClose={onEventClick} />
+        </article>
       ))}
     </>
   );

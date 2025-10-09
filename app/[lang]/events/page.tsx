@@ -64,9 +64,9 @@ function EventsPageBody({ lang }: { lang: Locale }) {
       <ModeToggle mode={mode} onToggle={toggleMode} dict={dict} />
 
       {posters.length === 0 ? (
-        <div className="mx-auto mt-4 w-full max-w-2xl text-center text-2xl">
+        <section className="mx-auto mt-4 w-full max-w-2xl text-center text-2xl">
           <p>{dict?.events?.noEvents || "No events found."}</p>
-        </div>
+        </section>
       ) : (
         <>
           <Activity mode={mode === "list" ? "visible" : "hidden"}>

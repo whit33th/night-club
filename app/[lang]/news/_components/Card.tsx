@@ -47,7 +47,7 @@ export function NewsCard({
             alt={post.title}
             width={400}
             height={300}
-            className="block h-auto w-full scale-[1.01] transform-gpu opacity-95 contrast-125 grayscale transition-all duration-500 ease-out group-hover:scale-[1.03] group-hover:opacity-100 group-hover:grayscale-0"
+            className="block h-auto w-full transform-gpu opacity-95 contrast-125 grayscale transition-all duration-500 ease-out group-hover:opacity-100 group-hover:grayscale-0"
             transformation={[
               {
                 width: 400,
@@ -70,7 +70,10 @@ export function NewsCard({
         <figcaption className="flex items-center justify-between gap-3 border-white/10 bg-white/[0.03] px-3 py-2 text-xs uppercase tracking-wide text-neutral-200">
           <span className="grow select-none text-right text-[0.72rem] text-neutral-200">
             {formattedDate}
-            <span className="mx-1 text-neutral-500">{"///"}</span> {post.title}
+            <span className="mx-1 text-neutral-500 group-hover:text-neutral-400">
+              {"///"}
+            </span>{" "}
+            {post.title}
           </span>
         </figcaption>
       </motion.article>

@@ -40,12 +40,15 @@ export default function Footer() {
       ],
     },
     {
-      title: "More",
+      title: dict.navigation.more,
       links: [
         { href: localizedLink("news"), label: dict.navigation.news },
         { href: localizedLink("gallery"), label: dict.navigation.gallery },
-        { href: localizedLink("legal/privacy"), label: "Privacy" },
-        { href: localizedLink("legal/terms"), label: "Terms" },
+        {
+          href: localizedLink("legal/privacy"),
+          label: dict.navigation.privacy,
+        },
+        { href: localizedLink("legal/terms"), label: dict.navigation.terms },
       ],
     },
     {

@@ -7,7 +7,10 @@
     "about": "About",
     "faq": "FAQ",
     "contact": "Contact",
-    "address": "Address"
+    "address": "Address",
+    "more": "More",
+    "privacy": "Privacy",
+    "terms": "Terms"
   },
   "hero": {
     "title": "2progi",
