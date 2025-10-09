@@ -22,8 +22,8 @@ export default function EventsGridSSR({
 
   return (
     <section className="mt-4">
-      <h1 className="pb-4 pl-3 text-3xl font-semibold sm:text-4xl xl:pb-0 2xl:text-5xl">
-        Upcoming Events
+      <h1 className="pb-4 pl-5 text-4xl font-semibold xl:pb-0 2xl:text-5xl">
+        {dict.events.title}
       </h1>
       {events.length > 0 && (
         <div className="hidden items-center justify-end xl:flex">
