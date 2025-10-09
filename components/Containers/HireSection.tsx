@@ -21,7 +21,7 @@ export default function HireSection({ dict }: HireSectionProps) {
   const subtitle = dict.hire?.subtitle || "Professional event hosting";
   const description =
     dict.hire?.description ||
-    "Looking for the perfect venue for your private party, corporate event, or special celebration? Our team will help you create an unforgettable experience with professional sound, lighting, and catering services.";
+    "Situated in the vibrant heart of Poznań, with state-of-the-art sound system and professional lighting, multiple bars, and incredible atmosphere throughout the venue, 2progi is one of Poland's most dynamic nightlife destinations. Since opening, the club has been the pulse of Poznań's electronic music scene, hosting unforgettable nights and exclusive events that define the city's nightlife culture.";
   const cta = dict.hire?.cta || dict.navigation.contact;
 
   return (
