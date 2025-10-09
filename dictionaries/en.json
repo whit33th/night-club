@@ -6,12 +6,13 @@
     "news": "News",
     "about": "About",
     "faq": "FAQ",
-    "contact": "Contact"
+    "contact": "Contact",
+    "address": "Address"
   },
   "hero": {
     "title": "2progi",
     "subtitle": "Music and event club in the heart of Poznań",
-    "description": "Concerts, parties, DJ sets and event space rental",
+    "description": "Club where music meets people. Concerts, DJ sets, and unforgettable parties in Poznań.",
     "cta": "View events",
     "address": "Aleja Niepodległości 36, Poznań",
     "texts": {
@@ -76,7 +77,9 @@
     "casual": "Casual",
     "band": "Band",
     "dj": "DJ",
-    "aboutThisEvent": "About this event"
+    "aboutThisEvent": "About this event",
+    "buyTicket": "Buy",
+    "free": "Free"
   },
   "gallery": {
     "title": "Gallery",
@@ -187,5 +190,11 @@
         "a": "Management reserves the right of admission."
       }
     ]
+  },
+  "hire": {
+    "title": "Hire 2progi for your next event",
+    "subtitle": "Professional event hosting",
+    "description": "Looking for the perfect venue for your private party, corporate event, or special celebration? Our team will help you create an unforgettable experience with professional sound, lighting, and catering services.",
+    "cta": "Contact us"
   }
 }

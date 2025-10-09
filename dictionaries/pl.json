@@ -6,12 +6,13 @@
     "news": "Aktualności",
     "about": "O nas",
     "faq": "FAQ",
-    "contact": "Kontakt"
+    "contact": "Kontakt",
+    "address": "Adres"
   },
   "hero": {
     "title": "2progi",
     "subtitle": "Klub muzyczno-eventowy w sercu Poznania",
-    "description": "Koncerty, imprezy, DJ-sety i wynajem przestrzeni eventowej",
+    "description": "Klub, w którym muzyka spotyka ludzi. Koncerty, DJ-sety i niezapomniane imprezy w Poznaniu.",
     "cta": "Zobacz wydarzenia",
     "address": "Aleja Niepodległości 36, Poznań",
     "texts": {
@@ -76,7 +77,9 @@
     "casual": "Casualowy",
     "band": "Zespół",
     "dj": "DJ",
-    "aboutThisEvent": "O tym wydarzeniu"
+    "aboutThisEvent": "O tym wydarzeniu",
+    "buyTicket": "Kup",
+    "free": "Darmowe"
   },
   "gallery": {
     "title": "Galeria",
@@ -190,5 +193,11 @@
         "a": "Zarząd zastrzega sobie prawo do odmowy wstępu."
       }
     ]
+  },
+  "hire": {
+    "title": "Wynajmij 2progi na swoje wydarzenie",
+    "subtitle": "Profesjonalna organizacja eventów",
+    "description": "Szukasz idealnego miejsca na prywatną imprezę, event firmowy lub specjalne święto? Nasz zespół pomoże Ci stworzyć niezapomniane doświadczenie z profesjonalnym nagłośnieniem, oświetleniem i usługami cateringowymi.",
+    "cta": "Skontaktuj się"
   }
 }

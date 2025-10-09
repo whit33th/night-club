@@ -1,13 +1,13 @@
 "use client";
 
-import { Preloaded, usePreloadedQuery } from "convex/react";
+import ConvexEventsCard from "@/app/[lang]/events/_components/EventsPage/ConvexEventsCard";
 import { api } from "@/convex/_generated/api";
+import { Dict } from "@/lib/get-dictionary-client";
+import { Locale } from "@/lib/i18n-config";
+import { generateSlug } from "@/lib/slugUtils";
+import { Preloaded, usePreloadedQuery } from "convex/react";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { generateSlug } from "@/lib/slugUtils";
-import ConvexEventsCardSSR from "@/app/[lang]/events/_components/EventsPage/ConvexEventsCardSSR";
-import { Locale } from "@/lib/i18n-config";
-import { Dict } from "@/lib/get-dictionary-client";
 
 export default function EventsGridSSR({
   preloaded,
@@ -22,7 +22,9 @@ export default function EventsGridSSR({
 
   return (
     <section className="mt-4">
-      <h1 className="sr-only">Events</h1>
+      <h1 className="pb-4 pl-3 text-3xl font-semibold sm:text-4xl xl:pb-0 2xl:text-5xl">
+        Upcoming Events
+      </h1>
       {events.length > 0 && (
         <div className="hidden items-center justify-end xl:flex">
           <Link
@@ -56,12 +58,18 @@ export default function EventsGridSSR({
           const isPast = eventDateTime < currentWarsawDate;
 
           return (
-            <ConvexEventsCardSSR
+            <ConvexEventsCard
               key={event._id}
               event={event}
               index={index}
               href={`/${lang}/events/${eventSlug}`}
               isPast={isPast}
+              imageConfig={{
+                width: 350,
+                height: 450,
+                quality: 90,
+                aspectRatio: "4:5",
+              }}
             />
           );
         })}

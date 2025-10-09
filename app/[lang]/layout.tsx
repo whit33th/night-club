@@ -10,12 +10,15 @@ import { clubInfo } from "@/lib/data/club-info";
 import { localeMap } from "@/lib/date-utils";
 import { getDictionary } from "@/lib/get-dictionary";
 import { i18n, Locale } from "@/lib/i18n-config";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
+
 import { Inter } from "next/font/google";
+
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
 import "./globals.css";
-
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -217,6 +220,8 @@ export default async function RootLayout({
             <Toaster richColors position="bottom-right" />
           </ConvexClientProvider>
         </LenisProvider>
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );

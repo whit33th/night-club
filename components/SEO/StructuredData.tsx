@@ -11,7 +11,7 @@ export default function JsonLdMainPage() {
         name: clubInfo.name,
         alternateName: "2progi Night Club",
         description:
-          "2progi — klub muzyczno-eventowy w Poznaniu. Koncerty, imprezy, DJ-sety i wynajem przestrzeni eventowej.",
+          "2progi — klub, w którym muzyka spotyka ludzi. Koncerty, DJ-sety i niezapomniane imprezy w Poznaniu.",
         url: clubInfo.website,
         logo: {
           "@type": "ImageObject",

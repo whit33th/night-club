@@ -37,7 +37,7 @@ export default function ConvexEventsGridCard({
   return (
     <Link
       href={localizedLink(`events/${eventSlug}`)}
-      className="aspect-[9/12] h-full"
+      className="aspect-[4/5] h-full"
     >
       <ViewTransition name={`event-card-${event._id}`} key={event._id}>
         <motion.div
@@ -67,7 +67,7 @@ export default function ConvexEventsGridCard({
             <p className="font-bold">{month}</p>
             <p className="text-3xl font-bold">{Number(day)}</p>
           </motion.div>
-          <div className="relative aspect-[9/12] flex-1 overflow-hidden p-4">
+          <div className="relative aspect-[4/5] flex-1 overflow-hidden p-4">
             <Image
               src={event.imageKitPath!}
               alt={event.title}
@@ -79,7 +79,8 @@ export default function ConvexEventsGridCard({
                 {
                   format: "webp",
                   width: 350,
-                  height: 350,
+                  height: 450,
+                  aspectRatio: "9:12",
                   quality: 75,
                   progressive: true,
                 },

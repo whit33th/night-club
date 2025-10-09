@@ -115,13 +115,13 @@ export default async function AboutPage({ params }: Props) {
         </div>
         {(() => {
           const base: Array<{ src: string; alt: string }> = [
-            { src: "/imgs/interior/2.jpg", alt: "Club interior" },
-            { src: "/imgs/interior/1.jpg", alt: "Dancefloor" },
-            { src: "/imgs/interior/3.jpg", alt: "Crowd 1" },
-            { src: "/imgs/interior/4.jpg", alt: "Crowd 2" },
-            { src: "/imgs/interior/5.jpg", alt: "Crowd 3" },
-            { src: "/imgs/interior/6.jpg", alt: "Crowd 4" },
-            { src: "/imgs/interior/7.jpg", alt: "Crowd 4" },
+            { src: "/imgs/interior/2.webp", alt: "Club entrance" },
+            { src: "/imgs/interior/1.webp", alt: "Bar" },
+            { src: "/imgs/interior/3.webp", alt: "Interior" },
+            { src: "/imgs/interior/4.webp", alt: "Interior" },
+            { src: "/imgs/interior/5.webp", alt: "Interior" },
+            { src: "/imgs/interior/6.webp", alt: "Interior" },
+            { src: "/imgs/interior/7.webp", alt: "Interior" },
           ];
           const spans = [
             "sm:col-span-2 sm:row-span-3",

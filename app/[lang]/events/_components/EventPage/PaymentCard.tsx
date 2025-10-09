@@ -45,7 +45,7 @@ export default function PaymentCard({
                   height: 800,
                 },
               ]}
-              quality={65}
+              quality={80}
               blurQuality={10}
               blurAmount={50}
               // sizes="(max-width: 768px) 144px, 192px"

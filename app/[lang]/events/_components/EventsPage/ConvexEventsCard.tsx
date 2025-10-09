@@ -1,0 +1,166 @@
+"use client";
+
+import { useLanguage } from "@/components/Providers/LanguageProvider";
+import { useLocalizedLink } from "@/components/Providers/useLocalizedLink";
+import { Doc } from "@/convex/_generated/dataModel";
+import { localeMap } from "@/lib/date-utils";
+import { generateSlug } from "@/lib/slugUtils";
+import { Image } from "@imagekit/next";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { unstable_ViewTransition as ViewTransition } from "react";
+
+interface ConvexEventsCardProps {
+  event: Doc<"events">;
+  index: number;
+  href?: string;
+  isPast?: boolean;
+  imageConfig?: {
+    width?: number;
+    height?: number;
+    quality?: number;
+    aspectRatio?: string;
+  };
+}
+
+export default function ConvexEventsCard({
+  event,
+  index,
+  href,
+  isPast = false,
+  imageConfig = {
+    width: 350,
+    height: 450,
+    quality: 90,
+    aspectRatio: "4:5",
+  },
+}: ConvexEventsCardProps) {
+  const { lang, dict } = useLanguage();
+  const localizedLink = useLocalizedLink();
+  const date = new Date(event.date);
+
+  const monthName = date.toLocaleDateString(localeMap[lang], {
+    month: "short",
+  });
+  const month = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+  const day = date.toLocaleDateString(localeMap[lang], { day: "numeric" });
+
+  // Format artists for display
+  const artistsDisplay =
+    event.artists?.map((artist) => artist.name).join(", ") ?? "";
+
+  // Generate SEO-friendly URL: event-name-date-id
+  const eventSlug = generateSlug(event.title, event.date, event._id);
+
+  // Use custom href if provided, otherwise generate default URL
+  const linkHref = href ?? localizedLink(`events/${eventSlug}`);
+
+  return (
+    <Link href={linkHref} className={`group flex aspect-[4/5] h-full flex-col`}>
+      <motion.div
+        className="relative flex h-full flex-col p-3"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: isPast ? 0.75 : 1, y: 0 }}
+        transition={{
+          duration: 0.2,
+          delay: index * 0.06,
+          ease: "easeOut",
+        }}
+      >
+        <motion.div
+          className={`absolute left-0 top-0 z-10 flex h-16 w-16 flex-col items-center justify-center rounded-[14px] shadow-xl backdrop-blur backdrop-hue-rotate-180 ${
+            isPast ? "bg-neutral-900/40 text-neutral-400" : "bg-neutral-900/25"
+          }`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{
+            duration: 0.4,
+            delay: index * 0.06 + 0.2,
+            ease: "easeOut",
+          }}
+        >
+          <p className="font-bold">{month}</p>
+          <p className="text-3xl font-bold">{Number(day)}</p>
+        </motion.div>
+        <div className="relative aspect-[4/5] flex-1 overflow-hidden rounded p-4">
+          <ViewTransition name={`event-${event._id}`} key={event._id}>
+            <Image
+              src={event.imageKitPath!}
+              alt={event.title}
+              fill
+              className={`group-hover:scale-103 absolute inset-0 rounded object-cover object-center transition-all duration-300 ease-in-out group-hover:opacity-80 ${
+                isPast ? "grayscale" : ""
+              }`}
+              transformation={[
+                {
+                  format: "webp",
+                  width: imageConfig.width,
+                  height: imageConfig.height,
+                  aspectRatio: imageConfig.aspectRatio,
+                  quality: imageConfig.quality,
+                },
+              ]}
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 315px"
+              loading={index < 4 ? "eager" : "lazy"}
+              priority={index < 4}
+            />
+          </ViewTransition>
+          <figure
+            className={`pointer-events-none absolute inset-0 z-[1] ${
+              isPast
+                ? "bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.1)_55%,rgba(0,0,0,0.6)_100%)]"
+                : "bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0)_55%,rgba(0,0,0,0.3)_100%)]"
+            }`}
+          />
+          {isPast && (
+            <div className="absolute inset-0 z-[2] flex items-center justify-center">
+              <span className="rounded-full bg-black/70 px-3 py-1 text-sm font-medium text-white/90 backdrop-blur">
+                {dict.events.pastEvent}
+              </span>
+            </div>
+          )}
+        </div>
+
+        <motion.div
+          className={`absolute bottom-0 left-0 z-10 flex min-h-16 w-full items-center justify-between gap-3 rounded-[14px] px-4 py-2 backdrop-blur backdrop-hue-rotate-180 ${
+            isPast ? "bg-neutral-900/40" : "bg-neutral-900/25"
+          }`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{
+            duration: 0.4,
+            delay: index * 0.06 + 0.3,
+            ease: "easeOut",
+          }}
+        >
+          <div className="flex w-full items-center justify-between gap-3">
+            <div className="flex flex-col">
+              <h2 className={`font-bold ${isPast ? "text-neutral-300" : ""}`}>
+                {(index + 1).toString().padStart(2, "0")}. {event.title}
+              </h2>
+              <h3
+                className={`text-xs ${isPast ? "text-neutral-500" : "text-neutral-400"}`}
+              >
+                {artistsDisplay}
+              </h3>
+            </div>
+            {!isPast && event.ticketUrl && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  window.open(event.ticketUrl, "_blank", "noopener,noreferrer");
+                }}
+                className="rounded-lg bg-black/5 px-4 py-2 text-sm font-medium outline-white/20 backdrop-blur transition-colors duration-200 hover:bg-black/10 hover:outline-dashed hover:outline-2 active:scale-95"
+              >
+                {event.priceFrom === 0
+                  ? dict.events.free || "Free"
+                  : dict.events.buyTicket || "Buy"}
+              </button>
+            )}
+          </div>
+        </motion.div>
+      </motion.div>
+    </Link>
+  );
+}

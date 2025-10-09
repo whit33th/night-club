@@ -25,7 +25,7 @@ export default function HeroImage({ id, alt, src }: HeroImageProps) {
               format: "webp",
               width: 800,
               height: 800,
-              quality: 65,
+              quality: 80,
             },
           ]}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"

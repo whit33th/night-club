@@ -1,7 +1,7 @@
 "use client";
 
 import { Doc } from "@/convex/_generated/dataModel";
-import ConvexEventsGridCard from "./ConvexEventsGridCard";
+import ConvexEventsCard from "./ConvexEventsCard";
 import { isPastEvent } from "@/lib/date-utils";
 
 export default function EventsGridView({
@@ -14,11 +14,17 @@ export default function EventsGridView({
       {items.map((event, index) => {
         const isPast = isPastEvent(event.date, event.startAt);
         return (
-          <ConvexEventsGridCard
+          <ConvexEventsCard
             event={event}
             index={index}
             isPast={isPast}
             key={event._id}
+            imageConfig={{
+              width: 350,
+              height: 450,
+              quality: 70,
+              aspectRatio: "4:5",
+            }}
           />
         );
       })}

@@ -3,6 +3,7 @@
 import { SocialLinks } from "@/components/Containers/SocialLinks";
 import { useLanguage } from "@/components/Providers/LanguageProvider";
 import { useLocalizedLink } from "@/components/Providers/useLocalizedLink";
+import { clubInfo } from "@/lib/data/club-info";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -50,8 +51,17 @@ export default function Footer() {
     {
       title: dict.navigation.contact,
       links: [
-        { href: "mailto:biuro@2progi.pl", label: "biuro@2progi.pl" },
-        { href: "tel:+48606277256", label: "+48 606 277 256" },
+        { href: "mailto:biuro@2progi.pl", label: clubInfo.email },
+        { href: "tel:+48606277256", label: clubInfo.phone },
+      ],
+    },
+    {
+      title: dict.navigation.address,
+      links: [
+        {
+          href: "https://maps.app.goo.gl/aSZb81XLDtQXi2Q66",
+          label: clubInfo.address.street + ", " + clubInfo.address.city,
+        },
       ],
     },
   ];
