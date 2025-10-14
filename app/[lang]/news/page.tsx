@@ -17,18 +17,14 @@ export default function NewsPage({ params }: Props) {
   const news = useQuery(api.admin.listNews);
 
   return (
-    <div className="relative mx-auto max-w-3xl px-4 pt-8">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-0 right-0 top-0 -z-10 select-none opacity-[0.03]"
-      />
+    <div className="relative mx-auto max-w-3xl px-4 pt-8 2xl:max-w-4xl">
       <NewsHeader dict={dict} />
       {news === undefined ? (
         <div className="mt-8 flex items-center justify-center gap-3 py-12">
           <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white/60"></div>
         </div>
       ) : (
-        <NewsList posts={news} dict={dict} />
+        <NewsList posts={news} />
       )}
     </div>
   );

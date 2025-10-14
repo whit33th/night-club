@@ -43,17 +43,17 @@ export function NewsDetail({
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="overflow-hidden"
       >
-        <div className="relative">
+        <div className="relative overflow-hidden">
           <ImageWithPlaceholder
             src={imageSrc}
             alt={news.title}
             width={800}
-            height={600}
-            className="block h-auto w-full transform-gpu transition-all duration-700 ease-out hover:grayscale-0"
-            quality={65}
+            height={400}
+            className="block h-auto w-full transform-gpu object-cover transition-all duration-700 ease-out hover:grayscale-0 sm:max-h-[400px] md:max-h-[500px] lg:max-h-[600px] xl:max-h-[700px]"
+            quality={75}
             blurQuality={5}
             blurAmount={30}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 800px"
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 95vw, (max-width: 1024px) 90vw, (max-width: 1280px) 85vw, 700px"
           />
         </div>
         <div className="border-l-8 border-white/10 px-4 py-4 sm:px-5 sm:py-5">

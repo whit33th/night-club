@@ -86,11 +86,11 @@ export function TestimonialCarousel({
     calculateLayout();
     window.addEventListener("resize", calculateLayout);
     return () => window.removeEventListener("resize", calculateLayout);
-  }, []);
+  }, [testimonials.length]);
 
-  const addMoreCards = () => {
+  const addMoreCards = useCallback(() => {
     setDisplayedCards((prev) => [...prev, ...testimonials]);
-  };
+  }, [testimonials]);
 
   const scrollToIndex = useCallback(
     (index: number) => {
@@ -128,6 +128,7 @@ export function TestimonialCarousel({
     currentIndex,
     scrollToIndex,
     isAnimating,
+    addMoreCards,
   ]);
 
   const prevTestimonial = () => {
@@ -248,6 +249,7 @@ export function TestimonialCarousel({
                       width={150}
                       height={150}
                       src={testimonial.image}
+                      loading="eager"
                       alt={testimonial.name}
                       className="h-full w-full object-cover"
                     />

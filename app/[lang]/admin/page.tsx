@@ -318,7 +318,12 @@ export default function EventsPage() {
             type="number"
             placeholder="18"
             error={errors.minAge}
-            {...register("minAge")}
+            {...register("minAge", {
+              validate: (v) =>
+                v === "" ||
+                (/^\d+$/.test(v) && Number(v) >= 0) ||
+                "Must be a non-negative integer",
+            })}
           />
           <FormField
             label="Dress Code"
@@ -425,13 +430,23 @@ export default function EventsPage() {
             icon={<DollarSign className="h-4 w-4" />}
             placeholder="0"
             error={errors.priceFrom}
-            {...register("priceFrom")}
+            {...register("priceFrom", {
+              validate: (v) =>
+                v === "" ||
+                (!isNaN(Number(v)) && Number(v) >= 0) ||
+                "Must be a non-negative number",
+            })}
           />
           <FormField
             label="Currency"
             placeholder="PLN"
             error={errors.currency}
-            {...register("currency")}
+            {...register("currency", {
+              validate: (v) =>
+                v === "" ||
+                /^[A-Z]{3}$/.test(v) ||
+                "Use 3-letter code (e.g. PLN)",
+            })}
           />
           <FormField
             label="Ticket URL"
@@ -439,7 +454,12 @@ export default function EventsPage() {
             icon={<Link className="h-4 w-4" />}
             placeholder="https://tickets.com/event"
             error={errors.ticketUrl}
-            {...register("ticketUrl")}
+            {...register("ticketUrl", {
+              validate: (v) =>
+                v === "" ||
+                /^https?:\/\//i.test(v) ||
+                "Must start with http(s)://",
+            })}
           />
           <FormField
             label="Description"

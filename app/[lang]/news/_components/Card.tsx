@@ -39,7 +39,7 @@ export function NewsCard({
           clipPath:
             "polygon(12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px)",
         }}
-        className="border-x border-b border-white/10"
+        className="border-x border-b border-white/5"
       >
         <div className="relative overflow-hidden">
           <ImageWithPlaceholder

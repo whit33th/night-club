@@ -176,6 +176,10 @@ export default function NewsPage() {
             error={errors.title}
             {...register("title", {
               required: "Title is required",
+              minLength: {
+                value: 3,
+                message: "Title must be at least 3 characters",
+              },
             })}
           />
 
@@ -197,7 +201,13 @@ export default function NewsPage() {
             required
             error={errors.body}
             className="md:col-span-2"
-            {...register("body", { required: "Body is required" })}
+            {...register("body", {
+              required: "Body is required",
+              minLength: {
+                value: 10,
+                message: "Body must be at least 10 characters",
+              },
+            })}
           />
         </div>
 

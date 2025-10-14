@@ -41,7 +41,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
             required={required}
             {...props}
             className={
-              "w-full rounded-lg border border-white/15 bg-white/5 py-2 text-sm text-white outline-none transition placeholder:text-white/40 focus:ring-2 focus:ring-[var(--primary)] " +
+              "w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm text-white outline-none transition placeholder:text-white/40 focus:ring-2 focus:ring-[var(--primary)] " +
               (icon ? "pl-8 pr-3" : "px-3") +
               (error ? "border-red-500/60 focus:ring-red-500" : "") +
               className

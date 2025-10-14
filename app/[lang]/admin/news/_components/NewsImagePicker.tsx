@@ -58,6 +58,9 @@ function NewsImagePickerBase({
           )}
         </div>
       </label>
+      {imageError && (
+        <p className="mt-2 text-sm text-red-400">Please select an image.</p>
+      )}
     </div>
   );
 }
