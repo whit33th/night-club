@@ -22,6 +22,8 @@ export function useAdminForm<T extends FieldValues>({
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [compressionProgress, setCompressionProgress] = useState(0);
 
   const form = useForm<T>({
     defaultValues,
@@ -59,22 +61,33 @@ export function useAdminForm<T extends FieldValues>({
     file: File,
   ): Promise<{ fileId: string; filePath: string }> => {
     try {
+      setCompressionProgress(0);
+      setUploadProgress(0);
+
       const MAX_SIZE_MB = 3;
       const compressed = await imageCompression(file, {
         maxSizeMB: MAX_SIZE_MB,
-        maxWidthOrHeight: 1200,
+        maxWidthOrHeight: 1000, // Reduced from 1200 for faster processing
         useWebWorker: true,
         fileType: "image/webp",
+        onProgress: (progress) => {
+          setCompressionProgress(Math.round(progress));
+        },
       });
 
       if (compressed.size > MAX_SIZE_MB * 1024 * 1024) {
         throw new Error("Image is too large (max 3 MB)");
       }
 
+      setCompressionProgress(100);
+      setUploadProgress(10);
+
+      // Get auth token
       const authRes = await fetch("/api/imagekit/auth");
       if (!authRes.ok) throw new Error("Failed to get auth token");
 
       const { token, expire, signature, publicKey } = await authRes.json();
+      setUploadProgress(20);
 
       const formData = new FormData();
       formData.append("file", compressed);
@@ -84,6 +97,8 @@ export function useAdminForm<T extends FieldValues>({
       formData.append("signature", signature);
       formData.append("publicKey", publicKey);
 
+      setUploadProgress(30);
+
       const uploadRes = await fetch(
         "https://upload.imagekit.io/api/v1/files/upload",
         {
@@ -92,14 +107,20 @@ export function useAdminForm<T extends FieldValues>({
         },
       );
 
+      setUploadProgress(90);
+
       if (!uploadRes.ok) throw new Error("Upload failed");
 
       const result = await uploadRes.json();
+      setUploadProgress(100);
+
       return {
         fileId: result.fileId,
         filePath: result.filePath,
       };
     } catch (error: unknown) {
+      setCompressionProgress(0);
+      setUploadProgress(0);
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error";
       toast.error("Image upload failed: " + errorMessage);
@@ -141,6 +162,8 @@ export function useAdminForm<T extends FieldValues>({
     }
     setImagePreview("");
     setSelectedFile(null);
+    setUploadProgress(0);
+    setCompressionProgress(0);
   }, [imagePreview]);
 
   const resetForm = useCallback(() => {
@@ -153,6 +176,8 @@ export function useAdminForm<T extends FieldValues>({
     loading,
     imagePreview,
     selectedFile,
+    uploadProgress,
+    compressionProgress,
     handleFileChange,
     clearImage,
     resetForm,

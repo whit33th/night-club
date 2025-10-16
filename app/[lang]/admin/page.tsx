@@ -169,6 +169,8 @@ export default function EventsPage() {
     formState: { errors },
     loading,
     imagePreview,
+    uploadProgress,
+    compressionProgress,
     handleFileChange,
     reset,
     watch,
@@ -198,15 +200,29 @@ export default function EventsPage() {
       if (editingId && editingEvent) {
         const patch = { ...formData };
 
+        // Prepare parallel operations
+        const operations: Promise<any>[] = [];
+
         if (imageKitData) {
-          if (editingEvent.imageKitId) {
-            await deleteImageFromImageKit(editingEvent.imageKitId);
-          }
+          // Add new image data to patch
           patch.imageKitId = imageKitData.fileId;
           patch.imageKitPath = imageKitData.filePath;
+
+          // Delete old image in parallel (don't wait for it)
+          if (editingEvent.imageKitId) {
+            operations.push(
+              deleteImageFromImageKit(editingEvent.imageKitId).catch((err) =>
+                console.warn("Failed to delete old image:", err),
+              ),
+            );
+          }
         }
 
-        await updateEvent({ id: editingId, patch });
+        // Add update operation
+        operations.push(updateEvent({ id: editingId, patch }));
+
+        // Execute all operations in parallel
+        await Promise.all(operations);
 
         setEditingId(null);
         setEditingEvent(null);
@@ -491,6 +507,54 @@ export default function EventsPage() {
               : "Create Event"}
         </Button>
       </form>
+
+      {/* Progress Overlay */}
+      {loading && (compressionProgress > 0 || uploadProgress > 0) && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+          <div className="mx-4 w-full max-w-md rounded-lg border border-white/10 bg-white/5 p-6 backdrop-blur">
+            <div className="space-y-4">
+              {compressionProgress > 0 && compressionProgress < 100 && (
+                <div>
+                  <div className="mb-2 flex items-center justify-between text-sm">
+                    <span className="text-white/80">Compressing image...</span>
+                    <span className="text-white/60">
+                      {compressionProgress}%
+                    </span>
+                  </div>
+                  <div className="h-2 w-full rounded-full bg-white/10">
+                    <div
+                      className="h-2 rounded-full bg-[var(--primary)] transition-all duration-300"
+                      style={{ width: `${compressionProgress}%` }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {uploadProgress > 0 && (
+                <div>
+                  <div className="mb-2 flex items-center justify-between text-sm">
+                    <span className="text-white/80">Uploading image...</span>
+                    <span className="text-white/60">{uploadProgress}%</span>
+                  </div>
+                  <div className="h-2 w-full rounded-full bg-white/10">
+                    <div
+                      className="h-2 rounded-full bg-green-500 transition-all duration-300"
+                      style={{ width: `${uploadProgress}%` }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {compressionProgress === 100 && uploadProgress === 100 && (
+                <div className="flex items-center space-x-3">
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-[var(--primary)] border-t-transparent" />
+                  <span className="text-white/80">Saving event...</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="space-y-4">
         <h2 className="text-xl font-semibold">Existing Events</h2>
