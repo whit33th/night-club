@@ -201,7 +201,7 @@ export default function EventsPage() {
         const patch = { ...formData };
 
         // Prepare parallel operations
-        const operations: Promise<any>[] = [];
+        const operations: Promise<unknown>[] = [];
 
         if (imageKitData) {
           // Add new image data to patch
