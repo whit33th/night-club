@@ -1,4 +1,4 @@
-# 🎵 2progi Night Club
+# 2progi Night Club
 
 <img width="2880" height="1620" alt="image" src="https://github.com/user-attachments/assets/11dfe69f-e36d-4654-9ee4-c1491e75dc2b" />
 
@@ -9,30 +9,30 @@
 
 _Experience the nightlife like never before_
 
-[🎉 Visit Website](https://2progi.vercel.app) • [📸 Gallery](#features) • [🎪 Events](#features) • [📰 News](#features)
+[Visit Website](https://2progi.vercel.app) • [📸 Gallery](#features) • [🎪 Events](#features) • [📰 News](#features)
 
 </div>
 
 ---
 
-## 🌟 About
+## About
 
 **2progi** is a modern, full-stack web application for a premier night club located in Poznań, Poland. This project showcases cutting-edge web technologies to deliver an immersive digital experience for club-goers, featuring event management, photo galleries, news updates, and seamless multilingual support.
 
-## ✨ Features
+## Features
 
-- 🎭 **Event Management** - Browse upcoming events and book your spot
-- 📸 **Photo Gallery** - Relive the best moments with our dynamic gallery
-- 📰 **News & Updates** - Stay informed about the latest happenings
-- 🌍 **Multilingual Support** - Full English and Polish localization
-- 🎨 **Smooth Animations** - Enhanced UX with Framer Motion and Lenis
-- 📱 **Responsive Design** - Perfect experience on any device
-- 🔐 **Admin Panel** - Comprehensive content management system
-- 🚀 **Performance Optimized** - Lightning-fast load times and SEO-ready
-- 🗺️ **Interactive Map** - Easy-to-find location with embedded maps
-- 📧 **Contact Forms** - Direct communication with the venue
+-  **Event Management** - Browse upcoming events and book your spot
+-  **Photo Gallery** - Relive the best moments with our dynamic gallery
+-  **News & Updates** - Stay informed about the latest happenings
+-  **Multilingual Support** - Full English and Polish localization
+-  **Smooth Animations** - Enhanced UX with Framer Motion and Lenis
+-  **Responsive Design** - Perfect experience on any device
+-  **Admin Panel** - Comprehensive content management system
+-  **Performance Optimized** - Lightning-fast load times and SEO-ready
+-  **Interactive Map** - Easy-to-find location with embedded maps
+-  **Contact Forms** - Direct communication with the venue
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 
@@ -57,7 +57,7 @@ _Experience the nightlife like never before_
 - **Code Quality:** ESLint + Prettier
 - **Compiler:** React Compiler (RC3)
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -110,7 +110,7 @@ _Experience the nightlife like never before_
    pnpm start
    ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 night-club/
@@ -134,7 +134,7 @@ night-club/
 └── public/               # Static assets
 ```
 
-## 🌐 Internationalization
+## Internationalization
 
 The app supports multiple languages with a custom i18n implementation:
 
@@ -143,7 +143,7 @@ The app supports multiple languages with a custom i18n implementation:
 
 Language is automatically detected from the URL path (`/en/*` or `/pl/*`).
 
-## 🎨 Key Features in Detail
+## Key Features in Detail
 
 ### Admin Panel
 
@@ -171,7 +171,7 @@ Secure admin interface for managing:
 - React Server Components
 - Edge-ready deployment
 
-## 📍 Club Information
+## Club Information
 
 - **Location:** al. Niepodległości 36, Poznań, Poland
 - **Capacity:** 500 guests
@@ -185,22 +185,13 @@ Secure admin interface for managing:
 - [TikTok](https://www.tiktok.com/@2progi)
 - [Telegram](https://t.me/poznan2progi)
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 📄 License
+## License
 
 This project is private and proprietary.
-
-## 🎯 Roadmap
-
-- [ ] Mobile app integration
-- [ ] Ticket booking system
-- [ ] VIP reservations
-- [ ] Guest list management
-- [ ] Live event streaming
-- [ ] DJ schedule integration
 
 ---
 
