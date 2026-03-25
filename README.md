@@ -1,5 +1,8 @@
 # 🎵 2progi Night Club
 
+<img width="2880" height="1620" alt="image" src="https://github.com/user-attachments/assets/11dfe69f-e36d-4654-9ee4-c1491e75dc2b" />
+
+
 <div align="center">
 
 [![Website](https://img.shields.io/badge/🌐_Visit-2progi.vercel.app-blue?style=for-the-badge)](https://2progi.vercel.app)
