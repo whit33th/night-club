@@ -9,7 +9,7 @@
 
 _Experience the nightlife like never before_
 
-[Visit Website](https://2progi.vercel.app) • [📸 Gallery](#features) • [🎪 Events](#features) • [📰 News](#features)
+[Visit Website](https://2progi.vercel.app) • [Gallery](#features) • [Events](#features) • [News](#features)
 
 </div>
 
